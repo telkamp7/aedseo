@@ -7,7 +7,7 @@
 fit_growth_rate(
   observations,
   level = 0.95,
-  family = c("poisson", "quasipoisson", "negative.binomial")
+  family = c("poisson", "quasipoisson")
 )
 }
 \arguments{
@@ -15,7 +15,7 @@ fit_growth_rate(
 
 \item{level}{The confidence level for parameter estimates, a numeric value between 0 and 1.}
 
-\item{family}{A character string specifying the family for modeling. Choose between "poisson," "quasipoisson," or "negative.binomial."}
+\item{family}{A character string specifying the family for modeling. Choose between "poisson," or "quasipoisson".}
 }
 \value{
 A list containing:

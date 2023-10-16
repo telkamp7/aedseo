@@ -13,10 +13,9 @@ test_that("The growth rate models converge", {
   # Fit the models
   fit_poisson <- fit_growth_rate(observations = data_poisson, level = 0.95, family = "poisson")
   fit_quasipoisson <- fit_growth_rate(observations = data_nbinom, level = 0.95, family = "quasipoisson")
-  fit_nbinom <- fit_growth_rate(observations = data_nbinom, level = 0.95, family = "negative.binomial")
 
   # Check if they all converge
   expect_true(object = fit_poisson$fit$converged)
   expect_true(object = fit_quasipoisson$fit$converged)
-  expect_true(object = fit_nbinom$fit$converged)
+
 })

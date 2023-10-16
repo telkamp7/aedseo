@@ -7,7 +7,7 @@
 #'
 #' @param observations A numeric vector containing the time series observations.
 #' @param level The confidence level for parameter estimates, a numeric value between 0 and 1.
-#' @param family A character string specifying the family for modeling. Choose between "poisson," "quasipoisson," or "negative.binomial."
+#' @param family A character string specifying the family for modeling. Choose between "poisson," or "quasipoisson".
 #'
 #' @return A list containing:
 #'   - 'fit': The fitted growth rate model.
@@ -28,8 +28,7 @@ fit_growth_rate <- function(
     level = 0.95,
     family = c(
       "poisson",
-      "quasipoisson",
-      "negative.binomial"))
+      "quasipoisson"))
   {
 
   safe_confint <- purrr::safely(stats::confint)
@@ -58,11 +57,7 @@ fit_growth_rate <- function(
       formula = x ~ growth_rate,
       data = growth_data,
       family = stats::quasipoisson(link = "log")
-      ),
-    negative.binomial = MASS::glm.nb(
-      formula = x ~ growth_rate,
-      data = growth_data,
-      link = "log")
+      )
     )
 
   # Calculate the 'safe' confidence intervals
