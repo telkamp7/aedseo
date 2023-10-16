@@ -33,7 +33,11 @@ This function fits a growth rate model to time series observations and provides 
 \examples{
 # Fit a growth rate model to a time series of counts (e.g., population growth)
 data <- c(100, 120, 150, 180, 220, 270)
-growth_rate_model <- fit_growth_rate(observations = data, level = 0.95, family = "poisson")
+growth_rate_model <- fit_growth_rate(
+  observations = data,
+  level = 0.95,
+  family = "poisson"
+  )
 
 # Print the estimated growth rate and confidence interval
 print(growth_rate_model$estimate)
