@@ -1,4 +1,5 @@
 #' @keywords internal
+#' @aliases aedseo-package
 "_PACKAGE"
 
 ## usethis namespace: start

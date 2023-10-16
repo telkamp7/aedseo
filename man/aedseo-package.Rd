@@ -2,8 +2,8 @@
 % Please edit documentation in R/aedseo-package.R
 \docType{package}
 \name{aedseo-package}
-\alias{aedseo}
 \alias{aedseo-package}
+\alias{_PACKAGE}
 \title{aedseo: What the Package Does (One Line, Title Case)}
 \description{
 What the package does (one paragraph).
@@ -17,7 +17,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Kasper Schou Telkamp \email{ksst@ssi.dk} (\href{https://orcid.org/0009-0001-5126-0190}{ORCID})
 
 }
 \keyword{internal}
