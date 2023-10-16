@@ -2,6 +2,7 @@
 
 export("%>%")
 export(fit_growth_rate)
+export(tsd)
 importFrom(lifecycle,deprecated)
 importFrom(magrittr,"%>%")
 importFrom(tibble,tibble)

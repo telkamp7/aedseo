@@ -18,6 +18,7 @@ Imports:
     base,
     dplyr,
     lifecycle,
+    lubridate,
     magrittr,
     MASS,
     purrr,

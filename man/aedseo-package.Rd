@@ -4,7 +4,7 @@
 \name{aedseo-package}
 \alias{aedseo-package}
 \alias{_PACKAGE}
-\title{aedseo: What the Package Does (One Line, Title Case)}
+\title{aedseo: Automated and Early Detection of Seasonal Epidemic Onset (aedseo)}
 \description{
 What the package does (one paragraph).
 }
