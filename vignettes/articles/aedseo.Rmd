@@ -1,0 +1,78 @@
+---
+title: "Automated and Early Detection of Seasonal Epidemic Onset"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(aedseo)
+library(ISOweek)
+library(ggplot2)
+library(dplyr)
+library(tsibble)
+```
+
+
+```{r}
+
+# Define the number of years and the number of months within a year
+years <- 10
+weeks <- 52
+# ... calculate the total number of observations
+n <- years*weeks
+# ... and a vector containing the overall time passed
+timeOverall <- 1:n
+
+# Create arbitrary dates
+dates <- as.POSIXct(x = timeOverall*86400*7,
+           origin = "2010-01-01",
+           tz = "UTC",
+           format = "%F")
+
+# Define a vector containing the months within a year, replicated for each year
+timeInYear <- rep(x = 1:weeks, times = years)
+
+# Define the mean number of cases
+mu <- 5
+# ... and a trend
+t <- 1.001
+# ... and seasonal parameters
+gamma_sin <- gamma_cos <- 1
+
+# Calculate the time varying mean
+mu_t <- exp(mu + timeOverall*log(t) + gamma_sin * sin(2*pi*time/52) + gamma_cos * cos(2*pi*time/52))
+
+# Have a glance at the time varying mean
+plot(mu_t)
+
+# Draw a realization from the negative binomial distribution
+sim_nbinom <- rnbinom(n = n, mu = mu_t, size = 1)
+
+# Visualize the simulated series
+plot(sim_nbinom)
+
+# Construct a 'tsibble' object with the time series data
+tsd_data <- tsd(
+  observed = sim_nbinom,
+  time = dates,
+  time_interval = "week"
+  )
+
+# Apply the 'aedseo' algorithm
+aedseo_results <- aedseo(tsd = tsd_data, k = 5, level = 0.95, family = "quasipoisson")
+
+# Visualize the growth rate
+aedseo_results %>%
+  ggplot(mapping = aes(x = reference_time, y = growth_rate)) +
+  geom_line() +
+  geom_ribbon(mapping = aes(ymin = lower_growth_rate, ymax = upper_growth_rate), alpha = 0.3) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  scale_x_yearweek()
+
+```
+
