@@ -17,11 +17,19 @@ library(dplyr)
 library(tsibble)
 ```
 
+In the contemporary landscape of combating infectious diseases, the scope of action extends beyond patient treatment and preventive measures. It necessitates a proactive stance, emphasizing the timely detection of emerging outbreaks as a pivotal strategy to curtail their further spread and escalation. Along these lines, health institution such as hospitals and general 
+
+
+
+
+This package resolves around the timely detection of the start of the seasonal epidemics.
+
+
 
 ```{r}
 
 # Define the number of years and the number of months within a year
-years <- 10
+years <- 3
 weeks <- 52
 # ... calculate the total number of observations
 n <- years*weeks
@@ -45,13 +53,13 @@ t <- 1.001
 gamma_sin <- gamma_cos <- 1
 
 # Calculate the time varying mean
-mu_t <- exp(mu + timeOverall*log(t) + gamma_sin * sin(2*pi*time/52) + gamma_cos * cos(2*pi*time/52))
+mu_t <- exp(mu + timeOverall*log(t) + gamma_sin * sin(2*pi*timeInYear/52) + gamma_cos * cos(2*pi*timeInYear/52))
 
 # Have a glance at the time varying mean
 plot(mu_t)
 
 # Draw a realization from the negative binomial distribution
-sim_nbinom <- rnbinom(n = n, mu = mu_t, size = 1)
+sim_nbinom <- rnbinom(n = n, mu = mu_t, size = 10)
 
 # Visualize the simulated series
 plot(sim_nbinom)
