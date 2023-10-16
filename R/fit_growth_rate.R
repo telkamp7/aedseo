@@ -32,6 +32,8 @@ fit_growth_rate <- function(
       "negative.binomial"))
   {
 
+  safe_confint <- purrr::safely(stats::confint)
+
   # Match the arguements
   family <- rlang::arg_match(family)
 
@@ -63,16 +65,19 @@ fit_growth_rate <- function(
       link = "log")
     )
 
+  # Calculate the 'safe' confidence intervals
+  growth_confint <- suppressMessages(
+    safe_confint(
+      object = growth_fit,
+      parm = "growth_rate",
+      level = level
+    )
+  )
+
   # Collect the estimates
   ans <- c(
     stats::coef(object = growth_fit)["growth_rate"],
-    suppressMessages(
-      stats::confint(
-        object = growth_fit,
-        parm = "growth_rate",
-        level = level
-        )
-      )
+    growth_confint$result
     )
 
   return(list(

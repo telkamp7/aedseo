@@ -1,5 +1,5 @@
 Package: aedseo
-Title: What the Package Does (One Line, Title Case)
+Title: Automated and Early Detection of Seasonal Epidemic Onset (aedseo)
 Version: 0.0.0.9000
 Authors@R: 
     person("Kasper", "Schou Telkamp", ,"ksst@ssi.dk", role = c("aut", "cre"),
@@ -16,9 +16,12 @@ Suggests:
 Config/testthat/edition: 3
 Imports: 
     base,
+    dplyr,
     lifecycle,
     magrittr,
     MASS,
+    purrr,
     rlang,
     stats,
-    tibble
+    tibble,
+    tsibble
