@@ -67,7 +67,11 @@ aedseo <- function(
     obs_iter <- tsd[(i-k+1):i, ]
 
     # Calculate growth rates
-    growth_rates <- fit_growth_rate(observations = obs_iter$observed, level = level, family = family)
+    growth_rates <- fit_growth_rate(
+      observations = obs_iter$observed,
+      level = level,
+      family = family
+      )
 
     # Calculate Sum of Cases (SoC)
     SoC <- base::sum(obs_iter$observed)

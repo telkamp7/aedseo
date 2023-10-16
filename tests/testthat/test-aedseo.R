@@ -20,8 +20,18 @@ test_that("The growth rate models converge", {
     time_interval = "day")
 
   # Calculate AEDSEO with a 3-day window
-  aedseo_poisson <- aedseo(tsd = tsd_data_poisson, k = 3, level = 0.95, family = "poisson")
-  aedseo_quasipoisson <- aedseo(tsd = tsd_data_nbinom, k = 3, level = 0.95, family = "quasipoisson")
+  aedseo_poisson <- aedseo(
+    tsd = tsd_data_poisson,
+    k = 3,
+    level = 0.95,
+    family = "poisson"
+    )
+  aedseo_quasipoisson <- aedseo(
+    tsd = tsd_data_nbinom,
+    k = 3,
+    level = 0.95,
+    family = "quasipoisson"
+    )
 
   # Check if they all converge
   expect_true(object = all(aedseo_poisson$converged))

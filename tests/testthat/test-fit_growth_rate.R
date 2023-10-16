@@ -11,8 +11,16 @@ test_that("The growth rate models converge", {
   data_nbinom <- stats::rnbinom(n = n, mu = 5, size = 1)
 
   # Fit the models
-  fit_poisson <- fit_growth_rate(observations = data_poisson, level = 0.95, family = "poisson")
-  fit_quasipoisson <- fit_growth_rate(observations = data_nbinom, level = 0.95, family = "quasipoisson")
+  fit_poisson <- fit_growth_rate(
+    observations = data_poisson,
+    level = 0.95,
+    family = "poisson"
+    )
+  fit_quasipoisson <- fit_growth_rate(
+    observations = data_nbinom,
+    level = 0.95,
+    family = "quasipoisson"
+    )
 
   # Check if they all converge
   expect_true(object = fit_poisson$fit$converged)
