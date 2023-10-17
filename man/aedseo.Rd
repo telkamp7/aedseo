@@ -22,6 +22,7 @@ A tibble containing:
 \item 'growth_rate': The estimated growth rate.
 \item 'lower_growth_rate': The lower bound of the growth rate's confidence interval.
 \item 'upper_growth_rate': The upper bound of the growth rate's confidence interval.
+\item 'growth_warning': Logical. Is the growth rate significantly higher than zero?
 \item 'SoC': The Sum of Cases within the time window.
 \item 'converged': Logical. Was the IWLS judged to have converged?
 }

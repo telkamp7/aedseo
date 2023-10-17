@@ -14,8 +14,13 @@ library(aedseo)
 library(ISOweek)
 library(ggplot2)
 library(dplyr)
+library(tidyr)
+library(tibble)
 library(tsibble)
 ```
+
+
+## Introduction
 
 In the contemporary landscape of combating infectious diseases, the scope of action extends beyond patient treatment and preventive measures. It necessitates a proactive stance, emphasizing the timely detection of emerging outbreaks as a pivotal strategy to curtail their further spread and escalation. Along these lines, health institution such as hospitals and general 
 
@@ -23,6 +28,8 @@ In the contemporary landscape of combating infectious diseases, the scope of act
 
 
 This package resolves around the timely detection of the start of the seasonal epidemics.
+
+
 
 
 
@@ -55,14 +62,24 @@ gamma_sin <- gamma_cos <- 1
 # Calculate the time varying mean
 mu_t <- exp(mu + timeOverall*log(t) + gamma_sin * sin(2*pi*timeInYear/52) + gamma_cos * cos(2*pi*timeInYear/52))
 
-# Have a glance at the time varying mean
-plot(mu_t)
-
 # Draw a realization from the negative binomial distribution
 sim_nbinom <- rnbinom(n = n, mu = mu_t, size = 10)
 
-# Visualize the simulated series
-plot(sim_nbinom)
+# Collect the data in a 'tibble'
+sim_data <- tibble(Date = dates, mu_t = mu_t, y = sim_nbinom)
+
+# Have a glance at the time varying mean
+sim_data %>%
+  pivot_longer(cols = mu_t:y, names_to = "type", values_to = "value") %>%
+  ggplot(mapping = aes(x = Date, y = value)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(facets = vars(type), ncol = 1)
+
+sim_data %>%
+  ggplot(mapping = aes(x = Date)) +
+  geom_line(mapping = aes(y = mu_t)) +
+  geom_point(mapping = aes(y = y)) 
 
 # Construct a 'tsibble' object with the time series data
 tsd_data <- tsd(

@@ -15,6 +15,7 @@
 #'   - 'growth_rate': The estimated growth rate.
 #'   - 'lower_growth_rate': The lower bound of the growth rate's confidence interval.
 #'   - 'upper_growth_rate': The upper bound of the growth rate's confidence interval.
+#'   - 'growth_warning': Logical. Is the growth rate significantly higher than zero?
 #'   - 'SoC': The Sum of Cases within the time window.
 #'   - 'converged': Logical. Was the IWLS judged to have converged?
 #'
@@ -73,6 +74,9 @@ aedseo <- function(
       family = family
       )
 
+    # See if the growth rate is significantly higher than zero
+    growth_warning <- growth_rates$estimate[2] > 0
+
     # Calculate Sum of Cases (SoC)
     SoC <- base::sum(obs_iter$observed)
 
@@ -84,10 +88,11 @@ aedseo <- function(
         growth_rate = growth_rates$estimate[1],
         lower_growth_rate =  growth_rates$estimate[2],
         upper_growth_rate =  growth_rates$estimate[3],
+        growth_warning = growth_warning,
         SoC = SoC,
         converged = growth_rates$fit$converged
+        )
       )
-    )
 
   }
 
