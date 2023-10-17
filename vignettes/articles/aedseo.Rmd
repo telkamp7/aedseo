@@ -17,6 +17,7 @@ library(dplyr)
 library(tidyr)
 library(tibble)
 library(tsibble)
+library(kableExtra)
 ```
 
 
@@ -25,8 +26,6 @@ library(tsibble)
 In the contemporary landscape of combating infectious diseases, the scope of action extends beyond patient treatment and preventive measures. It necessitates a proactive stance, emphasizing the timely detection of emerging outbreaks as a pivotal strategy to curtail their further spread and escalation. Along these lines, health institution such as hospitals and general 
 
 This package resolves around the timely detection of the start of the seasonal epidemics. 
-
-
 
 ## Simulations
 
@@ -37,6 +36,21 @@ To assess the effectiveness of the proposed algorithm, a simulation study is con
 \end{equation}
 
 To accommodate a variety of scenarios encountered in practical applications, the simulations is generated using different combinations of parameters. These parameters include baseline frequencies of reports denoted as $\theta$, trends represented by $\beta$, seasonal patterns characterized by $\gamma_{\sin}$ and $\gamma_{\cos}$, as well as dispersions indicated by $\phi$. A list of the specific parameter combinations are provided in Table XX.
+
+
+```{r parameter_combinations}
+
+parameter_combinations <- as_tibble(expand_grid(theta = c(3,4,5,6,7), beta = c(0.001), gamma_sin = c(1,2), gamma_cos = c(1,2), phi = c(1,2)))  
+
+parameter_combinations %>%
+  mutate(Scenario = row_number()) %>%
+  select(Scenario, theta:phi) %>%
+  rename(`$\\theta$` = theta, `$\\beta$` = beta, `$\\gamma_{\\sin}$` = gamma_sin, `$\\gamma_{\\cos}$` = gamma_cos, `$\\phi$` = phi) %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", caption = "Parameters and criteria to generate the 40 scenarios.",
+      linesep = c(rep("",7),"\\addlinespace")) %>%
+  kable_paper(latex_options = c("HOLD_position"))
+
+```
 
 
 ```{r}
