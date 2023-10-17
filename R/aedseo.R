@@ -56,6 +56,9 @@ aedseo <- function(
       "quasipoisson"))
   {
 
+  # Throw an error if any of the inputs are not supported
+  family <- rlang::arg_match(family)
+
   # Extract the length of the series
   n <- base::nrow(tsd)
 
