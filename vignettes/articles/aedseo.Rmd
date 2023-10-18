@@ -34,6 +34,21 @@ This package revolves around the timely detection of the onset of seasonal respi
 ## Methodology
 
 
+### Exponential growth rate
+
+The exponential growth rate, denoted as $r$, represents the per capita change in the number of new cases per unit of time. Given that incidence data are integer-valued, the proposed method relies on generalized linear models (GLM). For count data, the Poisson distribution is a suitable choice as a model. Hence, the count observations denoted as $Y$ are assumed to follow a Poisson distribution
+
+\begin{equation}
+  Y \sim Poisson(\lambda)
+\end{equation}
+
+Here, the link function, $\log()$, connects the linear predictor to the expected value of the data point, expressed as $\log(\lambda)=\mu$. Given a single continuous covariate $t$, the mean $\mu$ can be expressed as
+
+\begin{equation}
+  \mu = \alpha + r t
+\end{equation}
+
+It is important to note that the Poisson distribution assumes that the mean and variance are equal. In reality, real data often deviate from this assumption, with the variance ($v$) being significantly larger than the mean. This biological phenomenon, known as overdispersion, can be addressed within a model in various ways. One approach is to employ quasi-Poisson regression, which assumes $v=\sigma\lambda$, or to use negative binomial regression, which assumes $v=\lambda+\lambda^2/\theta$, where both $\sigma$ and $\theta$ are overdispersion parameters.
 
 
 ## Simulations
