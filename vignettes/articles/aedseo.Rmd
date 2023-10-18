@@ -1,5 +1,6 @@
 ---
 title: "Automated and Early Detection of Seasonal Epidemic Onset"
+bibliography: "references.bib"
 ---
 
 ```{r, include = FALSE}
@@ -25,7 +26,23 @@ library(kableExtra)
 
 In the contemporary landscape of combating infectious diseases, the scope of action extends beyond patient treatment and preventive measures. It necessitates a proactive stance, emphasizing the timely detection of emerging outbreaks as a pivotal strategy to curtail their further spread and escalation. Along these lines, health institution such as hospitals and general 
 
+
+
+
+Understanding seasonality helps countries to make recommendations regarding the timing of the provision of monoclonal antibodies [@Terletskaia_2005] which are available for treatment and prophylaxis in the first year(s) of life, mainly for premature children.
+
+
+The timely detection of epidemic onset has the potential to guide empirical antiviral therapy for hospitalized patients with suspected influenza, as discussed in the study by @McGeer_2009. This, in turn, contributes to the reduction of the health and economic burden caused by influenza. Achieving accurate identification of the beginning of an influenza epidemic necessitates regular and prompt data collection, coupled with a standardized procedure for continuous data analysis.
+
+A wide range of statistical methods are at out disposal for defining influenza epidemics. Over the last two decades, techniques such as Serfling-based models and dynamic linear models, which rely on recent data [@Serfling_1963, @Stroup_1989, @West_1997], have been extensively employed for this purpose.
+
+
+
+
+
+
 This package resolves around the timely detection of the start of the seasonal epidemics. 
+
 
 ## Simulations
 
