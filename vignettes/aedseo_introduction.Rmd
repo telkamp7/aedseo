@@ -19,6 +19,7 @@ library(aedseo)
 library(tibble)
 library(tsibble)
 library(tidyr)
+library(dplyr)
 library(ggplot2)
 ```
 
@@ -129,6 +130,12 @@ sim_data %>%
   ggplot(mapping = aes(x = Date)) +
   geom_line(mapping = aes(y = mu_t)) +
   geom_point(mapping = aes(y = y)) 
+```
+
+## Applying the algorithm
+
+
+```{r}
 
 # Construct a 'tsibble' object with the time series data
 tsd_data <- tsd(
@@ -136,13 +143,7 @@ tsd_data <- tsd(
   time = dates,
   time_interval = "week"
   )
-```
 
-## Applying the algorithm
-
-
-
-```{r}
 # Apply the 'aedseo' algorithm
 aedseo_results <- aedseo(tsd = tsd_data, k = 5, level = 0.95, family = "quasipoisson")
 
@@ -154,14 +155,41 @@ aedseo_results %>%
   geom_hline(yintercept = 0, linetype = "dashed") +
   scale_x_yearweek()
 
-aedseo_results %>%
-  ggplot(mapping = aes(x = reference_time)) +
-  geom_point(mapping = aes(y = growth_rate, alpha = growth_warning)) +
-  geom_errorbar(mapping = aes(
-    ymin = lower_growth_rate, ymax = upper_growth_rate, alpha = growth_warning
-    )) +
-  geom_hline(yintercept = 0, linetype = "dashed") +
-  theme(legend.position = "top")
 ```
+
+
+
+```{r}
+
+# Join the observations and estimated growth rates
+full_data <- full_join(x = tsd_data, y = aedseo_results, by = join_by("time" == "reference_time"))
+
+# Data to add horizontal line in growth rate
+ablines <- tibble(name = c("growth_rate", "observed"), x = c(0, NA))
+
+# Make a nice plot
+full_data %>%
+  pivot_longer(cols = c(observed, growth_rate)) %>%
+  ggplot(mapping = aes(x = time, y = value)) +
+  geom_line() +
+  geom_point(
+    data = tsd_data %>%
+      mutate(name = "observed"),
+    mapping = aes(y = observed)) +
+  geom_ribbon(
+    data = aedseo_results %>%
+      mutate(name = "growth_rate"),
+    mapping = aes(
+      x = reference_time,
+      ymin = lower_growth_rate,
+      ymax = upper_growth_rate),
+    inherit.aes = FALSE, alpha = 0.3) +
+  geom_hline(data = ablines,
+             mapping = aes(yintercept = x),
+             linetype = "dashed") +
+  facet_wrap(facets = vars(name), ncol = 1, scale = "free_y")
+
+```
+
 
 
