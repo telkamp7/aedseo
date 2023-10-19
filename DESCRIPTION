@@ -12,6 +12,8 @@ RoxygenNote: 7.2.3
 URL: https://github.com/telkamp7/aedseo
 BugReports: https://github.com/telkamp7/aedseo/issues
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Imports: 
@@ -26,3 +28,4 @@ Imports:
     tibble,
     tsibble
 Config/Needs/website: rmarkdown
+VignetteBuilder: knitr

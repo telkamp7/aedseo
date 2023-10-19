@@ -1,6 +1,10 @@
 ---
 title: "Automated and Early Detection of Seasonal Epidemic Onset"
 bibliography: "references.bib"
+output:
+  html_document:
+    includes:
+      in_header: preamble.tex
 ---
 
 ```{r, include = FALSE}
@@ -21,11 +25,9 @@ library(tsibble)
 library(kableExtra)
 ```
 
-
 ## Introduction
 
-
-Understanding the seasonality of respiratory virus infections is crucial for countries to make informed recommendations concerning the timing of monoclonal antibody provision, particularly for the treatment and prophylaxis of children in their first year(s) of life, primarily premature infants [@Terletskaia_2005, @Teirlinck_2023]. Moreover, the timely detection of epidemic onset has the potential to guide empirical antiviral therapy for hospitalized patients with suspected influenza [@McGeer_2009]. This, in turn, contributes to the reduction of the health an economic burden caused by respiratory virus infections. Achieving accurate identification of the beginning of seasonal respiratory epidemics necessitates regular and prompt data collection, coupled with a standardized procedure for continuous data analysis.
+Understanding the seasonality of respiratory virus infections is crucial for countries to make informed recommendations concerning the timing of monoclonal antibody provision, particularly for the treatment and prophylaxis of children exposed to respiratory syncytial virus (RSV) in their first year(s) of life, primarily premature infants [@Terletskaia_2005, @Teirlinck_2023]. Moreover, the timely detection of epidemic onset has the potential to guide empirical antiviral therapy for hospitalized patients with suspected influenza [@McGeer_2009]. This, in turn, contributes to the reduction of the health an economic burden caused by respiratory virus infections. Achieving accurate identification of the beginning of seasonal respiratory epidemics necessitates regular and prompt data collection, coupled with a standardized procedure for continuous data analysis.
 
 A wide range of statistical methods are at out disposal for defining influenza epidemics. Over the last two decades, techniques such as Serfling-based models and dynamic linear models, which rely on recent data [@Serfling_1963, @Stroup_1989, @West_1997, @Pelat_2007], have been extensively employed for this purpose.
 
@@ -33,13 +35,21 @@ This package revolves around the timely detection of the onset of seasonal respi
 
 ## Methodology
 
+The methodology used to detect the onset of seasonal respiratory epidemics can be divided into two essential criteria:
+
+- The local estimate of the exponential growth rate, $r$, is significantly greater than zero.
+- The sum of cases (SoC) over the past $k$ units of time exceeds a disease-specific threshold.
+
+Here, $k$ denotes the window size employed to obtain the local estimate of the exponential growth rate and the SoC. When both of these criteria are met, an alarm is triggered and the onset of the seasonal epidemic is detected.
 
 ### Exponential growth rate
+
+Inspired by [@Hara_2010, @Obadia_2012]
 
 The exponential growth rate, denoted as $r$, represents the per capita change in the number of new cases per unit of time. Given that incidence data are integer-valued, the proposed method relies on generalized linear models (GLM). For count data, the Poisson distribution is a suitable choice as a model. Hence, the count observations denoted as $Y$ are assumed to follow a Poisson distribution
 
 \begin{equation}
-  Y \sim Poisson(\lambda)
+ Y \sim \Pois(\lambda)
 \end{equation}
 
 Here, the link function, $\log()$, connects the linear predictor to the expected value of the data point, expressed as $\log(\lambda)=\mu$. Given a single continuous covariate $t$, the mean $\mu$ can be expressed as
@@ -48,8 +58,15 @@ Here, the link function, $\log()$, connects the linear predictor to the expected
   \mu = \alpha + r t
 \end{equation}
 
-It is important to note that the Poisson distribution assumes that the mean and variance are equal. In reality, real data often deviate from this assumption, with the variance ($v$) being significantly larger than the mean. This biological phenomenon, known as overdispersion, can be addressed within a model in various ways. One approach is to employ quasi-Poisson regression, which assumes $v=\sigma\lambda$, or to use negative binomial regression, which assumes $v=\lambda+\lambda^2/\theta$, where both $\sigma$ and $\theta$ are overdispersion parameters.
+This is equivalent to a multiplicative model for $\lambda$, i.e.
 
+\begin{equation}
+  \lambda = \exp(\alpha + r t) = \exp(\alpha) \exp(r t)
+\end{equation}
+
+Intuitively, negative values of $r$ result in a decline in the number of observed cases, while $r=0$ represents stability, and positive values of $r$ indicate an increase. The direct relationship between growth rates and reproductive numbers is further elaborated in the study by @Wallinga_2007.
+
+It is important to note that the Poisson distribution assumes that the mean and variance are equal. In reality, real data often deviate from this assumption, with the variance ($v$) being significantly larger than the mean. This biological phenomenon, known as overdispersion, can be addressed within a model in various ways. One approach is to employ quasi-Poisson regression, which assumes $v=\sigma\lambda$, or to use negative binomial regression, which assumes $v=\lambda+\lambda^2/\theta$, where both $\sigma$ and $\theta$ are overdispersion parameters.
 
 ## Simulations
 
