@@ -6,3 +6,5 @@
 .quarto
 .tex
 inst/doc
+/doc/
+/Meta/

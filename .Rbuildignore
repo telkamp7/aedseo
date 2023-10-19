@@ -5,3 +5,5 @@
 ^README\.Rmd$
 ^codecov\.yml$
 ^vignettes/articles$
+^doc$
+^Meta$
