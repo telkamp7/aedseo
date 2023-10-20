@@ -43,23 +43,23 @@ To assess the effectiveness of the `aedseo` function, we simulate some data. The
 \end{equation}
 
 ```{r}
-mu_t <- function(t, theta = 1, exp_beta = 1.001, gamma_sin = 1, gamma_cos = 1, trend = 1, j = 1, ...){
+mu_t <- function(t, theta = 1, exp_beta = 1.001, gamma_sin = 1, gamma_cos = 1, trend = 1, j = 1, ...) {
   # Start construction of linear predictor
   linear_predictor <- theta
   # ... add a trend if the scenario request it
-  if(trend == 1){
-    linear_predictor <- linear_predictor + log(exp_beta)*t
+  if (trend == 1) {
+    linear_predictor <- linear_predictor + log(exp_beta) * t
   }
   # ... add a seasonal component
   linear_predictor <- linear_predictor +
-    gamma_sin * sin( 2*pi*t*j / 52 ) + gamma_cos * cos( 2*pi*t*j / 52 ) 
+    gamma_sin * sin(2 * pi * t * j / 52) + gamma_cos * cos(2 * pi * t * j / 52)
 
-  return( exp(linear_predictor) )
+  return(exp(linear_predictor))
 }
 
-simulate_from_nbinom <- function(...){
+simulate_from_nbinom <- function(...) {
   # Set some default values for the simulation
-  default_pars = list(
+  default_pars <- list(
     "t" = 1,
     "theta" = 1,
     "exp_beta" = 1.001,
@@ -69,50 +69,50 @@ simulate_from_nbinom <- function(...){
     "j" = 1,
     "phi" = 1,
     "seed" = 42
-    )
-  
+  )
+
   # Match call
   mc <- as.list(match.call())[-1]
   # ... and change parameters relative to the call
   mc <- append(mc, default_pars[!names(default_pars) %in% names(mc)])[names(default_pars)]
-  
+
   # Set the seed
   set.seed(mc$seed)
-  
+
   # Calculate the number of time points
   n <- length(eval(mc$t))
   # Calculate mu_t
   mu_t_scenario <- do.call(what = "mu_t", args = mc)
   # ... and compute the variance of the negative binomial distribution
-  variance = mu_t_scenario * mc$phi
+  variance <- mu_t_scenario * mc$phi
   # ... and infer the size in the negative binomial distribution
-  size = (mu_t_scenario + mu_t_scenario^2) / variance
+  size <- (mu_t_scenario + mu_t_scenario^2) / variance
   # Plugin and simulate the data
   simulation <- rnbinom(n = n, mu = mu_t_scenario, size = size)
-  
+
   return(list("mu_t" = mu_t_scenario, "simulation" = simulation, "pars" = mc))
-  
 }
 
 # Define the number of years and the number of months within a year
 years <- 3
 weeks <- 52
 # ... calculate the total number of observations
-n <- years*weeks
+n <- years * weeks
 # ... and a vector containing the overall time passed
 timeOverall <- 1:n
 # Create arbitrary dates
-dates <- as.POSIXct(x = timeOverall*86400*7,
-           origin = "2010-01-01",
-           tz = "UTC",
-           format = "%F")
+dates <- as.POSIXct(
+  x = timeOverall * 86400 * 7,
+  origin = "2010-01-01",
+  tz = "UTC",
+  format = "%F"
+)
 
 # Simulate the data
 simulation <- simulate_from_nbinom(t = timeOverall, theta = log(1000), phi = 5)
 
 # Collect the data in a 'tibble'
 sim_data <- tibble(Date = dates, mu_t = simulation$mu_t, y = simulation$simulation)
-
 ```
 
 A total of three years of weekly data are then simulated with the following set of parameters:
@@ -129,7 +129,7 @@ In the following figure, the simulated data (solid circles) is visualized alongs
 sim_data %>%
   ggplot(mapping = aes(x = Date)) +
   geom_line(mapping = aes(y = mu_t)) +
-  geom_point(mapping = aes(y = y)) 
+  geom_point(mapping = aes(y = y))
 ```
 
 ## Applying the algorithm
@@ -142,7 +142,7 @@ tsd_data <- tsd(
   observed = simulation$simulation,
   time = dates,
   time_interval = "week"
-  )
+)
 ```
 
 Next, the time series data object is passed to the `aedseo()` function. Here, a window width of $k=5$ is specified, meaning that a total of 5 weeks is used in the local estimate of the exponential growth rate. Additionally, a 95\% confidence interval is specified. Finally, the exponential growth rate is estimated using quasi-Poisson regression to account for overdispersion in the data.
@@ -156,7 +156,6 @@ In the figure below, the observed values from the simulations is visualized alon
 
 
 ```{r}
-
 # Join the observations and estimated growth rates
 full_data <- full_join(x = tsd_data, y = aedseo_results, by = join_by("time" == "reference_time"))
 
@@ -171,20 +170,24 @@ full_data %>%
   geom_point(
     data = tsd_data %>%
       mutate(name = "observed"),
-    mapping = aes(y = observed)) +
+    mapping = aes(y = observed)
+  ) +
   geom_ribbon(
     data = aedseo_results %>%
       mutate(name = "growth_rate"),
     mapping = aes(
       x = reference_time,
       ymin = lower_growth_rate,
-      ymax = upper_growth_rate),
-    inherit.aes = FALSE, alpha = 0.3) +
-  geom_hline(data = ablines,
-             mapping = aes(yintercept = x),
-             linetype = "dashed") +
+      ymax = upper_growth_rate
+    ),
+    inherit.aes = FALSE, alpha = 0.3
+  ) +
+  geom_hline(
+    data = ablines,
+    mapping = aes(yintercept = x),
+    linetype = "dashed"
+  ) +
   facet_wrap(facets = vars(name), ncol = 1, scale = "free_y")
-
 ```
 
 

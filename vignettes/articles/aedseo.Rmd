@@ -80,38 +80,37 @@ To accommodate a variety of scenarios encountered in practical applications, the
 
 
 ```{r parameter_combinations}
-
-parameter_combinations <- as_tibble(expand_grid(theta = c(3,4,5,6,7), beta = c(0.001), gamma_sin = c(1,2), gamma_cos = c(1,2), phi = c(1,2)))  
+parameter_combinations <- as_tibble(expand_grid(theta = c(3, 4, 5, 6, 7), beta = c(0.001), gamma_sin = c(1, 2), gamma_cos = c(1, 2), phi = c(1, 2)))
 
 parameter_combinations %>%
   mutate(Scenario = row_number()) %>%
   select(Scenario, theta:phi) %>%
   rename(`$\\theta$` = theta, `$\\beta$` = beta, `$\\gamma_{\\sin}$` = gamma_sin, `$\\gamma_{\\cos}$` = gamma_cos, `$\\phi$` = phi) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", caption = "Parameters and criteria to generate the 40 scenarios.",
-      linesep = c(rep("",7),"\\addlinespace")) %>%
+  kbl(
+    booktabs = TRUE, escape = FALSE, align = "l", caption = "Parameters and criteria to generate the 40 scenarios.",
+    linesep = c(rep("", 7), "\\addlinespace")
+  ) %>%
   kable_paper(latex_options = c("HOLD_position"))
-
 ```
 
 
 ```{r}
-
-mu_t <- function(t, theta = 1, exp_beta = 1.001, gamma_sin = 1, gamma_cos = 1, trend = 1, j = 1, ...){
+mu_t <- function(t, theta = 1, exp_beta = 1.001, gamma_sin = 1, gamma_cos = 1, trend = 1, j = 1, ...) {
   # Start construction of linear predictor
   linear_predictor <- theta
   # ... add a trend if the scenario request it
-  if(trend == 1){
-    linear_predictor <- linear_predictor + log(exp_beta)*t
+  if (trend == 1) {
+    linear_predictor <- linear_predictor + log(exp_beta) * t
   }
   # ... add a seasonal component
-  linear_predictor <- linear_predictor + gamma_sin * sin( 2*pi*t*j / 52 )+ gamma_cos * cos( 2*pi*t*j / 52 ) 
+  linear_predictor <- linear_predictor + gamma_sin * sin(2 * pi * t * j / 52) + gamma_cos * cos(2 * pi * t * j / 52)
 
-  return( exp(linear_predictor) )
+  return(exp(linear_predictor))
 }
 
-simulate_from_nbinom <- function(...){
+simulate_from_nbinom <- function(...) {
   # Set some default values for the simulation
-  default_pars = list(
+  default_pars <- list(
     "t" = 1,
     "theta" = 1,
     "exp_beta" = 1.001,
@@ -121,48 +120,47 @@ simulate_from_nbinom <- function(...){
     "j" = 1,
     "phi" = 1,
     "seed" = 42
-    )
-  
+  )
+
   # Match call
   mc <- as.list(match.call())[-1]
   # ... and change parameters relative to the call
   mc <- append(mc, default_pars[!names(default_pars) %in% names(mc)])[names(default_pars)]
-  
+
   # Set the seed
   set.seed(mc$seed)
-  
+
   # Calculate the number of time points
   n <- length(eval(mc$t))
   # Calculate mu_t
   mu_t_scenario <- do.call(what = "mu_t", args = mc)
   # ... and compute the variance of the negative binomial distribution
-  variance = mu_t_scenario * mc$phi
+  variance <- mu_t_scenario * mc$phi
   # ... and infer the size in the negative binomial distribution
-  size = (mu_t_scenario + mu_t_scenario^2) / variance
+  size <- (mu_t_scenario + mu_t_scenario^2) / variance
   # Plugin and simulate the data
   simulation <- rnbinom(n = n, mu = mu_t_scenario, size = size)
-  
-  return(list("mu_t" = mu_t_scenario, "simulation" = simulation, "pars" = mc))
-  
-}
 
+  return(list("mu_t" = mu_t_scenario, "simulation" = simulation, "pars" = mc))
+}
 ```
 
 
 ```{r}
-
 # Define the number of years and the number of months within a year
 years <- 3
 weeks <- 52
 # ... calculate the total number of observations
-n <- years*weeks
+n <- years * weeks
 # ... and a vector containing the overall time passed
 timeOverall <- 1:n
 # Create arbitrary dates
-dates <- as.POSIXct(x = timeOverall*86400*7,
-           origin = "2010-01-01",
-           tz = "UTC",
-           format = "%F")
+dates <- as.POSIXct(
+  x = timeOverall * 86400 * 7,
+  origin = "2010-01-01",
+  tz = "UTC",
+  format = "%F"
+)
 
 # Simulate the data
 simulation <- simulate_from_nbinom(t = timeOverall)
@@ -181,14 +179,14 @@ sim_data %>%
 sim_data %>%
   ggplot(mapping = aes(x = Date)) +
   geom_line(mapping = aes(y = mu_t)) +
-  geom_point(mapping = aes(y = y)) 
+  geom_point(mapping = aes(y = y))
 
 # Construct a 'tsibble' object with the time series data
 tsd_data <- tsd(
   observed = simulation$simulation,
   time = dates,
   time_interval = "week"
-  )
+)
 
 # Apply the 'aedseo' algorithm
 aedseo_results <- aedseo(tsd = tsd_data, k = 5, level = 0.95, family = "quasipoisson")
@@ -206,7 +204,6 @@ aedseo_results %>%
   geom_point(mapping = aes(y = growth_rate, alpha = growth_warning)) +
   geom_errorbar(mapping = aes(ymin = lower_growth_rate, ymax = upper_growth_rate, alpha = growth_warning)) +
   geom_hline(yintercept = 0, linetype = "dashed")
-
 ```
 
 
@@ -223,7 +220,7 @@ exp_beta <- 1.001
 gamma_sin <- gamma_cos <- 1
 
 # Calculate the time varying mean
-mu_t <- exp(theta + timeOverall*log(exp_beta) + gamma_sin * sin(2*pi*timeInYear/52) + gamma_cos * cos(2*pi*timeInYear/52))
+mu_t <- exp(theta + timeOverall * log(exp_beta) + gamma_sin * sin(2 * pi * timeInYear / 52) + gamma_cos * cos(2 * pi * timeInYear / 52))
 
 # Draw a realization from the negative binomial distribution
 sim_nbinom <- rnbinom(n = n, mu = mu_t, size = 10)

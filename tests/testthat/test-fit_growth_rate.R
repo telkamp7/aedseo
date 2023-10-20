@@ -1,5 +1,4 @@
 test_that("The growth rate models converge", {
-
   # Number of random data points to generate
   n <- 1e3
 
@@ -15,15 +14,14 @@ test_that("The growth rate models converge", {
     observations = data_poisson,
     level = 0.95,
     family = "poisson"
-    )
+  )
   fit_quasipoisson <- fit_growth_rate(
     observations = data_nbinom,
     level = 0.95,
     family = "quasipoisson"
-    )
+  )
 
   # Check if they all converge
   expect_true(object = fit_poisson$fit$converged)
   expect_true(object = fit_quasipoisson$fit$converged)
-
 })

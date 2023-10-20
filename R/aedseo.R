@@ -39,10 +39,10 @@
 #'     "2023-01-03",
 #'     "2023-01-04",
 #'     "2023-01-05",
-#'     "2023-01-06")
-#'     ),
-#'     time_interval = "day"
-#'   )
+#'     "2023-01-06"
+#'   )),
+#'   time_interval = "day"
+#' )
 #'
 #' # Calculate AEDSEO with a 3-day window and a Poisson family model
 #' aedseo_results <- aedseo(
@@ -50,7 +50,7 @@
 #'   k = 3,
 #'   level = 0.95,
 #'   family = "poisson"
-#'   )
+#' )
 #'
 #' # Print the AEDSEO results
 #' print(aedseo_results)
@@ -61,8 +61,8 @@ aedseo <- function(
     level = 0.95,
     family = c(
       "poisson",
-      "quasipoisson")) {
-
+      "quasipoisson"
+    )) {
   # Throw an error if any of the inputs are not supported
   family <- rlang::arg_match(family)
 
@@ -72,8 +72,7 @@ aedseo <- function(
   # Allocate space for growth rate estimates
   res <- tibble::tibble()
 
-  for (i in k:n){
-
+  for (i in k:n) {
     # Index observations for this iteration
     obs_iter <- tsd[(i - k + 1):i, ]
 
@@ -82,7 +81,7 @@ aedseo <- function(
       observations = obs_iter$observed,
       level = level,
       family = family
-      )
+    )
 
     # See if the growth rate is significantly higher than zero
     growth_warning <- growth_rates$estimate[2] > 0
@@ -96,16 +95,14 @@ aedseo <- function(
       tibble::tibble(
         reference_time = tsd$time[i],
         growth_rate = growth_rates$estimate[1],
-        lower_growth_rate =  growth_rates$estimate[2],
-        upper_growth_rate =  growth_rates$estimate[3],
+        lower_growth_rate = growth_rates$estimate[2],
+        upper_growth_rate = growth_rates$estimate[3],
         growth_warning = growth_warning,
         SoC = SoC,
         converged = growth_rates$fit$converged
-        )
       )
-
+    )
   }
 
   return(res)
-
 }

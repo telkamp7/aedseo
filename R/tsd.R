@@ -19,34 +19,35 @@
 #' daily_tsd <- tsd(
 #'   observed = c(10, 15, 20, 18),
 #'   time = as.Date(
-#'     c("2023-01-01", "2023-01-02", "2023-01-03", "2023-01-04")),
+#'     c("2023-01-01", "2023-01-02", "2023-01-03", "2023-01-04")
+#'   ),
 #'   time_interval = "day"
-#'   )
+#' )
 #'
 #' # Create a tsibble object from weekly data
 #' weekly_tsd <- tsd(
 #'   observed = c(100, 120, 130),
 #'   time = as.Date(
-#'     c("2023-01-01", "2023-01-08", "2023-01-15")),
-#'     time_interval = "week"
-#'   )
+#'     c("2023-01-01", "2023-01-08", "2023-01-15")
+#'   ),
+#'   time_interval = "week"
+#' )
 #'
 #' # Create a tsibble object from monthly data
 #' monthly_tsd <- tsd(
 #'   observed = c(500, 520, 540),
 #'   time = as.Date(
-#'     c("2023-01-01", "2023-02-01", "2023-03-01")),
-#'     time_interval = "month"
-#'   )
+#'     c("2023-01-01", "2023-02-01", "2023-03-01")
+#'   ),
+#'   time_interval = "month"
+#' )
 #'
-tsd <- function(observed, time, time_interval = c("day", "week", "month")){
-
+tsd <- function(observed, time, time_interval = c("day", "week", "month")) {
   # Throw an error if any of the inputs are not supported
   time_interval <- rlang::arg_match(time_interval)
 
   # Select the correct 'time_interval' and create the 'tsd' return object
-  ans <- switch(
-    time_interval,
+  ans <- switch(time_interval,
     day = tibble(time = time, observed = observed) %>%
       tsibble::build_tsibble(
         index = time,
