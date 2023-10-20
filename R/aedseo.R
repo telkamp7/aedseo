@@ -3,19 +3,27 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' This function performs automated and early detection of seasonal epidemic onsets (aedseo) on a time series dataset. It estimates growth rates for consecutive time intervals and calculates the Sum of Cases (SoC).
+#' This function performs automated and early detection of seasonal epidemic
+#' onsets (aedseo) on a time series dataset. It estimates growth rates for
+#' consecutive time intervals and calculates the Sum of Cases (SoC).
 #'
-#' @param tsd A tsibble object containing time series data with 'time,' 'observed,' and 'periodInYear.'
+#' @param tsd A tsibble object containing time series data with 'time,'
+#' 'observed,' and 'periodInYear.'
 #' @param k An integer specifying the window size for modeling growth rates.
-#' @param level The confidence level for parameter estimates, a numeric value between 0 and 1.
-#' @param family A character string specifying the family for modeling. Choose between "poisson," or "quasipoisson".
+#' @param level The confidence level for parameter estimates, a numeric value
+#' between 0 and 1.
+#' @param family A character string specifying the family for modeling.
+#' Choose between "poisson," or "quasipoisson".
 #'
 #' @return A tibble containing:
 #'   - 'reference_time': The time point for which the growth rate is estimated.
 #'   - 'growth_rate': The estimated growth rate.
-#'   - 'lower_growth_rate': The lower bound of the growth rate's confidence interval.
-#'   - 'upper_growth_rate': The upper bound of the growth rate's confidence interval.
-#'   - 'growth_warning': Logical. Is the growth rate significantly higher than zero?
+#'   - 'lower_growth_rate': The lower bound of the growth rate's confidence
+#'   interval.
+#'   - 'upper_growth_rate': The upper bound of the growth rate's confidence
+#'   interval.
+#'   - 'growth_warning': Logical. Is the growth rate significantly higher than
+#'   zero?
 #'   - 'SoC': The Sum of Cases within the time window.
 #'   - 'converged': Logical. Was the IWLS judged to have converged?
 #'
@@ -53,8 +61,7 @@ aedseo <- function(
     level = 0.95,
     family = c(
       "poisson",
-      "quasipoisson"))
-  {
+      "quasipoisson")) {
 
   # Throw an error if any of the inputs are not supported
   family <- rlang::arg_match(family)
@@ -65,10 +72,10 @@ aedseo <- function(
   # Allocate space for growth rate estimates
   res <- tibble::tibble()
 
-  for(i in k:n){
+  for (i in k:n){
 
     # Index observations for this iteration
-    obs_iter <- tsd[(i-k+1):i, ]
+    obs_iter <- tsd[(i - k + 1):i, ]
 
     # Calculate growth rates
     growth_rates <- fit_growth_rate(
