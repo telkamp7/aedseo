@@ -29,7 +29,7 @@ interval.
 interval.
 \item 'growth_warning': Logical. Is the growth rate significantly higher than
 zero?
-\item 'SoC': The Sum of Cases within the time window.
+\item 'sum_of_cases': The Sum of Cases within the time window.
 \item 'converged': Logical. Was the IWLS judged to have converged?
 }
 }
@@ -38,7 +38,7 @@ zero?
 
 This function performs automated and early detection of seasonal epidemic
 onsets (aedseo) on a time series dataset. It estimates growth rates for
-consecutive time intervals and calculates the Sum of Cases (SoC).
+consecutive time intervals and calculates the Sum of Cases (sum_of_cases).
 }
 \examples{
 # Create a tsibble object from sample data
@@ -50,10 +50,10 @@ tsd_data <- tsd(
     "2023-01-03",
     "2023-01-04",
     "2023-01-05",
-    "2023-01-06")
-    ),
-    time_interval = "day"
-  )
+    "2023-01-06"
+  )),
+  time_interval = "day"
+)
 
 # Calculate AEDSEO with a 3-day window and a Poisson family model
 aedseo_results <- aedseo(
@@ -61,7 +61,7 @@ aedseo_results <- aedseo(
   k = 3,
   level = 0.95,
   family = "poisson"
-  )
+)
 
 # Print the AEDSEO results
 print(aedseo_results)

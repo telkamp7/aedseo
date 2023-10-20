@@ -5,7 +5,7 @@
 #'
 #' This function performs automated and early detection of seasonal epidemic
 #' onsets (aedseo) on a time series dataset. It estimates growth rates for
-#' consecutive time intervals and calculates the Sum of Cases (SoC).
+#' consecutive time intervals and calculates the Sum of Cases (sum_of_cases).
 #'
 #' @param tsd A tsibble object containing time series data with 'time,'
 #' 'observed,' and 'periodInYear.'
@@ -24,7 +24,7 @@
 #'   interval.
 #'   - 'growth_warning': Logical. Is the growth rate significantly higher than
 #'   zero?
-#'   - 'SoC': The Sum of Cases within the time window.
+#'   - 'sum_of_cases': The Sum of Cases within the time window.
 #'   - 'converged': Logical. Was the IWLS judged to have converged?
 #'
 #' @export
@@ -86,8 +86,8 @@ aedseo <- function(
     # See if the growth rate is significantly higher than zero
     growth_warning <- growth_rates$estimate[2] > 0
 
-    # Calculate Sum of Cases (SoC)
-    SoC <- base::sum(obs_iter$observed)
+    # Calculate Sum of Cases (sum_of_cases)
+    sum_of_cases <- base::sum(obs_iter$observed)
 
     # Collect the results
     res <- dplyr::bind_rows(
@@ -98,7 +98,7 @@ aedseo <- function(
         lower_growth_rate = growth_rates$estimate[2],
         upper_growth_rate = growth_rates$estimate[3],
         growth_warning = growth_warning,
-        SoC = SoC,
+        sum_of_cases = sum_of_cases,
         converged = growth_rates$fit$converged
       )
     )

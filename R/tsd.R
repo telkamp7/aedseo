@@ -1,16 +1,21 @@
-#' Create a tsibble (time-series data) object from observed data and corresponding dates.
+#' Create a tsibble (time-series data) object from observed data and
+#' corresponding dates.
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' This function takes observed data and the corresponding date vector and converts it into a tsibble object,
-#' which is a time series data structure that can be used for time series analysis.
+#' This function takes observed data and the corresponding date vector and
+#' converts it into a tsibble object,
+#' which is a time series data structure that can be used for time series
+#' analysis.
 #'
 #' @param observed A numeric vector containing the observations.
 #' @param time A date vector containing the corresponding dates.
-#' @param time_interval A character vector specifying the time interval, choose between "day," "week," or "month."
+#' @param time_interval A character vector specifying the time interval.
+#' Choose between "day," "week," or "month."
 #'
-#' @return A tsibble object containing time, the observations, and the periodInYear.
+#' @return A tsibble object containing time, the observations, and the
+#' periodInYear.
 #'
 #' @export
 #'

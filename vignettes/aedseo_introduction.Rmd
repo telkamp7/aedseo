@@ -43,7 +43,15 @@ To assess the effectiveness of the `aedseo` function, we simulate some data. The
 \end{equation}
 
 ```{r}
-mu_t <- function(t, theta = 1, exp_beta = 1.001, gamma_sin = 1, gamma_cos = 1, trend = 1, j = 1, ...) {
+mu_t <- function(
+    t,
+    theta = 1,
+    exp_beta = 1.001,
+    gamma_sin = 1,
+    gamma_cos = 1,
+    trend = 1,
+    j = 1,
+    ...) {
   # Start construction of linear predictor
   linear_predictor <- theta
   # ... add a trend if the scenario request it
@@ -74,7 +82,8 @@ simulate_from_nbinom <- function(...) {
   # Match call
   mc <- as.list(match.call())[-1]
   # ... and change parameters relative to the call
-  mc <- append(mc, default_pars[!names(default_pars) %in% names(mc)])[names(default_pars)]
+  index_mc <- !names(default_pars) %in% names(mc)
+  mc <- append(mc, default_pars[index_mc])[names(default_pars)]
 
   # Set the seed
   set.seed(mc$seed)
@@ -99,20 +108,24 @@ weeks <- 52
 # ... calculate the total number of observations
 n <- years * weeks
 # ... and a vector containing the overall time passed
-timeOverall <- 1:n
+time_overall <- 1:n
 # Create arbitrary dates
 dates <- as.POSIXct(
-  x = timeOverall * 86400 * 7,
+  x = time_overall * 86400 * 7,
   origin = "2010-01-01",
   tz = "UTC",
   format = "%F"
 )
 
 # Simulate the data
-simulation <- simulate_from_nbinom(t = timeOverall, theta = log(1000), phi = 5)
+simulation <- simulate_from_nbinom(t = time_overall, theta = log(1000), phi = 5)
 
 # Collect the data in a 'tibble'
-sim_data <- tibble(Date = dates, mu_t = simulation$mu_t, y = simulation$simulation)
+sim_data <- tibble(
+  Date = dates,
+  mu_t = simulation$mu_t,
+  y = simulation$simulation
+)
 ```
 
 A total of three years of weekly data are then simulated with the following set of parameters:
@@ -149,7 +162,12 @@ Next, the time series data object is passed to the `aedseo()` function. Here, a 
 
 ```{r}
 # Apply the 'aedseo' algorithm
-aedseo_results <- aedseo(tsd = tsd_data, k = 5, level = 0.95, family = "quasipoisson")
+aedseo_results <- aedseo(
+  tsd = tsd_data,
+  k = 5,
+  level = 0.95,
+  family = "quasipoisson"
+)
 ```
 
 In the figure below, the observed values from the simulations is visualized alongside the local estimate of the growth rate and its corresponding 95\% confidence interval.
@@ -157,7 +175,11 @@ In the figure below, the observed values from the simulations is visualized alon
 
 ```{r}
 # Join the observations and estimated growth rates
-full_data <- full_join(x = tsd_data, y = aedseo_results, by = join_by("time" == "reference_time"))
+full_data <- full_join(
+  x = tsd_data,
+  y = aedseo_results,
+  by = join_by("time" == "reference_time")
+)
 
 # Data to add horizontal line in growth rate
 ablines <- tibble(name = c("growth_rate", "observed"), x = c(0, NA))
