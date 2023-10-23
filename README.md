@@ -12,11 +12,20 @@ coverage](https://codecov.io/gh/telkamp7/aedseo/branch/master/graph/badge.svg)](
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of aedseo is to …
+## Description
+
+The Automated and Early Detection of Seasonal Epidemic Onset (`aedseo`)
+Package provides a powerful tool for automating the early detection of
+seasonal epidemic onsets in time series data. It offers the ability to
+estimate growth rates for consecutive time intervals and calculate the
+Sum of Cases (SoC) within those intervals. This package is particularly
+useful for epidemiologists, public health professionals, and researchers
+seeking to identify and respond to seasonal epidemics in a timely
+fashion.
 
 ## Installation
 
-You can install the development version of aedseo from
+You can install the development version of `aedseo` from
 [GitHub](https://github.com/) with:
 
 ``` r
@@ -24,35 +33,50 @@ You can install the development version of aedseo from
 devtools::install_github("telkamp7/aedseo")
 ```
 
-## Example
+## Getting started
 
-This is a basic example which shows you how to solve a common problem:
+To quickly get started with `aedseo`, follow these steps:
+
+1.  Install the package using the code provided above.
+2.  Load the package with `library(aedseo)`.
+3.  Create a time series data object (`tsibble`) from your data using
+    the `aedseo::tsd` function.
+4.  Apply the `aedseo::aedseo` function to estimate growth rates and
+    detect seasonal epidemic onsets.
 
 ``` r
+# Load the package
 library(aedseo)
-## basic example code
+
+# Create a tsibble object from your data
+tsd_data <- tsd(
+  observed = c(100, 120, 150, 180, 220, 270),
+  time = as.Date(c(
+    "2023-01-01",
+    "2023-01-02",
+    "2023-01-03",
+    "2023-01-04",
+    "2023-01-05",
+    "2023-01-06")
+    ),
+    time_interval = "day"
+  )
+
+# Detect seasonal epidemic onsets
+aedseo_results <- aedseo(tsd = tsd_data, k = 3, level = 0.95, family = "poisson")
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+## Vignette
+
+For a more detailed introduction to the workflow of this package, see
+the introductory vignette.
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+# After installing the package
+vignette("aedseo_introduction", package = "aedseo")
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this.
+## Contributing
 
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+We welcome contributions to the `aedseo` package. Feel free to open
+issues, submit pull requests, or provide feedback to help us improve.
