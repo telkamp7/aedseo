@@ -2,8 +2,8 @@
 % Please edit documentation in R/tsd.R
 \name{tsd}
 \alias{tsd}
-\title{Create a \code{\link[tsibble:tsibble]{tsibble::tsibble()}} (time-series data) object from observed data and
-corresponding dates.}
+\title{Create a \code{\link[tsibble:tsibble]{tsibble::tsibble()}} (time-series data) object from observed data
+and corresponding dates.}
 \usage{
 tsd(observed, time, time_interval = c("day", "week", "month"))
 }

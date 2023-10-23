@@ -19,6 +19,8 @@ estimated growth rate, lower confidence interval, and upper confidence
 interval for the specified number of future time steps.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function is used to predict future growth rates based on a model object
 created using the AEDSEO package. It takes the model object and the number
 of future time steps (\code{n_step}) for which you want to make predictions and
