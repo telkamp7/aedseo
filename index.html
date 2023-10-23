@@ -81,36 +81,62 @@
 </div>
 <!-- badges: start -->
 
-<p>The goal of aedseo is to …</p>
+<div class="section level2">
+<h2 id="description">Description<a class="anchor" aria-label="anchor" href="#description"></a>
+</h2>
+<p>The Automated and Early Detection of Seasonal Epidemic Onset (<code>aedseo</code>) Package provides a powerful tool for automating the early detection of seasonal epidemic onsets in time series data. It offers the ability to estimate growth rates for consecutive time intervals and calculate the Sum of Cases (SoC) within those intervals. This package is particularly useful for epidemiologists, public health professionals, and researchers seeking to identify and respond to seasonal epidemics in a timely fashion.</p>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of aedseo from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version of <code>aedseo</code> from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"telkamp7/aedseo"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h2 id="getting-started">Getting started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
 </h2>
-<p>This is a basic example which shows you how to solve a common problem:</p>
+<p>To quickly get started with <code>aedseo</code>, follow these steps:</p>
+<ol style="list-style-type: decimal">
+<li>Install the package using the code provided above.</li>
+<li>Load the package with <code><a href="https://github.com/telkamp7/aedseo" class="external-link">library(aedseo)</a></code>.</li>
+<li>Create a time series data object (<code>tsibble</code>) from your data using the <code><a href="reference/tsd.html">aedseo::tsd</a></code> function.</li>
+<li>Apply the <code><a href="reference/aedseo.html">aedseo::aedseo</a></code> function to estimate growth rates and detect seasonal epidemic onsets.</li>
+</ol>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/telkamp7/aedseo" class="external-link">aedseo</a></span><span class="op">)</span></span>
-<span><span class="co">## basic example code</span></span></code></pre></div>
-<p>What is special about using <code>README.Rmd</code> instead of just <code>README.md</code>? You can include R chunks like so:</p>
+<code class="sourceCode R"><span><span class="co"># Load the package</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/telkamp7/aedseo" class="external-link">aedseo</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create a tsibble object from your data</span></span>
+<span><span class="va">tsd_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/tsd.html">tsd</a></span><span class="op">(</span></span>
+<span>  observed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">120</span>, <span class="fl">150</span>, <span class="fl">180</span>, <span class="fl">220</span>, <span class="fl">270</span><span class="op">)</span>,</span>
+<span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"2023-01-01"</span>,</span>
+<span>    <span class="st">"2023-01-02"</span>,</span>
+<span>    <span class="st">"2023-01-03"</span>,</span>
+<span>    <span class="st">"2023-01-04"</span>,</span>
+<span>    <span class="st">"2023-01-05"</span>,</span>
+<span>    <span class="st">"2023-01-06"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    time_interval <span class="op">=</span> <span class="st">"day"</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Detect seasonal epidemic onsets</span></span>
+<span><span class="va">aedseo_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/aedseo.html">aedseo</a></span><span class="op">(</span>tsd <span class="op">=</span> <span class="va">tsd_data</span>, k <span class="op">=</span> <span class="fl">3</span>, level <span class="op">=</span> <span class="fl">0.95</span>, family <span class="op">=</span> <span class="st">"poisson"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="vignette">Vignette<a class="anchor" aria-label="anchor" href="#vignette"></a>
+</h2>
+<p>For a more detailed introduction to the workflow of this package, see the introductory vignette.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      speed           dist       </span></span>
-<span><span class="co">#&gt;  Min.   : 4.0   Min.   :  2.00  </span></span>
-<span><span class="co">#&gt;  1st Qu.:12.0   1st Qu.: 26.00  </span></span>
-<span><span class="co">#&gt;  Median :15.0   Median : 36.00  </span></span>
-<span><span class="co">#&gt;  Mean   :15.4   Mean   : 42.98  </span></span>
-<span><span class="co">#&gt;  3rd Qu.:19.0   3rd Qu.: 56.00  </span></span>
-<span><span class="co">#&gt;  Max.   :25.0   Max.   :120.00</span></span></code></pre></div>
-<p>You’ll still need to render <code>README.Rmd</code> regularly, to keep <code>README.md</code> up-to-date. <code>devtools::build_readme()</code> is handy for this.</p>
-<p>You can also embed plots, for example:</p>
-<p><img src="reference/figures/README-pressure-1.png" width="100%"></p>
-<p>In that case, don’t forget to commit and push the resulting figure files, so they display on GitHub and CRAN.</p>
+<code class="sourceCode R"><span><span class="co"># After installing the package</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"aedseo_introduction"</span>, package <span class="op">=</span> <span class="st">"aedseo"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
+</h2>
+<p>We welcome contributions to the <code>aedseo</code> package. Feel free to open issues, submit pull requests, or provide feedback to help us improve.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
