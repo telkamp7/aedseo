@@ -19,7 +19,10 @@ estimated growth rate, lower confidence interval, and upper confidence
 interval for the specified number of future time steps.
 }
 \description{
-This function is used to predict future growth rates based on a model object created using the AEDSEO package. It takes the model object and the number of future time steps (\code{n_step}) for which you want to make predictions and returns a prediction tibble.
+This function is used to predict future growth rates based on a model object
+created using the AEDSEO package. It takes the model object and the number
+of future time steps (\code{n_step}) for which you want to make predictions and
+returns a prediction tibble.
 }
 \examples{
 # Create a model using the AEDSEO package
@@ -31,12 +34,17 @@ tsd_data <- tsd(
     "2023-01-03",
     "2023-01-04",
     "2023-01-05",
-    "2023-01-06")
-    ),
-    time_interval = "day"
-  )
+    "2023-01-06"
+  )),
+  time_interval = "day"
+)
 
-aedseo_results <- aedseo(tsd = tsd_data, k = 3, level = 0.95, family = "poisson")
+aedseo_results <- aedseo(
+  tsd = tsd_data,
+  k = 3,
+  level = 0.95,
+  family = "poisson"
+)
 
 # Predict growth rates for the next 5 time steps
 prediction <- predict_growth_rate(object = aedseo_results, n_step = 5)
