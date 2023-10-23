@@ -6,6 +6,8 @@
 \alias{_PACKAGE}
 \title{aedseo: Automated and Early Detection of Seasonal Epidemic Onset}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 The Automated and Early Detection of Seasonal Epidemic Onset (aedseo) Package provides a powerful tool for automating the early detection of seasonal epidemic onsets in time series data. It offers the ability to estimate growth rates for consecutive time intervals and calculate the Sum of Cases (SoC) within those intervals. This package is particularly useful for epidemiologists, public health professionals, and researchers seeking to identify and respond to seasonal epidemics in a timely fashion.
 }
 \seealso{
