@@ -4,7 +4,7 @@
 \name{aedseo-package}
 \alias{aedseo-package}
 \alias{_PACKAGE}
-\title{aedseo: Automated and Early Detection of Seasonal Epidemic Onset (aedseo)}
+\title{aedseo: Automated and Early Detection of Seasonal Epidemic Onset}
 \description{
 The Automated and Early Detection of Seasonal Epidemic Onset (aedseo) Package provides a powerful tool for automating the early detection of seasonal epidemic onsets in time series data. It offers the ability to estimate growth rates for consecutive time intervals and calculate the Sum of Cases (SoC) within those intervals. This package is particularly useful for epidemiologists, public health professionals, and researchers seeking to identify and respond to seasonal epidemics in a timely fashion.
 }
@@ -12,6 +12,7 @@ The Automated and Early Detection of Seasonal Epidemic Onset (aedseo) Package pr
 Useful links:
 \itemize{
   \item \url{https://github.com/telkamp7/aedseo}
+  \item \url{https://telkamp7.github.io/aedseo/}
   \item Report bugs at \url{https://github.com/telkamp7/aedseo/issues}
 }
 
