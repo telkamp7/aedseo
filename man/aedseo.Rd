@@ -2,7 +2,7 @@
 % Please edit documentation in R/aedseo.R
 \name{aedseo}
 \alias{aedseo}
-\title{Automated an Early Detection of Seasonal Epidemic Onset (aedseo)}
+\title{Automated and Early Detection of Seasonal Epidemic Onset}
 \usage{
 aedseo(tsd, k = 5, level = 0.95, family = c("poisson", "quasipoisson"))
 }

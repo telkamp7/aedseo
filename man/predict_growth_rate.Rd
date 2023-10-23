@@ -7,8 +7,8 @@
 predict_growth_rate(object, n_step)
 }
 \arguments{
-\item{object}{A model object created using the aedseo package, typically
-the result of the \code{aedseo} function.}
+\item{object}{A model object created using the \code{aedseo} package, typically
+the result of the \code{aedseo()} function.}
 
 \item{n_step}{An integer specifying the number of future time steps for
 which you want to predict growth rates.}
@@ -25,7 +25,7 @@ of future time steps (\code{n_step}) for which you want to make predictions and
 returns a prediction tibble.
 }
 \examples{
-# Create a model using the AEDSEO package
+# Analyze the data using the aedseo package
 tsd_data <- tsd(
   observed = c(100, 120, 150, 180, 220, 270),
   time = as.Date(c(

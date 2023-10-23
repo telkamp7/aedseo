@@ -5,8 +5,8 @@
 #' of future time steps (`n_step`) for which you want to make predictions and
 #' returns a prediction tibble.
 #'
-#' @param object A model object created using the aedseo package, typically
-#' the result of the `aedseo` function.
+#' @param object A model object created using the `aedseo` package, typically
+#' the result of the `aedseo()` function.
 #' @param n_step An integer specifying the number of future time steps for
 #' which you want to predict growth rates.
 #'
@@ -18,7 +18,7 @@
 #' @importFrom rlang .data
 #'
 #' @examples
-#' # Create a model using the AEDSEO package
+#' # Analyze the data using the aedseo package
 #' tsd_data <- tsd(
 #'   observed = c(100, 120, 150, 180, 220, 270),
 #'   time = as.Date(c(

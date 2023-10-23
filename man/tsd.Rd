@@ -2,7 +2,7 @@
 % Please edit documentation in R/tsd.R
 \name{tsd}
 \alias{tsd}
-\title{Create a tsibble (time-series data) object from observed data and
+\title{Create a \code{\link[tsibble:tsibble]{tsibble::tsibble()}} (time-series data) object from observed data and
 corresponding dates.}
 \usage{
 tsd(observed, time, time_interval = c("day", "week", "month"))
@@ -16,16 +16,15 @@ tsd(observed, time, time_interval = c("day", "week", "month"))
 Choose between "day," "week," or "month."}
 }
 \value{
-A tsibble object containing time, the observations, and the
-periodInYear.
+A \code{\link[tsibble:tsibble]{tsibble::tsibble()}} object containing time, the observations,
+and the periodInYear.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 This function takes observed data and the corresponding date vector and
-converts it into a tsibble object,
-which is a time series data structure that can be used for time series
-analysis.
+converts it into a \code{\link[tsibble:tsibble]{tsibble::tsibble()}} object, which is a time series
+data structure that can be used for time series analysis.
 }
 \examples{
 # Create a tsibble object from daily data

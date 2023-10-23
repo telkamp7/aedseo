@@ -1,4 +1,4 @@
-#' Automated an Early Detection of Seasonal Epidemic Onset (aedseo)
+#' Automated and Early Detection of Seasonal Epidemic Onset
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
