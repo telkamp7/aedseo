@@ -72,8 +72,8 @@ returns a prediction tibble.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>object</dt>
-<dd><p>A model object created using the aedseo package, typically
-the result of the <code>aedseo</code> function.</p></dd>
+<dd><p>A model object created using the <code>aedseo</code> package, typically
+the result of the <code><a href="aedseo.html">aedseo()</a></code> function.</p></dd>
 
 
 <dt>n_step</dt>
@@ -92,7 +92,7 @@ interval for the specified number of future time steps.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create a model using the AEDSEO package</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Analyze the data using the aedseo package</span></span></span>
 <span class="r-in"><span><span class="va">tsd_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="tsd.html">tsd</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  observed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">120</span>, <span class="fl">150</span>, <span class="fl">180</span>, <span class="fl">220</span>, <span class="fl">270</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
