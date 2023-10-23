@@ -17,6 +17,7 @@
 #'
 #' @return A tibble containing:
 #'   - 'reference_time': The time point for which the growth rate is estimated.
+#'   - 'observed': The observed value in the reference time point.
 #'   - 'growth_rate': The estimated growth rate.
 #'   - 'lower_growth_rate': The lower bound of the growth rate's confidence
 #'   interval.
@@ -94,6 +95,7 @@ aedseo <- function(
       res,
       tibble::tibble(
         reference_time = tsd$time[i],
+        observed = tsd$observed[i],
         growth_rate = growth_rates$estimate[1],
         lower_growth_rate = growth_rates$estimate[2],
         upper_growth_rate = growth_rates$estimate[3],

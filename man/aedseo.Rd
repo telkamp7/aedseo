@@ -22,6 +22,7 @@ Choose between "poisson," or "quasipoisson".}
 A tibble containing:
 \itemize{
 \item 'reference_time': The time point for which the growth rate is estimated.
+\item 'observed': The observed value in the reference time point.
 \item 'growth_rate': The estimated growth rate.
 \item 'lower_growth_rate': The lower bound of the growth rate's confidence
 interval.

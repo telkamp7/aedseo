@@ -178,7 +178,7 @@ In the figure below, the observed values from the simulations is visualized alon
 full_data <- full_join(
   x = tsd_data,
   y = aedseo_results,
-  by = join_by("time" == "reference_time")
+  by = join_by("time" == "reference_time", "observed" == "observed")
 )
 
 # Data to add horizontal line in growth rate
