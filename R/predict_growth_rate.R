@@ -1,6 +1,9 @@
 #' Predict Growth Rates for Future Time Steps
 #'
-#' This function is used to predict future growth rates based on a model object created using the AEDSEO package. It takes the model object and the number of future time steps (`n_step`) for which you want to make predictions and returns a prediction tibble.
+#' This function is used to predict future growth rates based on a model object
+#' created using the AEDSEO package. It takes the model object and the number
+#' of future time steps (`n_step`) for which you want to make predictions and
+#' returns a prediction tibble.
 #'
 #' @param object A model object created using the aedseo package, typically
 #' the result of the `aedseo` function.
@@ -12,6 +15,8 @@
 #' interval for the specified number of future time steps.
 #' @export
 #'
+#' @importFrom rlang .data
+#'
 #' @examples
 #' # Create a model using the AEDSEO package
 #' tsd_data <- tsd(
@@ -22,12 +27,17 @@
 #'     "2023-01-03",
 #'     "2023-01-04",
 #'     "2023-01-05",
-#'     "2023-01-06")
-#'     ),
-#'     time_interval = "day"
-#'   )
+#'     "2023-01-06"
+#'   )),
+#'   time_interval = "day"
+#' )
 #'
-#' aedseo_results <- aedseo(tsd = tsd_data, k = 3, level = 0.95, family = "poisson")
+#' aedseo_results <- aedseo(
+#'   tsd = tsd_data,
+#'   k = 3,
+#'   level = 0.95,
+#'   family = "poisson"
+#' )
 #'
 #' # Predict growth rates for the next 5 time steps
 #' prediction <- predict_growth_rate(object = aedseo_results, n_step = 5)
@@ -35,17 +45,17 @@
 #' # Print the prediction
 #' print(prediction)
 #'
-predict_growth_rate <- function(object, n_step){
-
+predict_growth_rate <- function(object, n_step) {
   # Calculate the prediction
   prediction <- dplyr::last(object) %>%
-    dplyr::reframe(t = 0:n_step,
-                   time = reference_time + t,
-                   estimate = exp(log(observed) + growth_rate * t),
-                   lower = exp(log(observed) + lower_growth_rate * t),
-                   upper = exp(log(observed) + upper_growth_rate * t))
+    dplyr::reframe(
+      t = 0:n_step,
+      time = .data$reference_time + t,
+      estimate = exp(log(.data$observed) + .data$growth_rate * t),
+      lower = exp(log(.data$observed) + .data$lower_growth_rate * t),
+      upper = exp(log(.data$observed) + .data$upper_growth_rate * t)
+    )
 
   # Return
   return(prediction)
-
 }
