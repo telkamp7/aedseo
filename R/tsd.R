@@ -50,36 +50,18 @@ tsd <- function(observed, time, time_interval = c("day", "week", "month")) {
   # Throw an error if any of the inputs are not supported
   time_interval <- rlang::arg_match(time_interval)
 
-  # Select the correct 'time_interval' and create the 'tsd' return object
-  ans <- switch(time_interval,
-    day = tibble(time = time, observed = observed) %>%
-      tsibble::build_tsibble(
-        index = time,
-        interval = tsibble::new_interval(
-          day = 1
-        )
-      ) %>%
-      tsibble::fill_gaps() %>%
-      dplyr::mutate(periodInYear = lubridate::yday(time)),
-    week = tibble(time = tsibble::yearweek(time), observed = observed) %>%
-      tsibble::build_tsibble(
-        index = time,
-        interval = tsibble::new_interval(
-          week = 1
-        )
-      ) %>%
-      tsibble::fill_gaps() %>%
-      dplyr::mutate(periodInYear = lubridate::isoweek(time)),
-    month = tibble(time = tsibble::yearmonth(time), observed = observed) %>%
-      tsibble::build_tsibble(
-        index = time,
-        interval = tsibble::new_interval(
-          month = 1
-        )
-      ) %>%
-      tsibble::fill_gaps() %>%
-      dplyr::mutate(periodInYear = lubridate::month(time))
+  # Collect the input in a tibble
+  tbl <- tibble::tibble(
+    time = time,
+    observed = observed
   )
 
-  return(ans)
+  # Create the time series data object
+  tsd <- tibble::new_tibble(
+    x = tbl,
+    class = "aedseo_tsd",
+    time_interval = time_interval
+  )
+
+  return(tsd)
 }
