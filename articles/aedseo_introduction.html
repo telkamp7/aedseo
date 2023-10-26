@@ -90,12 +90,6 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/telkamp7/aedseo" class="external-link">aedseo</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tsibble.tidyverts.org" class="external-link">tsibble</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'tsibble'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, union</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -255,10 +249,10 @@ of weekly data.</p>
 </h2>
 <p>In the following section, the application of the algorithm to the
 simulated data is outlined. The first step is to transform the simulated
-data into a <code>tsibble</code> object using the <code><a href="../reference/tsd.html">tsd()</a></code>
+data into a <code>aedseo_tsd</code> object using the <code><a href="../reference/tsd.html">tsd()</a></code>
 function.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Construct a 'tsibble' object with the time series data</span></span>
+<code class="sourceCode R"><span><span class="co"># Construct an 'aedseo_tsd' object with the time series data</span></span>
 <span><span class="va">tsd_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tsd.html">tsd</a></span><span class="op">(</span></span>
 <span>  observed <span class="op">=</span> <span class="va">simulation</span><span class="op">$</span><span class="va">simulation</span>,</span>
 <span>  time <span class="op">=</span> <span class="va">dates</span>,</span>
