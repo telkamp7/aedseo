@@ -17,7 +17,6 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(aedseo)
 library(tibble)
-library(tsibble)
 library(tidyr)
 library(dplyr)
 library(ggplot2)
@@ -147,10 +146,10 @@ sim_data %>%
 
 ## Applying the algorithm
 
-In the following section, the application of the algorithm to the simulated data is outlined. The first step is to transform the simulated data into a `tsibble` object using the `tsd()` function.
+In the following section, the application of the algorithm to the simulated data is outlined. The first step is to transform the simulated data into a `aedseo_tsd` object using the `tsd()` function.
 
 ```{r}
-# Construct a 'tsibble' object with the time series data
+# Construct an 'aedseo_tsd' object with the time series data
 tsd_data <- tsd(
   observed = simulation$simulation,
   time = dates,
