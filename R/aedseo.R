@@ -56,6 +56,7 @@
 #' # Print the AEDSEO results
 #' print(aedseo_results)
 #'
+# TODO: #3 Rewrite the 'aedseo' function as an S3 Object @telkamp7
 aedseo <- function(
     tsd,
     k = 5,
