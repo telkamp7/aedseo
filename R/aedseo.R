@@ -107,5 +107,11 @@ aedseo <- function(
     )
   }
 
-  return(res)
+  # Turn the results into an `aedseo` class
+  ans <- tibble::new_tibble(
+    x = res,
+    class = "aedseo"
+  )
+
+  return(ans)
 }
