@@ -24,12 +24,10 @@ Imports:
     base,
     dplyr,
     lifecycle,
-    lubridate,
     magrittr,
     purrr,
     rlang,
     stats,
-    tibble,
-    tsibble
+    tibble
 Config/Needs/website: rmarkdown
 VignetteBuilder: knitr
