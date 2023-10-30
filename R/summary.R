@@ -13,6 +13,8 @@
 #' @return This function is used for its side effect, which is printing a
 #' summary message to the console.
 #'
+#' @export
+#'
 #' @examples
 #' # Create a tsibble object from sample data
 #' tsd_data <- tsd(

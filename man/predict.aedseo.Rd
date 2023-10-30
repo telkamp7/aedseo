@@ -4,21 +4,21 @@
 \alias{predict.aedseo}
 \title{Predict Growth Rates for Future Time Steps}
 \usage{
-\method{predict}{aedseo}(object, n_step, ...)
+\method{predict}{aedseo}(object, n_step = 3, ...)
 }
 \arguments{
 \item{object}{A model object created using the \code{aedseo} package, typically
 the result of the \code{aedseo()} function.}
 
 \item{n_step}{An integer specifying the number of future time steps for
-which you want to predict growth rates.}
+which you want to predict growth rates. Default is 3.}
 
-\item{...}{Additional arguement affecting the predictions produced.}
+\item{...}{Additional arguments (not used).}
 }
 \value{
-A tibble containing the predicted growth rates, including time,
-estimated growth rate, lower confidence interval, and upper confidence
-interval for the specified number of future time steps.
+A tibble S3 object called \code{aedseo} containing the predicted growth
+rates, including time, estimated growth rate, lower confidence interval,
+and upper confidence interval for the specified number of future time steps.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

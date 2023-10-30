@@ -24,7 +24,7 @@ test_that("Summary prints without errors", {
   )
 
   # Capture the output of the summary function
-  tmp <- capture_output(summary.aedseo(aedseo_poisson))
+  tmp <- capture_output(summary(aedseo_poisson))
 
   # Verify that the summary printed without errors
   expect_true(grepl(pattern = "Summary of aedseo Object", x = tmp))

@@ -7,19 +7,20 @@
 \method{summary}{aedseo}(object, ...)
 }
 \arguments{
-\item{object}{An object of class 'aedseo' containing the results of an aedseo analysis.}
+\item{object}{An object of class 'aedseo' containing the results of an aedseo
+analysis.}
 
 \item{...}{Additional arguments (not used).}
 }
 \value{
-This function is used for its side effect, which is printing a summary message
-to the console.
+This function is used for its side effect, which is printing a
+summary message to the console.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Summarize the results of an aedseo analysis, including the latest growth rate estimate,
-the confidence interval, and information about growth warnings.
+Summarize the results of an aedseo analysis, including the latest growth rate
+estimate, the confidence interval, and information about growth warnings.
 }
 \examples{
 # Create a tsibble object from sample data

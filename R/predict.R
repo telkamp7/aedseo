@@ -11,12 +11,13 @@
 #' @param object A model object created using the `aedseo` package, typically
 #' the result of the `aedseo()` function.
 #' @param n_step An integer specifying the number of future time steps for
-#' which you want to predict growth rates.
-#' @param ... Additional arguement affecting the predictions produced.
+#' which you want to predict growth rates. Default is 3.
+#' @param ... Additional arguments (not used).
 #'
 #' @return  A tibble S3 object called `aedseo` containing the predicted growth
 #' rates, including time, estimated growth rate, lower confidence interval,
 #' and upper confidence interval for the specified number of future time steps.
+#'
 #' @export
 #'
 #' @importFrom rlang .data
@@ -49,7 +50,7 @@
 #' # Print the prediction
 #' print(prediction)
 #'
-predict.aedseo <- function(object, n_step, ...) {
+predict.aedseo <- function(object, n_step = 3, ...) {
   # Calculate the prediction
   ans <- dplyr::last(object) %>%
     dplyr::reframe(
