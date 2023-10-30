@@ -48,7 +48,7 @@
 #' # Print the prediction
 #' print(prediction)
 #'
-predict.aedseo <- function(object, n_step) {
+predict.aedseo <- function(object, n_step, ...) {
   # Calculate the prediction
   ans <- dplyr::last(object) %>%
     dplyr::reframe(
