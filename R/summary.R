@@ -3,14 +3,15 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' Summarize the results of an aedseo analysis, including the latest growth rate estimate,
-#' the confidence interval, and information about growth warnings.
+#' Summarize the results of an aedseo analysis, including the latest growth rate
+#' estimate, the confidence interval, and information about growth warnings.
 #'
-#' @param object An object of class 'aedseo' containing the results of an aedseo analysis.
+#' @param object An object of class 'aedseo' containing the results of an aedseo
+#' analysis.
 #' @param ... Additional arguments (not used).
 #'
-#' @return This function is used for its side effect, which is printing a summary message
-#'   to the console.
+#' @return This function is used for its side effect, which is printing a
+#' summary message to the console.
 #'
 #' @examples
 #' # Create a tsibble object from sample data
@@ -37,7 +38,6 @@
 #' # Print the summary of the aedseo_results to the console
 #' summary(aedseo_results)
 summary.aedseo <- function(object, ...) {
-
   # Extract the last observation
   last_observation <- dplyr::last(object)
 
@@ -57,16 +57,30 @@ summary.aedseo <- function(object, ...) {
 
   rlang::local_options(digits = 3)
 
-  # Write the output to the console
-  cat("Reference time point:", as.character(reference_time), "\n \n")
-  cat("Growth rate estimate: \n")
-  cat("Estimate   Lower   Upper \n")
-  cat("  ",
-      last_observation$growth_rate, " ",
-      last_observation$lower_growth_rate, " ",
-      last_observation$upper_growth_rate, "\n \n")
-  cat("Total number of growth warnings in the series:",
-      sum_of_growth_warnings, "\n")
-  cat("Latest growth warning:", as.character(latest_growth_warning), "\n")
+  # Generate the summary message
+  summary_message <- sprintf(
+    "Summary of aedseo Object
+
+    Reference time point:
+      %s
+
+    Growth rate estimate:
+      Estimate   Lower   Upper
+         %.3f  %.3f   %.3f
+
+    Total number of growth warnings in the series:
+      %d
+    Latest growth warning:
+      %s",
+    as.character(reference_time),
+    last_observation$growth_rate,
+    last_observation$lower_growth_rate,
+    last_observation$upper_growth_rate,
+    sum_of_growth_warnings,
+    as.character(latest_growth_warning)
+  )
+
+  # Print the summary message
+  cat(summary_message)
 
 }
