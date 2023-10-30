@@ -104,7 +104,6 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This vignette …</p>
 <p>The methodology used to detect the onset of seasonal respiratory
 epidemics can be divided into two essential criteria:</p>
 <ul>
@@ -315,6 +314,69 @@ corresponding 95% confidence interval.</p>
 <span><span class="co">#&gt; Warning: Removed 4 rows containing missing values (`geom_line()`).</span></span>
 <span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_hline()`).</span></span></code></pre></div>
 <p><img src="aedseo_introduction_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+</div>
+<div class="section level2">
+<h2 id="the-aedseo-package-implements-s3-methods">The aedseo package implements S3 methods<a class="anchor" aria-label="anchor" href="#the-aedseo-package-implements-s3-methods"></a>
+</h2>
+<p>In this section, we will explore how to use the <code>predict</code>
+and <code>summary</code> S3 methods provided by the <code>aedseo</code>
+package. These methods enhance the functionality of your
+<code>aedseo</code> objects, allowing you to make predictions and obtain
+concise summaries of your analysis results.</p>
+<div class="section level3">
+<h3 id="predicting-growth-rates">Predicting Growth Rates<a class="anchor" aria-label="anchor" href="#predicting-growth-rates"></a>
+</h3>
+<p>The <code>predict</code> method for <code>aedseo</code> objects
+allows you to make predictions for future time steps based on the
+estimated growth rates. Here’s how to use it:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Example: Predict growth rates for the next 5 time steps</span></span>
+<span><span class="op">(</span><span class="va">prediction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">aedseo_results</span>, n_step <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
+<span><span class="co">#&gt;       t time                estimate lower upper</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     0 2012-12-28 <span style="color: #949494;">00:00:00</span>    <span style="text-decoration: underline;">3</span>279. <span style="text-decoration: underline;">3</span>279. <span style="text-decoration: underline;">3</span>279.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     1 2012-12-28 <span style="color: #949494;">00:00:01</span>    <span style="text-decoration: underline;">3</span>736. <span style="text-decoration: underline;">3</span>590. <span style="text-decoration: underline;">3</span>889.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     2 2012-12-28 <span style="color: #949494;">00:00:02</span>    <span style="text-decoration: underline;">4</span>257. <span style="text-decoration: underline;">3</span>930. <span style="text-decoration: underline;">4</span>613.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     3 2012-12-28 <span style="color: #949494;">00:00:03</span>    <span style="text-decoration: underline;">4</span>851. <span style="text-decoration: underline;">4</span>303. <span style="text-decoration: underline;">5</span>471.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     4 2012-12-28 <span style="color: #949494;">00:00:04</span>    <span style="text-decoration: underline;">5</span>527. <span style="text-decoration: underline;">4</span>710. <span style="text-decoration: underline;">6</span>490.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     5 2012-12-28 <span style="color: #949494;">00:00:05</span>    <span style="text-decoration: underline;">6</span>298. <span style="text-decoration: underline;">5</span>157. <span style="text-decoration: underline;">7</span>697.</span></span></code></pre></div>
+<p>In the example above, we use the predict method to predict growth
+rates for the next 5 time steps. The n_step argument specifies the
+number of steps into the future you want to forecast. The resulting
+prediction object will contain estimates, lower bounds, and upper bounds
+for each time step.</p>
+</div>
+<div class="section level3">
+<h3 id="summarizing-aedseo-results">Summarizing AEDSEO results<a class="anchor" aria-label="anchor" href="#summarizing-aedseo-results"></a>
+</h3>
+<p>The summary method for aedseo objects provides a concise summary of
+your automated early detection of seasonal epidemic onset (AEDSEO)
+analysis. You can use it to retrieve important information about your
+analysis, including the latest growth warning and the total number of
+growth warnings:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">aedseo_results</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Summary of aedseo Object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     Reference time point:</span></span>
+<span><span class="co">#&gt;       2012-12-28</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     Growth rate estimate:</span></span>
+<span><span class="co">#&gt;       Estimate   Lower   Upper</span></span>
+<span><span class="co">#&gt;          0.131  0.091   0.171</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     Total number of growth warnings in the series:</span></span>
+<span><span class="co">#&gt;       59</span></span>
+<span><span class="co">#&gt;     Latest growth warning:</span></span>
+<span><span class="co">#&gt;       2012-12-28</span></span></code></pre></div>
+<p>The summary method generates a summary message that includes details
+such as the reference time point, growth rate estimates, and the number
+of growth warnings in the series. It helps you quickly assess the key
+findings of your analysis.</p>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
