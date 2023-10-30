@@ -39,6 +39,7 @@
 #' )
 #' # Print the summary of the aedseo_results to the console
 #' summary(aedseo_results)
+# TODO: #8 Incorporate additional metadata about the call to the `aedseo` function.
 summary.aedseo <- function(object, ...) {
   # Extract the last observation
   last_observation <- dplyr::last(object)

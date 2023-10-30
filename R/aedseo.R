@@ -108,7 +108,8 @@ aedseo <- function(
   # Turn the results into an `aedseo` class
   ans <- tibble::new_tibble(
     x = res,
-    class = "aedseo"
+    class = "aedseo" # TODO: #8 Include metadata about the call, so it can
+    # be passed onto the `summary()` function. @telkamp7
   )
 
   return(ans)
