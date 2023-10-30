@@ -1,5 +1,4 @@
 test_that("Summary prints without errors", {
-
   # Set start and end dates
   from_date <- as.Date("2021-01-01")
   to_date <- as.Date("2021-01-31")

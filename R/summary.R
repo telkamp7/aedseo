@@ -82,5 +82,4 @@ summary.aedseo <- function(object, ...) {
 
   # Print the summary message
   cat(summary_message)
-
 }
