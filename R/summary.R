@@ -55,8 +55,6 @@ summary.aedseo <- function(object, ...) {
     dplyr::summarise(sum_of_growth_warnings = sum(.data$growth_warning)) %>%
     dplyr::pull(sum_of_growth_warnings)
 
-  rlang::local_options(digits = 3)
-
   # Generate the summary message
   summary_message <- sprintf(
     "Summary of aedseo Object
