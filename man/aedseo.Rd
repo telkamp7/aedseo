@@ -66,5 +66,4 @@ aedseo_results <- aedseo(
 
 # Print the AEDSEO results
 print(aedseo_results)
-
 }

@@ -12,10 +12,11 @@
 #' the result of the `aedseo()` function.
 #' @param n_step An integer specifying the number of future time steps for
 #' which you want to predict growth rates.
+#' @param ... Additional arguement affecting the predictions produced.
 #'
-#' @return  A tibble containing the predicted growth rates, including time,
-#' estimated growth rate, lower confidence interval, and upper confidence
-#' interval for the specified number of future time steps.
+#' @return  A tibble S3 object called `aedseo` containing the predicted growth
+#' rates, including time, estimated growth rate, lower confidence interval,
+#' and upper confidence interval for the specified number of future time steps.
 #' @export
 #'
 #' @importFrom rlang .data
@@ -43,14 +44,14 @@
 #' )
 #'
 #' # Predict growth rates for the next 5 time steps
-#' prediction <- predict_growth_rate(object = aedseo_results, n_step = 5)
+#' prediction <- predict(object = aedseo_results, n_step = 5)
 #'
 #' # Print the prediction
 #' print(prediction)
 #'
-predict_growth_rate <- function(object, n_step) {
+predict.aedseo <- function(object, n_step, ...) {
   # Calculate the prediction
-  prediction <- dplyr::last(object) %>%
+  ans <- dplyr::last(object) %>%
     dplyr::reframe(
       t = 0:n_step,
       time = .data$reference_time + t,
@@ -60,5 +61,5 @@ predict_growth_rate <- function(object, n_step) {
     )
 
   # Return
-  return(prediction)
+  return(ans)
 }

@@ -25,7 +25,7 @@ test_that("Returns the desired length", {
   n_step <- 5
 
   # Predict growth rates for the next 5 time steps
-  prediction <- predict_growth_rate(object = aedseo_results, n_step = n_step)
+  prediction <- predict(object = aedseo_results, n_step = n_step)
 
   # Return the number of prediction + the initial observation
   expect_length(prediction$estimate, n_step + 1)
