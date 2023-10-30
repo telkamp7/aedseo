@@ -1,8 +1,7 @@
 #' Predict Growth Rates for Future Time Steps
 #'
 #' @description
-#' `r lifecycle::badge("experimental")` # TODO: #3 Supersede this function
-#' # or alternatively delete it completely @telkamp7
+#' `r lifecycle::badge("experimental")`
 #'
 #' This function is used to predict future growth rates based on a model object
 #' created using the AEDSEO package. It takes the model object and the number
@@ -44,7 +43,7 @@
 #' )
 #'
 #' # Predict growth rates for the next 5 time steps
-#' prediction <- predict_growth_rate(object = aedseo_results, n_step = 5)
+#' prediction <- predict(object = aedseo_results, n_step = 5)
 #'
 #' # Print the prediction
 #' print(prediction)

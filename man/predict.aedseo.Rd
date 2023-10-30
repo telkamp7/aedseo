@@ -51,7 +51,7 @@ aedseo_results <- aedseo(
 )
 
 # Predict growth rates for the next 5 time steps
-prediction <- predict_growth_rate(object = aedseo_results, n_step = 5)
+prediction <- predict(object = aedseo_results, n_step = 5)
 
 # Print the prediction
 print(prediction)
