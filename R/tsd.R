@@ -1,11 +1,11 @@
-#' Create a [tsibble::tsibble()] (time-series data) object from observed data
+#' Create a S3 `aedseo_tsd` (time-series data) object from observed data
 #' and corresponding dates.
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
 #' This function takes observed data and the corresponding date vector and
-#' converts it into a [tsibble::tsibble()] object, which is a time series
+#' converts it into a `aedseo_tsd` object, which is a time series
 #' data structure that can be used for time series analysis.
 #'
 #' @param observed A numeric vector containing the observations.
@@ -13,13 +13,13 @@
 #' @param time_interval A character vector specifying the time interval.
 #' Choose between "day," "week," or "month."
 #'
-#' @return A [tsibble::tsibble()] object containing time, the observations,
+#' @return A `aedseo_tsd` object containing time, the observations,
 #' and the periodInYear.
 #'
 #' @export
 #'
 #' @examples
-#' # Create a tsibble object from daily data
+#' # Create a `aedseo_tsd` object from daily data
 #' daily_tsd <- tsd(
 #'   observed = c(10, 15, 20, 18),
 #'   time = as.Date(
@@ -28,7 +28,7 @@
 #'   time_interval = "day"
 #' )
 #'
-#' # Create a tsibble object from weekly data
+#' # Create a `aedseo_tsd` object from weekly data
 #' weekly_tsd <- tsd(
 #'   observed = c(100, 120, 130),
 #'   time = as.Date(
@@ -37,7 +37,7 @@
 #'   time_interval = "week"
 #' )
 #'
-#' # Create a tsibble object from monthly data
+#' # Create a `aedseo_tsd` object from monthly data
 #' monthly_tsd <- tsd(
 #'   observed = c(500, 520, 540),
 #'   time = as.Date(
