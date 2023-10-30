@@ -330,8 +330,7 @@ concise summaries of your analysis results.</p>
 allows you to make predictions for future time steps based on the
 estimated growth rates. Here’s how to use it:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Example: Predict growth rates for the next 5 time steps</span></span>
+<code class="sourceCode R"><span><span class="co"># Example: Predict growth rates for the next 5 time steps</span></span>
 <span><span class="op">(</span><span class="va">prediction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">aedseo_results</span>, n_step <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
 <span><span class="co">#&gt;       t time                estimate lower upper</span></span>
@@ -357,8 +356,7 @@ analysis. You can use it to retrieve important information about your
 analysis, including the latest growth warning and the total number of
 growth warnings:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">aedseo_results</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">aedseo_results</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Summary of aedseo Object</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Reference time point:</span></span>
