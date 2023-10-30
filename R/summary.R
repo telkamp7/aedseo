@@ -39,7 +39,6 @@
 #' )
 #' # Print the summary of the aedseo_results to the console
 #' summary(aedseo_results)
-# TODO: #8 Incorporate additional metadata about the call to the `aedseo` function.
 summary.aedseo <- function(object, ...) {
   # Extract the last observation
   last_observation <- dplyr::last(object)
@@ -58,22 +57,45 @@ summary.aedseo <- function(object, ...) {
     dplyr::summarise(sum_of_growth_warnings = sum(.data$growth_warning)) %>%
     dplyr::pull(sum_of_growth_warnings)
 
+  # Extract the attributes from the object
+  attributes_object <- attributes(object)
+
+  # Extract the object k, level, and family
+  k <- attributes_object$k
+  level <- attributes_object$level
+  family <- attributes_object$family
+
+  # Extract the lower and upper confidence intervals
+  lower_confidence_interval <- (1 - level) / 2
+  upper_confidence_interval <- level + lower_confidence_interval
+
   # Generate the summary message
   summary_message <- sprintf(
     "Summary of aedseo Object
 
+    Called using distributional family:
+      %s
+
+    Window size for growth rate estimation and
+    calculation of sum of cases:
+      %d
+
     Reference time point:
       %s
 
-    Growth rate estimate:
-      Estimate   Lower   Upper
-         %.3f  %.3f   %.3f
+    Growth rate estimate at reference time point:
+      Estimate   Lower (%.1f%%)   Upper (%.1f%%)
+         %.3f     %.3f          %.3f
 
     Total number of growth warnings in the series:
       %d
     Latest growth warning:
       %s",
+    family,
+    k,
     as.character(reference_time),
+    lower_confidence_interval * 100,
+    upper_confidence_interval * 100,
     last_observation$growth_rate,
     last_observation$lower_growth_rate,
     last_observation$upper_growth_rate,
