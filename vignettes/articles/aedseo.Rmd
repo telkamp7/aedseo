@@ -80,6 +80,8 @@ To accommodate a variety of scenarios encountered in practical applications, the
 
 
 ```{r parameter_combinations}
+#TODO: #7 Conduct the simulation study and write the article on the `aedseo`
+# package. @telkamp7
 parameter_combinations <- as_tibble(expand_grid(
   theta = c(3, 4, 5, 6, 7),
   beta = c(0.001),

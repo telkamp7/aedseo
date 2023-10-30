@@ -218,10 +218,8 @@ In this section, we will explore how to use the `predict` and `summary` S3 metho
 The `predict` method for `aedseo` objects allows you to make predictions for future time steps based on the estimated growth rates. Here's how to use it:
 
 ```{r}
-
 # Example: Predict growth rates for the next 5 time steps
 (prediction <- predict(aedseo_results, n_step = 5))
-
 ```
 
 In the example above, we use the predict method to predict growth rates for the next 5 time steps. The n_step argument specifies the number of steps into the future you want to forecast. The resulting prediction object will contain estimates, lower bounds, and upper bounds for each time step.
@@ -232,9 +230,7 @@ The summary method for aedseo objects provides a concise summary of your automat
 
 
 ```{r summary}
-
 summary(aedseo_results)
-
 ```
 
 The summary method generates a summary message that includes details such as the reference time point, growth rate estimates, and the number of growth warnings in the series. It helps you quickly assess the key findings of your analysis.
