@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   aedseo_introduction: aedseo_introduction.html
   aedseo: aedseo.html
-last_built: 2023-10-31T13:34Z
+last_built: 2023-10-31T13:37Z
 urls:
   reference: https://telkamp7.github.io/aedseo/reference
   article: https://telkamp7.github.io/aedseo/articles
