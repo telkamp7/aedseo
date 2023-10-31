@@ -53,7 +53,7 @@
 # TODO: #13 Turn the results into a `aedseo_predict` class. @telkmp7
 predict.aedseo <- function(object, n_step = 3, ...) {
   # Calculate the prediction
-  ans <- dplyr::last(object) %>%
+  res <- dplyr::last(object) %>%
     dplyr::reframe(
       t = 0:n_step,
       time = .data$reference_time + t,
@@ -61,6 +61,23 @@ predict.aedseo <- function(object, n_step = 3, ...) {
       lower = exp(log(.data$observed) + .data$lower_growth_rate * t),
       upper = exp(log(.data$observed) + .data$upper_growth_rate * t)
     )
+
+  # Extract the attributes from the object
+  attributes_object <- attributes(object)
+
+  # Extract the object k, level, and family
+  k <- attributes_object$k
+  level <- attributes_object$level
+  family <- attributes_object$family
+
+  # Turn the results into an `aedseo` class
+  ans <- tibble::new_tibble(
+    x = res,
+    class = "aedseo_predict",
+    k = k,
+    level = level,
+    family = family
+  )
 
   # Return
   return(ans)
