@@ -7,7 +7,7 @@
 #' onsets (aedseo) on a time series dataset. It estimates growth rates for
 #' consecutive time intervals and calculates the Sum of Cases (sum_of_cases).
 #'
-#' @param tsd A tsibble object containing time series data with 'time,'
+#' @param tsd A `aedseo_tsd` object containing time series data with 'time,'
 #' 'observed,' and 'periodInYear.'
 #' @param k An integer specifying the window size for modeling growth rates.
 #' @param level The confidence level for parameter estimates, a numeric value
