@@ -55,13 +55,13 @@
 #'
 #' # Print the AEDSEO results
 #' print(aedseo_results)
-aedseo <- function(
+aedseo <- function( #TODO: #11 Include a feature to include the SoC. @telkamp7
     tsd,
     k = 5,
     level = 0.95,
     family = c(
       "poisson",
-      "quasipoisson"
+      "quasipoisson" #TODO: #10 Include negative.binomial regressions. @telkamp7
     )) {
   # Throw an error if any of the inputs are not supported
   family <- rlang::arg_match(family)
