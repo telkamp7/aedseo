@@ -39,7 +39,7 @@ fit_growth_rate <- function(
     level = 0.95,
     family = c(
       "poisson",
-      "quasipoisson"
+      "quasipoisson" # TODO #10 Include negative.binomial regressions. @telkamp7
     )) {
   safe_confint <- purrr::safely(stats::confint)
 
