@@ -62,7 +62,8 @@ aedseo <- function(
     level = 0.95,
     family = c(
       "poisson",
-      "quasipoisson" # TODO: #10 Include negative.binomial regressions. @telkamp7
+      "quasipoisson"
+      # TODO: #10 Include negative.binomial regressions. @telkamp7
     )) {
   # Throw an error if any of the inputs are not supported
   family <- rlang::arg_match(family)

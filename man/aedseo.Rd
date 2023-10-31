@@ -7,7 +7,7 @@
 aedseo(tsd, k = 5, level = 0.95, family = c("poisson", "quasipoisson"))
 }
 \arguments{
-\item{tsd}{A tsibble object containing time series data with 'time,'
+\item{tsd}{A \code{aedseo_tsd} object containing time series data with 'time,'
 'observed,' and 'periodInYear.'}
 
 \item{k}{An integer specifying the window size for modeling growth rates.}

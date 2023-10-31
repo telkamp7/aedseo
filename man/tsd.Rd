@@ -2,7 +2,7 @@
 % Please edit documentation in R/tsd.R
 \name{tsd}
 \alias{tsd}
-\title{Create a \code{\link[tsibble:tsibble]{tsibble::tsibble()}} (time-series data) object from observed data
+\title{Create a S3 \code{aedseo_tsd} (time-series data) object from observed data
 and corresponding dates.}
 \usage{
 tsd(observed, time, time_interval = c("day", "week", "month"))
@@ -16,18 +16,18 @@ tsd(observed, time, time_interval = c("day", "week", "month"))
 Choose between "day," "week," or "month."}
 }
 \value{
-A \code{\link[tsibble:tsibble]{tsibble::tsibble()}} object containing time, the observations,
+A \code{aedseo_tsd} object containing time, the observations,
 and the periodInYear.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 This function takes observed data and the corresponding date vector and
-converts it into a \code{\link[tsibble:tsibble]{tsibble::tsibble()}} object, which is a time series
+converts it into a \code{aedseo_tsd} object, which is a time series
 data structure that can be used for time series analysis.
 }
 \examples{
-# Create a tsibble object from daily data
+# Create a `aedseo_tsd` object from daily data
 daily_tsd <- tsd(
   observed = c(10, 15, 20, 18),
   time = as.Date(
@@ -36,7 +36,7 @@ daily_tsd <- tsd(
   time_interval = "day"
 )
 
-# Create a tsibble object from weekly data
+# Create a `aedseo_tsd` object from weekly data
 weekly_tsd <- tsd(
   observed = c(100, 120, 130),
   time = as.Date(
@@ -45,7 +45,7 @@ weekly_tsd <- tsd(
   time_interval = "week"
 )
 
-# Create a tsibble object from monthly data
+# Create a `aedseo_tsd` object from monthly data
 monthly_tsd <- tsd(
   observed = c(500, 520, 540),
   time = as.Date(
