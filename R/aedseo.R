@@ -12,6 +12,8 @@
 #' @param k An integer specifying the window size for modeling growth rates.
 #' @param level The confidence level for parameter estimates, a numeric value
 #' between 0 and 1.
+#' @param disease_threshold An integer specifying the threshold for considering
+#' a disease outbreak.
 #' @param family A character string specifying the family for modeling.
 #' Choose between "poisson," or "quasipoisson".
 #'
@@ -26,6 +28,9 @@
 #'   - 'growth_warning': Logical. Is the growth rate significantly higher than
 #'   zero?
 #'   - 'sum_of_cases': The Sum of Cases within the time window.
+#'   - 'sum_of_cases_warning': Logical. Does the Sum of Cases exceed the
+#'   disease threshold?
+#'   - 'seasonal_onset_alarm': Logical. Is there a seasonal onset alarm?
 #'   - 'converged': Logical. Was the IWLS judged to have converged?
 #'
 #' @export
@@ -50,16 +55,17 @@
 #'   tsd = tsd_data,
 #'   k = 3,
 #'   level = 0.95,
+#'   disease_threshold = 200,
 #'   family = "poisson"
 #' )
 #'
 #' # Print the AEDSEO results
 #' print(aedseo_results)
 aedseo <- function(
-    # TODO: #11 Include a feature to include the SoC. @telkamp7
     tsd,
     k = 5,
     level = 0.95,
+    disease_threshold = NA_integer(),
     family = c(
       "poisson",
       "quasipoisson"
@@ -91,6 +97,12 @@ aedseo <- function(
     # Calculate Sum of Cases (sum_of_cases)
     sum_of_cases <- base::sum(obs_iter$observed)
 
+    # Evaluate if sum_of_cases exceeds disease_threshold
+    sum_of_cases_warning <- sum_of_cases > disease_threshold
+
+    # Give an seasonal_onset_alarm if both criteria are met
+    seasonal_onset_alarm <- growth_warning & sum_of_cases_warning
+
     # Collect the results
     res <- dplyr::bind_rows(
       res,
@@ -102,6 +114,8 @@ aedseo <- function(
         upper_growth_rate = growth_rates$estimate[3],
         growth_warning = growth_warning,
         sum_of_cases = sum_of_cases,
+        sum_of_cases_warning = sum_of_cases_warning,
+        seasonal_onset_alarm = seasonal_onset_alarm,
         converged = growth_rates$fit$converged
       )
     )
