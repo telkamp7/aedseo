@@ -21,7 +21,6 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(tibble)
-library(tsibble)
 library(kableExtra)
 ```
 
