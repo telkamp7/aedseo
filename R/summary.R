@@ -56,7 +56,7 @@ summary.aedseo <- function(object, ...) {
     dplyr::filter(.data$sum_of_cases_warning == TRUE) %>%
     dplyr::summarise(
       latest_sum_of_cases_warning = dplyr::last(reference_time)
-      ) %>%
+    ) %>%
     dplyr::pull(latest_sum_of_cases_warning)
 
   # Latest growth warning
@@ -70,7 +70,7 @@ summary.aedseo <- function(object, ...) {
     dplyr::filter(.data$seasonal_onset_alarm == TRUE) %>%
     dplyr::summarise(
       latest_seasonal_onset_alarm = dplyr::last(reference_time)
-     ) %>%
+    ) %>%
     dplyr::pull(latest_seasonal_onset_alarm)
 
   # Calculate the total number of growth warnings
@@ -121,7 +121,7 @@ summary.aedseo <- function(object, ...) {
       %d
     Latest growth warning:
       %s
-      
+
     Latest seasonal onset alarm:
       %s",
     family,
