@@ -269,6 +269,7 @@ account for overdispersion in the data.</p>
 <span>  tsd <span class="op">=</span> <span class="va">tsd_data</span>,</span>
 <span>  k <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  disease_threshold <span class="op">=</span> <span class="fl">2000</span>,</span>
 <span>  family <span class="op">=</span> <span class="st">"quasipoisson"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>In the figure below, the observed values from the simulations is
@@ -288,12 +289,21 @@ corresponding 95% confidence interval.</p>
 <span><span class="co"># Make a nice plot</span></span>
 <span><span class="va">full_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">observed</span>, <span class="va">growth_rate</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span></span>
+<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>      x <span class="op">=</span> <span class="va">time</span>,</span>
+<span>      y <span class="op">=</span> <span class="va">value</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">tsd_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    data <span class="op">=</span> <span class="va">aedseo_results</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"observed"</span><span class="op">)</span>,</span>
-<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">observed</span><span class="op">)</span></span>
+<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>      x <span class="op">=</span> <span class="va">reference_time</span>,</span>
+<span>      y <span class="op">=</span> <span class="va">observed</span>,</span>
+<span>      alpha <span class="op">=</span> <span class="va">seasonal_onset_alarm</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">geom_ribbon</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">aedseo_results</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -310,7 +320,15 @@ corresponding 95% confidence interval.</p>
 <span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="va">x</span><span class="op">)</span>,</span>
 <span>    linetype <span class="op">=</span> <span class="st">"dashed"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span>facets <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span>, scale <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span></span>
+<span>    facets <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>,</span>
+<span>    ncol <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    scale <span class="op">=</span> <span class="st">"free_y"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>    legend.position <span class="op">=</span> <span class="st">"top"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Using alpha for a discrete variable is not advised.</span></span>
 <span><span class="co">#&gt; Warning: Removed 4 rows containing missing values (`geom_line()`).</span></span>
 <span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_hline()`).</span></span></code></pre></div>
 <p><img src="aedseo_introduction_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
@@ -366,7 +384,15 @@ growth warnings:</p>
 <span><span class="co">#&gt;     calculation of sum of cases:</span></span>
 <span><span class="co">#&gt;       5</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     Disease specific threshold:</span></span>
+<span><span class="co">#&gt;       2000</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Reference time point:</span></span>
+<span><span class="co">#&gt;       2012-12-28</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     Sum of cases at reference time point:</span></span>
+<span><span class="co">#&gt;       12468</span></span>
+<span><span class="co">#&gt;     Latest sum of cases warning:</span></span>
 <span><span class="co">#&gt;       2012-12-28</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Growth rate estimate at reference time point:</span></span>
@@ -376,6 +402,9 @@ growth warnings:</p>
 <span><span class="co">#&gt;     Total number of growth warnings in the series:</span></span>
 <span><span class="co">#&gt;       59</span></span>
 <span><span class="co">#&gt;     Latest growth warning:</span></span>
+<span><span class="co">#&gt;       2012-12-28</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     Latest seasonal onset alarm:</span></span>
 <span><span class="co">#&gt;       2012-12-28</span></span></code></pre></div>
 <p>The summary method generates a summary message that includes details
 such as the reference time point, growth rate estimates, and the number

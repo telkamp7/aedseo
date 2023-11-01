@@ -66,7 +66,13 @@ consecutive time intervals and calculates the Sum of Cases (sum_of_cases).</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">aedseo</span><span class="op">(</span><span class="va">tsd</span>, k <span class="op">=</span> <span class="fl">5</span>, level <span class="op">=</span> <span class="fl">0.95</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"poisson"</span>, <span class="st">"quasipoisson"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">aedseo</span><span class="op">(</span></span>
+<span>  <span class="va">tsd</span>,</span>
+<span>  k <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  disease_threshold <span class="op">=</span> <span class="cn">NA_integer_</span>,</span>
+<span>  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"poisson"</span>, <span class="st">"quasipoisson"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -83,6 +89,11 @@ consecutive time intervals and calculates the Sum of Cases (sum_of_cases).</p>
 <dt>level</dt>
 <dd><p>The confidence level for parameter estimates, a numeric value
 between 0 and 1.</p></dd>
+
+
+<dt>disease_threshold</dt>
+<dd><p>An integer specifying the threshold for considering
+a disease outbreak.</p></dd>
 
 
 <dt>family</dt>
@@ -104,6 +115,9 @@ interval.</p></li>
 <li><p>'growth_warning': Logical. Is the growth rate significantly higher than
 zero?</p></li>
 <li><p>'sum_of_cases': The Sum of Cases within the time window.</p></li>
+<li><p>'sum_of_cases_warning': Logical. Does the Sum of Cases exceed the
+disease threshold?</p></li>
+<li><p>'seasonal_onset_alarm': Logical. Is there a seasonal onset alarm?</p></li>
 <li><p>'converged': Logical. Was the IWLS judged to have converged?</p></li>
 </ul></div>
 
@@ -128,19 +142,21 @@ zero?</p></li>
 <span class="r-in"><span>  tsd <span class="op">=</span> <span class="va">tsd_data</span>,</span></span>
 <span class="r-in"><span>  k <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>  disease_threshold <span class="op">=</span> <span class="fl">200</span>,</span></span>
 <span class="r-in"><span>  family <span class="op">=</span> <span class="st">"poisson"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Print the AEDSEO results</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">aedseo_results</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 10</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   reference_time observed growth_rate lower_growth_rate upper_growth_rate</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 2023-01-03          150       0.204            0.078<span style="text-decoration: underline;">5</span>             0.331</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 2023-01-04          180       0.201            0.087<span style="text-decoration: underline;">4</span>             0.316</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 2023-01-05          220       0.192            0.089<span style="text-decoration: underline;">1</span>             0.296</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 2023-01-06          270       0.203            0.109              0.297</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: growth_warning &lt;lgl&gt;, sum_of_cases &lt;dbl&gt;, converged &lt;lgl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: growth_warning &lt;lgl&gt;, sum_of_cases &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sum_of_cases_warning &lt;lgl&gt;, seasonal_onset_alarm &lt;lgl&gt;, converged &lt;lgl&gt;</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
