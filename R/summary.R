@@ -46,11 +46,32 @@ summary.aedseo <- function(object, ...) {
   # Extract the reference time
   reference_time <- last_observation$reference_time
 
+  # Latest sum of cases
+  latest_sum_of_cases <- object %>%
+    dplyr::filter(dplyr::row_number() == dplyr::n()) %>%
+    dplyr::pull(.data$sum_of_cases)
+
+  # Latest sum of cases warning
+  latest_sum_of_cases_warning <- object %>%
+    dplyr::filter(.data$sum_of_cases_warning == TRUE) %>%
+    dplyr::summarise(
+      latest_sum_of_cases_warning = dplyr::last(reference_time)
+    ) %>%
+    dplyr::pull(latest_sum_of_cases_warning)
+
   # Latest growth warning
   latest_growth_warning <- object %>%
     dplyr::filter(.data$growth_warning == TRUE) %>%
     dplyr::summarise(latest_growth_warning = dplyr::last(reference_time)) %>%
     dplyr::pull(latest_growth_warning)
+
+  # Latest growth warning
+  latest_seasonal_onset_alarm <- object %>%
+    dplyr::filter(.data$seasonal_onset_alarm == TRUE) %>%
+    dplyr::summarise(
+      latest_seasonal_onset_alarm = dplyr::last(reference_time)
+    ) %>%
+    dplyr::pull(latest_seasonal_onset_alarm)
 
   # Calculate the total number of growth warnings
   sum_of_growth_warnings <- object %>%
@@ -63,6 +84,7 @@ summary.aedseo <- function(object, ...) {
   # Extract the object k, level, and family
   k <- attributes_object$k
   level <- attributes_object$level
+  disease_threshold <- attributes_object$disease_threshold
   family <- attributes_object$family
 
   # Extract the lower and upper confidence intervals
@@ -80,7 +102,15 @@ summary.aedseo <- function(object, ...) {
     calculation of sum of cases:
       %d
 
+    Disease specific threshold:
+      %d
+
     Reference time point:
+      %s
+
+    Sum of cases at reference time point:
+      %d
+    Latest sum of cases warning:
       %s
 
     Growth rate estimate at reference time point:
@@ -90,17 +120,24 @@ summary.aedseo <- function(object, ...) {
     Total number of growth warnings in the series:
       %d
     Latest growth warning:
+      %s
+
+    Latest seasonal onset alarm:
       %s",
     family,
     k,
+    disease_threshold,
     as.character(reference_time),
+    latest_sum_of_cases,
+    as.character(latest_sum_of_cases_warning),
     lower_confidence_interval * 100,
     upper_confidence_interval * 100,
     last_observation$growth_rate,
     last_observation$lower_growth_rate,
     last_observation$upper_growth_rate,
     sum_of_growth_warnings,
-    as.character(latest_growth_warning)
+    as.character(latest_growth_warning),
+    as.character(latest_seasonal_onset_alarm)
   )
 
   # Print the summary message

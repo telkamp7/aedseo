@@ -163,6 +163,7 @@ aedseo_results <- aedseo(
   tsd = tsd_data,
   k = 5,
   level = 0.95,
+  disease_threshold = 2000,
   family = "quasipoisson"
 )
 ```
@@ -184,12 +185,21 @@ ablines <- tibble(name = c("growth_rate", "observed"), x = c(0, NA))
 # Make a nice plot
 full_data %>%
   pivot_longer(cols = c(observed, growth_rate)) %>%
-  ggplot(mapping = aes(x = time, y = value)) +
+  ggplot(
+    mapping = aes(
+      x = time,
+      y = value
+    )
+  ) +
   geom_line() +
   geom_point(
-    data = tsd_data %>%
+    data = aedseo_results %>%
       mutate(name = "observed"),
-    mapping = aes(y = observed)
+    mapping = aes(
+      x = reference_time,
+      y = observed,
+      alpha = seasonal_onset_alarm
+    )
   ) +
   geom_ribbon(
     data = aedseo_results %>%
@@ -206,7 +216,14 @@ full_data %>%
     mapping = aes(yintercept = x),
     linetype = "dashed"
   ) +
-  facet_wrap(facets = vars(name), ncol = 1, scale = "free_y")
+  facet_wrap(
+    facets = vars(name),
+    ncol = 1,
+    scale = "free_y"
+  ) +
+  theme(
+    legend.position = "top"
+  )
 ```
 
 ## The aedseo package implements S3 methods
@@ -234,7 +251,3 @@ summary(aedseo_results)
 ```
 
 The summary method generates a summary message that includes details such as the reference time point, growth rate estimates, and the number of growth warnings in the series. It helps you quickly assess the key findings of your analysis.
-
-
-
-

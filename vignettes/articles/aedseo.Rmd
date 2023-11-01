@@ -21,7 +21,6 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(tibble)
-library(tsibble)
 library(kableExtra)
 ```
 
@@ -239,8 +238,7 @@ aedseo_results %>%
     ),
     alpha = 0.3
   ) +
-  geom_hline(yintercept = 0, linetype = "dashed") +
-  scale_x_yearweek()
+  geom_hline(yintercept = 0, linetype = "dashed")
 
 aedseo_results %>%
   ggplot(mapping = aes(x = reference_time)) +

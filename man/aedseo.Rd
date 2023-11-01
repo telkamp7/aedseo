@@ -4,7 +4,13 @@
 \alias{aedseo}
 \title{Automated and Early Detection of Seasonal Epidemic Onset}
 \usage{
-aedseo(tsd, k = 5, level = 0.95, family = c("poisson", "quasipoisson"))
+aedseo(
+  tsd,
+  k = 5,
+  level = 0.95,
+  disease_threshold = NA_integer_,
+  family = c("poisson", "quasipoisson")
+)
 }
 \arguments{
 \item{tsd}{A \code{aedseo_tsd} object containing time series data with 'time,'
@@ -14,6 +20,9 @@ aedseo(tsd, k = 5, level = 0.95, family = c("poisson", "quasipoisson"))
 
 \item{level}{The confidence level for parameter estimates, a numeric value
 between 0 and 1.}
+
+\item{disease_threshold}{An integer specifying the threshold for considering
+a disease outbreak.}
 
 \item{family}{A character string specifying the family for modeling.
 Choose between "poisson," or "quasipoisson".}
@@ -31,6 +40,9 @@ interval.
 \item 'growth_warning': Logical. Is the growth rate significantly higher than
 zero?
 \item 'sum_of_cases': The Sum of Cases within the time window.
+\item 'sum_of_cases_warning': Logical. Does the Sum of Cases exceed the
+disease threshold?
+\item 'seasonal_onset_alarm': Logical. Is there a seasonal onset alarm?
 \item 'converged': Logical. Was the IWLS judged to have converged?
 }
 }
@@ -61,6 +73,7 @@ aedseo_results <- aedseo(
   tsd = tsd_data,
   k = 3,
   level = 0.95,
+  disease_threshold = 200,
   family = "poisson"
 )
 
