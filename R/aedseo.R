@@ -65,7 +65,7 @@ aedseo <- function(
     tsd,
     k = 5,
     level = 0.95,
-    disease_threshold = NA_integer(),
+    disease_threshold = NA_integer_,
     family = c(
       "poisson",
       "quasipoisson"
@@ -127,6 +127,7 @@ aedseo <- function(
     class = "aedseo",
     k = k,
     level = level,
+    disease_threshold = disease_threshold,
     family = family
   )
 
