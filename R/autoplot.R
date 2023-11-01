@@ -1,3 +1,4 @@
+#' @rdname autoplot
 #' Create a complete ggplot appropriate for a `aedseo_tsd` object
 #'
 #' This function generates a complete ggplot object suitable for visualizing
@@ -40,18 +41,35 @@ autoplot.aedseo_tsd <- function(object, ...) {
 
 #' Title
 #'
-#' @param object
-#' @param ...
+#' @param object An `aedseo` object containing growth rate estimates
+#' @param linewidth Numeric, the width of the line for the growth rate
+#' @param alpha Numeric, the alpha (transparency) for the confidence interval ribbon
+#' @param ... Additional arguments to be passed to the ggplot2::ggplot function
 #'
-#' @return
+#' @return A ggplot object for visualizing growth rates with confidence intervals
+#'
 #' @export
 #'
 #' @examples
-autoplot.aedseo <- function(object, ...) {
+#' # Create an aedseo object (replace with your actual object creation)
+#' aedseo_object <- aedseo(
+#'   tsd = tsd_data,
+#'   k = 3,
+#'   level = 0.95,
+#'   family = "quasipoisson")
+#'
+#' # Create a plot of growth rates with confidence intervals
+#' autoplot(aedseo_object, linewidth = 1, alpha = 0.2)
+autoplot.aedseo <- function(object, linewidth = 0.7, alpha = 0.3, ...) {
   object %>%
-    ggplot(mapping = aes(x = .data$time, y = .data$observed)) +
-    geom_point() +
-    geom_line()
+    ggplot(
+      mapping = aes(
+        x = .data$reference_time,
+        y = .data$growth_rate,
+        ymin = .data$lower_growth_rate,
+        ymax = .data$upper_growth_rate)) +
+    geom_line(linewidth = linewidth) +
+    geom_ribbon(alpha = alpha)
 }
 
 
