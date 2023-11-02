@@ -28,6 +28,13 @@ The Automated and Early Detection of Seasonal Epidemic Onset (`aedseo`) Package 
 
 ## Installation
 
+``` r
+# Install aedseo from CRAN
+install.packages("aedseo")
+```
+
+### Development vestion
+
 You can install the development version of `aedseo` from [GitHub](https://github.com/) with:
 
 ``` r

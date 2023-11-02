@@ -25,6 +25,13 @@ fashion.
 
 ## Installation
 
+``` r
+# Install aedseo from CRAN
+install.packages("aedseo")
+```
+
+### Development vestion
+
 You can install the development version of `aedseo` from
 [GitHub](https://github.com/) with:
 
