@@ -107,12 +107,8 @@ n <- years * weeks
 # ... and a vector containing the overall time passed
 time_overall <- 1:n
 # Create arbitrary dates
-dates <- as.POSIXct(
-  x = time_overall * 86400 * 7,
-  origin = "2010-01-01",
-  tz = "UTC",
-  format = "%F"
-)
+dates <- seq.Date(from = as.Date("2010-01-01"), by = "week", length.out = n)
+
 
 # Simulate the data
 simulation <- simulate_from_nbinom(t = time_overall, theta = log(1000), phi = 5)
