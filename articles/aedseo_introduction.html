@@ -200,12 +200,8 @@ components represented by Fourier terms. The equation <span class="math inline">
 <span><span class="co"># ... and a vector containing the overall time passed</span></span>
 <span><span class="va">time_overall</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span></span>
 <span><span class="co"># Create arbitrary dates</span></span>
-<span><span class="va">dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span></span>
-<span>  x <span class="op">=</span> <span class="va">time_overall</span> <span class="op">*</span> <span class="fl">86400</span> <span class="op">*</span> <span class="fl">7</span>,</span>
-<span>  origin <span class="op">=</span> <span class="st">"2010-01-01"</span>,</span>
-<span>  tz <span class="op">=</span> <span class="st">"UTC"</span>,</span>
-<span>  format <span class="op">=</span> <span class="st">"%F"</span></span>
-<span><span class="op">)</span></span>
+<span><span class="va">dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.Date.html" class="external-link">seq.Date</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2010-01-01"</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"week"</span>, length.out <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span>
+<span></span>
 <span></span>
 <span><span class="co"># Simulate the data</span></span>
 <span><span class="va">simulation</span> <span class="op">&lt;-</span> <span class="fu">simulate_from_nbinom</span><span class="op">(</span>t <span class="op">=</span> <span class="va">time_overall</span>, theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>, phi <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
@@ -351,14 +347,14 @@ estimated growth rates. Here’s how to use it:</p>
 <code class="sourceCode R"><span><span class="co"># Example: Predict growth rates for the next 5 time steps</span></span>
 <span><span class="op">(</span><span class="va">prediction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">aedseo_results</span>, n_step <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
-<span><span class="co">#&gt;       t time                estimate lower upper</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     0 2012-12-28 <span style="color: #949494;">00:00:00</span>    <span style="text-decoration: underline;">3</span>279. <span style="text-decoration: underline;">3</span>279. <span style="text-decoration: underline;">3</span>279.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     1 2012-12-28 <span style="color: #949494;">00:00:01</span>    <span style="text-decoration: underline;">3</span>736. <span style="text-decoration: underline;">3</span>590. <span style="text-decoration: underline;">3</span>889.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     2 2012-12-28 <span style="color: #949494;">00:00:02</span>    <span style="text-decoration: underline;">4</span>257. <span style="text-decoration: underline;">3</span>930. <span style="text-decoration: underline;">4</span>613.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     3 2012-12-28 <span style="color: #949494;">00:00:03</span>    <span style="text-decoration: underline;">4</span>851. <span style="text-decoration: underline;">4</span>303. <span style="text-decoration: underline;">5</span>471.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     4 2012-12-28 <span style="color: #949494;">00:00:04</span>    <span style="text-decoration: underline;">5</span>527. <span style="text-decoration: underline;">4</span>710. <span style="text-decoration: underline;">6</span>490.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     5 2012-12-28 <span style="color: #949494;">00:00:05</span>    <span style="text-decoration: underline;">6</span>298. <span style="text-decoration: underline;">5</span>157. <span style="text-decoration: underline;">7</span>697.</span></span></code></pre></div>
+<span><span class="co">#&gt;       t time       estimate lower upper</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     0 2012-12-21    <span style="text-decoration: underline;">3</span>279. <span style="text-decoration: underline;">3</span>279. <span style="text-decoration: underline;">3</span>279.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     1 2012-12-22    <span style="text-decoration: underline;">3</span>736. <span style="text-decoration: underline;">3</span>590. <span style="text-decoration: underline;">3</span>889.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     2 2012-12-23    <span style="text-decoration: underline;">4</span>257. <span style="text-decoration: underline;">3</span>930. <span style="text-decoration: underline;">4</span>613.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     3 2012-12-24    <span style="text-decoration: underline;">4</span>851. <span style="text-decoration: underline;">4</span>303. <span style="text-decoration: underline;">5</span>471.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     4 2012-12-25    <span style="text-decoration: underline;">5</span>527. <span style="text-decoration: underline;">4</span>710. <span style="text-decoration: underline;">6</span>490.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     5 2012-12-26    <span style="text-decoration: underline;">6</span>298. <span style="text-decoration: underline;">5</span>157. <span style="text-decoration: underline;">7</span>697.</span></span></code></pre></div>
 <p>In the example above, we use the predict method to predict growth
 rates for the next 5 time steps. The n_step argument specifies the
 number of steps into the future you want to forecast. The resulting
@@ -388,12 +384,12 @@ growth warnings:</p>
 <span><span class="co">#&gt;       2000</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Reference time point:</span></span>
-<span><span class="co">#&gt;       2012-12-28</span></span>
+<span><span class="co">#&gt;       2012-12-21</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Sum of cases at reference time point:</span></span>
 <span><span class="co">#&gt;       12468</span></span>
 <span><span class="co">#&gt;     Latest sum of cases warning:</span></span>
-<span><span class="co">#&gt;       2012-12-28</span></span>
+<span><span class="co">#&gt;       2012-12-21</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Growth rate estimate at reference time point:</span></span>
 <span><span class="co">#&gt;       Estimate   Lower (2.5%)   Upper (97.5%)</span></span>
@@ -402,10 +398,10 @@ growth warnings:</p>
 <span><span class="co">#&gt;     Total number of growth warnings in the series:</span></span>
 <span><span class="co">#&gt;       59</span></span>
 <span><span class="co">#&gt;     Latest growth warning:</span></span>
-<span><span class="co">#&gt;       2012-12-28</span></span>
+<span><span class="co">#&gt;       2012-12-21</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Latest seasonal onset alarm:</span></span>
-<span><span class="co">#&gt;       2012-12-28</span></span></code></pre></div>
+<span><span class="co">#&gt;       2012-12-21</span></span></code></pre></div>
 <p>The summary method generates a summary message that includes details
 such as the reference time point, growth rate estimates, and the number
 of growth warnings in the series. It helps you quickly assess the key
