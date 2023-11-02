@@ -28,7 +28,7 @@ a disease outbreak.}
 Choose between "poisson," or "quasipoisson".}
 }
 \value{
-A tibble containing:
+A \code{aedseo} object containing:
 \itemize{
 \item 'reference_time': The time point for which the growth rate is estimated.
 \item 'observed': The observed value in the reference time point.
@@ -47,7 +47,7 @@ disease threshold?
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 This function performs automated and early detection of seasonal epidemic
 onsets (aedseo) on a time series dataset. It estimates growth rates for

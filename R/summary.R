@@ -1,7 +1,7 @@
 #' Summary method for aedseo objects
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("stable")`
 #'
 #' Summarize the results of an aedseo analysis, including the latest growth rate
 #' estimate, the confidence interval, and information about growth warnings.

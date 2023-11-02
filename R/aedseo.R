@@ -1,7 +1,7 @@
 #' Automated and Early Detection of Seasonal Epidemic Onset
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("stable")`
 #'
 #' This function performs automated and early detection of seasonal epidemic
 #' onsets (aedseo) on a time series dataset. It estimates growth rates for

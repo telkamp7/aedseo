@@ -1,7 +1,7 @@
 #' Predict Growth Rates for Future Time Steps
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("stable")`
 #'
 #' This function is used to predict future growth rates based on a model object
 #' created using the AEDSEO package. It takes the model object and the number

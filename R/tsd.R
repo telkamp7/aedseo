@@ -2,7 +2,7 @@
 #' and corresponding dates.
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("stable")`
 #'
 #' This function takes observed data and the corresponding date vector and
 #' converts it into a `aedseo_tsd` object, which is a time series
