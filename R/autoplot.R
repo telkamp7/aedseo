@@ -46,10 +46,6 @@
 #' # Create a ggplot visualization of growth rates with confidence intervals
 #' # autoplot(aedseo_object, linewidth = 1, alpha = 0.2)
 #' @importFrom ggplot2 autoplot
-#' @export
-autoplot <- function(object, ...) {
-  UseMethod("autoplot")
-}
 #' @rdname autoplot
 #' @method autoplot aedseo_tsd
 #' @export
