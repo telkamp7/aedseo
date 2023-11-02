@@ -12,9 +12,10 @@
 #' @param time A date vector containing the corresponding dates.
 #' @param time_interval A character vector specifying the time interval.
 #' Choose between "day," "week," or "month."
-#'
-#' @return A `aedseo_tsd` object containing time, the observations,
-#' and the periodInYear.
+#' 
+#' @return A `aedseo_tsd` object containing:
+#'   - 'time': The time point for for where the observations is observed.
+#'   - 'observed': The observed value at the time point.
 #'
 #' @export
 #'
