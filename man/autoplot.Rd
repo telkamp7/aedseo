@@ -19,7 +19,8 @@ autoplot(object, ...)
 
 \item{linewidth}{Numeric, the width of the line for the growth rate}
 
-\item{alpha}{Numeric, the alpha (transparency) for the confidence interval ribbon}
+\item{alpha}{Numeric, the alpha (transparency) for the confidence interval
+ribbon}
 }
 \value{
 A ggplot object for visualizing the time series data.
@@ -47,15 +48,16 @@ aedseo_tsd_object <- tsd(
 )
 
 # Create a ggplot visualization for the aedseo_tsd object
-#autoplot(aedseo_tsd_object)
+# autoplot(aedseo_tsd_object)
 
 # Create an aedseo object
 aedseo_object <- aedseo(
   tsd = aedseo_tsd_object,
   k = 3,
   level = 0.95,
-  family = "quasipoisson")
+  family = "quasipoisson"
+)
 
 # Create a ggplot visualization of growth rates with confidence intervals
-#autoplot(aedseo_object, linewidth = 1, alpha = 0.2)
+# autoplot(aedseo_object, linewidth = 1, alpha = 0.2)
 }

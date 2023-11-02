@@ -1,6 +1,5 @@
 #' Create a complete ggplot appropriate to a particular data type
 #'
-#'
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
@@ -65,7 +64,6 @@ autoplot.aedseo_tsd <- function(object, ...) {
     ggplot2::geom_point() +
     ggplot2::geom_line()
 }
-
 #' @rdname autoplot
 #' @method autoplot aedseo
 #' @export
