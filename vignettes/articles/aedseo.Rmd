@@ -48,7 +48,7 @@ Inspired by [@Hara_2010, @Obadia_2012]
 The exponential growth rate, denoted as $r$, represents the per capita change in the number of new cases per unit of time. Given that incidence data are integer-valued, the proposed method relies on generalized linear models (GLM). For count data, the Poisson distribution is a suitable choice as a model. Hence, the count observations denoted as $Y$ are assumed to follow a Poisson distribution
 
 \begin{equation}
- Y \sim \Pois(\lambda)
+ Y \sim \mathrm{Pois}(\lambda)
 \end{equation}
 
 Here, the link function, $\log()$, connects the linear predictor to the expected value of the data point, expressed as $\log(\lambda)=\mu$. Given a single continuous covariate $t$, the mean $\mu$ can be expressed as
