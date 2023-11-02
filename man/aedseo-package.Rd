@@ -13,9 +13,9 @@ A powerful tool for automating the early detection of seasonal epidemic onsets i
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/telkamp7/aedseo}
-  \item \url{https://telkamp7.github.io/aedseo/}
-  \item Report bugs at \url{https://github.com/telkamp7/aedseo/issues}
+  \item \url{https://github.com/ssi-dk/aedseo}
+  \item \url{https://ssi-dk.github.io/aedseo/}
+  \item Report bugs at \url{https://github.com/ssi-dk/aedseo/issues}
 }
 
 }
