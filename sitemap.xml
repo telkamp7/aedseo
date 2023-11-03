@@ -1,60 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://telkamp7.github.io/aedseo/404.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/404.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/LICENSE-text.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/LICENSE.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/articles/aedseo.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/articles/aedseo_introduction.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/articles/aedseo_introduction.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/articles/index.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/authors.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/authors.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/index.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/index.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/news/index.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/news/index.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/reference/aedseo-package.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/reference/aedseo-package.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/reference/aedseo.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/reference/aedseo.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/reference/autoplot.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/reference/autoplot.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/reference/fit_growth_rate.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/reference/fit_growth_rate.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/reference/index.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/reference/pipe.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/reference/plot.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/reference/plot.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/reference/predict.aedseo.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/reference/predict.aedseo.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/reference/summary.aedseo.html</loc>
   </url>
   <url>
-    <loc>https://telkamp7.github.io/aedseo/reference/summary.aedseo.html</loc>
-  </url>
-  <url>
-    <loc>https://telkamp7.github.io/aedseo/reference/tsd.html</loc>
+    <loc>https://ssi-dk.github.io/aedseo/reference/tsd.html</loc>
   </url>
 </urlset>
