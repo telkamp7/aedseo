@@ -16,11 +16,14 @@ tsd(observed, time, time_interval = c("day", "week", "month"))
 Choose between "day," "week," or "month."}
 }
 \value{
-A \code{aedseo_tsd} object containing time, the observations,
-and the periodInYear.
+A \code{aedseo_tsd} object containing:
+\itemize{
+\item 'time': The time point for for where the observations is observed.
+\item 'observed': The observed value at the time point.
+}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 This function takes observed data and the corresponding date vector and
 converts it into a \code{aedseo_tsd} object, which is a time series

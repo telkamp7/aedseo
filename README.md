@@ -1,15 +1,15 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# aedseo <a href="https://telkamp7.github.io/aedseo/"><img src="man/figures/logo.png" align="right" height="139" alt="aedseo website" /></a>
+# aedseo <a href="https://ssi-dk.github.io/aedseo/"><img src="man/figures/logo.png" align="right" height="139" alt="aedseo website" /></a>
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/telkamp7/aedseo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/telkamp7/aedseo/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/ssi-dk/aedseo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ssi-dk/aedseo/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/telkamp7/aedseo/branch/master/graph/badge.svg)](https://app.codecov.io/gh/telkamp7/aedseo?branch=master)
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+stable](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 ## Description
@@ -24,6 +24,13 @@ seeking to identify and respond to seasonal epidemics in a timely
 fashion.
 
 ## Installation
+
+``` r
+# Install aedseo from CRAN
+install.packages("aedseo")
+```
+
+### Development vestion
 
 You can install the development version of `aedseo` from
 [GitHub](https://github.com/) with:

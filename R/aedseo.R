@@ -1,7 +1,7 @@
 #' Automated and Early Detection of Seasonal Epidemic Onset
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("stable")`
 #'
 #' This function performs automated and early detection of seasonal epidemic
 #' onsets (aedseo) on a time series dataset. It estimates growth rates for
@@ -17,7 +17,7 @@
 #' @param family A character string specifying the family for modeling.
 #' Choose between "poisson," or "quasipoisson".
 #'
-#' @return A tibble containing:
+#' @return A `aedseo` object containing:
 #'   - 'reference_time': The time point for which the growth rate is estimated.
 #'   - 'observed': The observed value in the reference time point.
 #'   - 'growth_rate': The estimated growth rate.

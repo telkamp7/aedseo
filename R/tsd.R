@@ -2,7 +2,7 @@
 #' and corresponding dates.
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("stable")`
 #'
 #' This function takes observed data and the corresponding date vector and
 #' converts it into a `aedseo_tsd` object, which is a time series
@@ -13,8 +13,9 @@
 #' @param time_interval A character vector specifying the time interval.
 #' Choose between "day," "week," or "month."
 #'
-#' @return A `aedseo_tsd` object containing time, the observations,
-#' and the periodInYear.
+#' @return A `aedseo_tsd` object containing:
+#'   - 'time': The time point for for where the observations is observed.
+#'   - 'observed': The observed value at the time point.
 #'
 #' @export
 #'
