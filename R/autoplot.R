@@ -33,7 +33,7 @@
 #' )
 #'
 #' # Create a ggplot visualization for the aedseo_tsd object
-#' # autoplot(aedseo_tsd_object)
+#' autoplot(aedseo_tsd_object)
 #'
 #' # Create an aedseo object
 #' aedseo_object <- aedseo(
@@ -44,7 +44,7 @@
 #' )
 #'
 #' # Create a ggplot visualization of growth rates with confidence intervals
-#' # autoplot(aedseo_object, linewidth = 1, alpha = 0.2)
+#' autoplot(aedseo_object, linewidth = 1, alpha = 0.2)
 #' @importFrom ggplot2 autoplot
 #' @rdname autoplot
 #' @method autoplot aedseo_tsd
