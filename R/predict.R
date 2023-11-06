@@ -50,7 +50,6 @@
 #' # Print the prediction
 #' print(prediction)
 #'
-# TODO: #13 Turn the results into a `aedseo_predict` class. @telkmp7
 predict.aedseo <- function(object, n_step = 3, ...) {
   # Calculate the prediction
   res <- dplyr::last(object) %>%
