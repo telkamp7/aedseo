@@ -4,7 +4,7 @@
 #' `r lifecycle::badge("stable")`
 #'
 #' This function is used to predict future growth rates based on a model object
-#' created using the AEDSEO package. It takes the model object and the number
+#' created using the 'aedseo' package. It takes the model object and the number
 #' of future time steps (`n_step`) for which you want to make predictions and
 #' returns a prediction tibble.
 #'
@@ -50,7 +50,6 @@
 #' # Print the prediction
 #' print(prediction)
 #'
-# TODO: #13 Turn the results into a `aedseo_predict` class. @telkmp7
 predict.aedseo <- function(object, n_step = 3, ...) {
   # Calculate the prediction
   res <- dplyr::last(object) %>%

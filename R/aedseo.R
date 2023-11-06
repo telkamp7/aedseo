@@ -5,10 +5,10 @@
 #'
 #' This function performs automated and early detection of seasonal epidemic
 #' onsets (aedseo) on a time series dataset. It estimates growth rates for
-#' consecutive time intervals and calculates the Sum of Cases (sum_of_cases).
+#' consecutive time intervals and calculates the sum of cases (sum_of_cases).
 #'
-#' @param tsd A `aedseo_tsd` object containing time series data with 'time,'
-#' 'observed,' and 'periodInYear.'
+#' @param tsd A `aedseo_tsd` object containing time series data with 'time' and
+#' 'observed.'
 #' @param k An integer specifying the window size for modeling growth rates.
 #' @param level The confidence level for parameter estimates, a numeric value
 #' between 0 and 1.
@@ -27,7 +27,7 @@
 #'   interval.
 #'   - 'growth_warning': Logical. Is the growth rate significantly higher than
 #'   zero?
-#'   - 'sum_of_cases': The Sum of Cases within the time window.
+#'   - 'sum_of_cases': The sum of cases within the time window.
 #'   - 'sum_of_cases_warning': Logical. Does the Sum of Cases exceed the
 #'   disease threshold?
 #'   - 'seasonal_onset_alarm': Logical. Is there a seasonal onset alarm?

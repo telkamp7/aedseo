@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-A powerful tool for automating the early detection of seasonal epidemic onsets in time series data. It offers the ability to estimate growth rates for consecutive time intervals and calculate the Sum of Cases (SoC) within those intervals. It is particularly useful for epidemiologists, public health professionals, and researchers seeking to identify and respond to seasonal epidemics in a timely fashion.
+A powerful tool for automating the early detection of seasonal epidemic onsets in time series data. It offers the ability to estimate growth rates for consecutive time intervals and calculate the sum of cases (SoC) within those intervals. It is particularly useful for epidemiologists, public health professionals, and researchers seeking to identify and respond to seasonal epidemics in a timely fashion. For reference on growth rate estimation, see Walling and Lipstich (2007) \doi{10.1098/rspb.2006.3754} and Obadia et al. (2012) \doi{10.1186/1472-6947-12-147}.
 }
 \seealso{
 Useful links:
