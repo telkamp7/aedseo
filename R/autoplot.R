@@ -1,9 +1,9 @@
-#' Create a complete ggplot appropriate to a particular data type
+#' Create a complete 'ggplot' appropriate to a particular data type
 #'
 #' @description
 #' `r lifecycle::badge("stable")`
 #'
-#'  This function generates a complete ggplot object suitable for
+#'  This function generates a complete 'ggplot' object suitable for
 #'  visualizing time series data in an `aedseo_tsd` object. It creates a line
 #'  plot connecting the observations and adds points at each data point.
 #'
@@ -13,7 +13,7 @@
 #' ribbon
 #' @param ... Additional arguments (not used).
 #'
-#' @return A ggplot object for visualizing the time series data.
+#' @return A 'ggplot' object for visualizing the time series data.
 #'
 #' @aliases autoplot
 #'

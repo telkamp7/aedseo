@@ -30,7 +30,7 @@
 #'   time_interval = "day"
 #' )
 #'
-#' # Calculate AEDSEO with a 3-day window and a Poisson family model
+#' # Calculate aedseo with a 3-day window and a Poisson family model
 #' aedseo_results <- aedseo(
 #'   tsd = tsd_data,
 #'   k = 3,
