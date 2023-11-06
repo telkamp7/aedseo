@@ -4,7 +4,7 @@
 \alias{plot.aedseo_tsd}
 \alias{plot}
 \alias{plot.aedseo}
-\title{Create a complete ggplot appropriate to a particular data type}
+\title{Create a complete 'ggplot' appropriate to a particular data type}
 \usage{
 \method{plot}{aedseo_tsd}(x, ...)
 
@@ -16,12 +16,12 @@
 \item{...}{Additional arguments passed to specific methods.}
 }
 \value{
-A ggplot object for visualizing the time series data.
+A 'ggplot' object for visualizing the time series data.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This function generates a complete ggplot object suitable for
+This function generates a complete 'ggplot' object suitable for
 visualizing time series data in an \code{aedseo_tsd} object. It creates a line
 plot connecting the observations and adds points at each data point.
 }
