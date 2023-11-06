@@ -13,8 +13,8 @@ aedseo(
 )
 }
 \arguments{
-\item{tsd}{A \code{aedseo_tsd} object containing time series data with 'time,'
-'observed,' and 'periodInYear.'}
+\item{tsd}{A \code{aedseo_tsd} object containing time series data with 'time' and
+'observed.'}
 
 \item{k}{An integer specifying the window size for modeling growth rates.}
 
@@ -39,7 +39,7 @@ interval.
 interval.
 \item 'growth_warning': Logical. Is the growth rate significantly higher than
 zero?
-\item 'sum_of_cases': The Sum of Cases within the time window.
+\item 'sum_of_cases': The sum of cases within the time window.
 \item 'sum_of_cases_warning': Logical. Does the Sum of Cases exceed the
 disease threshold?
 \item 'seasonal_onset_alarm': Logical. Is there a seasonal onset alarm?
@@ -51,7 +51,7 @@ disease threshold?
 
 This function performs automated and early detection of seasonal epidemic
 onsets (aedseo) on a time series dataset. It estimates growth rates for
-consecutive time intervals and calculates the Sum of Cases (sum_of_cases).
+consecutive time intervals and calculates the sum of cases (sum_of_cases).
 }
 \examples{
 # Create a tsibble object from sample data

@@ -4,7 +4,7 @@
 \alias{autoplot.aedseo_tsd}
 \alias{autoplot}
 \alias{autoplot.aedseo}
-\title{Create a complete ggplot appropriate to a particular data type}
+\title{Create a complete 'ggplot' appropriate to a particular data type}
 \usage{
 \method{autoplot}{aedseo_tsd}(object, ...)
 
@@ -21,16 +21,17 @@
 ribbon}
 }
 \value{
-A ggplot object for visualizing the time series data.
+A 'ggplot' object for visualizing the time series data.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This function generates a complete ggplot object suitable for
+This function generates a complete 'ggplot' object suitable for
 visualizing time series data in an \code{aedseo_tsd} object. It creates a line
 plot connecting the observations and adds points at each data point.
 }
 \examples{
+\dontrun{
 # Create an example aedseo_tsd object
 aedseo_tsd_object <- tsd(
   observed = c(100, 120, 150, 180, 220, 270),
@@ -46,7 +47,7 @@ aedseo_tsd_object <- tsd(
 )
 
 # Create a ggplot visualization for the aedseo_tsd object
-# autoplot(aedseo_tsd_object)
+autoplot(aedseo_tsd_object)
 
 # Create an aedseo object
 aedseo_object <- aedseo(
@@ -57,5 +58,6 @@ aedseo_object <- aedseo(
 )
 
 # Create a ggplot visualization of growth rates with confidence intervals
-# autoplot(aedseo_object, linewidth = 1, alpha = 0.2)
+autoplot(aedseo_object, linewidth = 1, alpha = 0.2)
+}
 }
