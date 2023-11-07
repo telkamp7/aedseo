@@ -48,7 +48,7 @@
 #' @importFrom ggplot2 autoplot
 #' @rdname autoplot
 #' @export
-autoplot <- function (object, ...) {
+autoplot <- function(object, ...) {
   UseMethod("autoplot")
 }
 #' @rdname autoplot
