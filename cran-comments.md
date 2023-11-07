@@ -18,7 +18,10 @@ We have addressed the feedback from the previous review. Specifically:
 
 ## Abbreviations
 
-* 'SoC' is an abbreviation of sum of cases. This is explained in detail in both the README.md, DESCRIPTION file, and in the relevant functions.
+* 'SoC': An abbreviation for "Sum of Cases," which is thoroughly explained in the README.md, DESCRIPTION file, and relevant functions.
+* 'Lipstich': The surname of one of the authors in the referenced paper.
+* 'Obadia': The surname of one of the authors in the referenced paper.
+* 'et al.': An abbreviation for "et alia" or "and others," which refers to multiple authors of the referenced paper.
 
 ## Resubmission
 
