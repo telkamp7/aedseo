@@ -18,7 +18,6 @@
 #' @aliases autoplot
 #'
 #' @examples
-#' \dontrun{
 #' # Create an example aedseo_tsd object
 #' aedseo_tsd_object <- tsd(
 #'   observed = c(100, 120, 150, 180, 220, 270),
@@ -46,8 +45,12 @@
 #'
 #' # Create a ggplot visualization of growth rates with confidence intervals
 #' autoplot(aedseo_object, linewidth = 1, alpha = 0.2)
-#' }
 #' @importFrom ggplot2 autoplot
+#' @rdname autoplot
+#' @export
+autoplot <- function (object, ...) {
+  UseMethod("autoplot")
+}
 #' @rdname autoplot
 #' @method autoplot aedseo_tsd
 #' @export

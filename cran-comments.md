@@ -12,11 +12,9 @@ The package has been tested on multiple platforms and no errors or warnings were
 
 ## Reviewer Feedback
 
-Thank you for the feedback, and we've addressed the issues mentioned:
+We have addressed the feedback from the previous review. Specifically:
 
-1. **References**: We've added references to the methods used in our package in the DESCRIPTION file in the required format: authors (year) <doi:...>. Note that this is a novel method for the detection of seasonal epidemic onsets and that there are currently no references available.
-
-2. **Commented Code in Examples**: We've removed commented code lines in examples and have made sure that the examples can be executed without issues.
+1. **Removal of \dontrun{}**: We have removed the `\dontrun{}` wrappers in the examples as we confirmed that the examples run in less than 5 seconds. 
 
 ## Abbreviations
 
