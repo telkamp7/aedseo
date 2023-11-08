@@ -1,6 +1,6 @@
 Package: aedseo
 Title: Automated and Early Detection of Seasonal Epidemic Onset
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(
     person("Kasper", "Schou Telkamp", ,"ksst@ssi.dk", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0001-5126-0190")),
