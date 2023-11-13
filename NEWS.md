@@ -7,3 +7,5 @@
 ## Minor changes
 
 * Updated LICENSE.md to have Statens Serum Institut as a copyright holder.
+
+* Fixed installation guide for the development version in the README.Rmd and README.md
