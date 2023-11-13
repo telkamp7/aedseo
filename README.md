@@ -39,7 +39,7 @@ You can install the development version of `aedseo` from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("telkamp7/aedseo")
+devtools::install_github("ssi-dk/aedseo")
 ```
 
 ## Getting started
