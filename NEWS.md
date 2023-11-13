@@ -1,5 +1,3 @@
-# aedseo (development version)
-
 # aedseo 0.1.1
 
 ## Improvements
