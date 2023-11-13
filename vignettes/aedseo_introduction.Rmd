@@ -188,9 +188,9 @@ The `predict` method for `aedseo` objects allows you to make predictions for fut
 
 In the example above, we use the predict method to predict growth rates for the next 5 time steps. The n_step argument specifies the number of steps into the future you want to forecast. The resulting prediction object will contain estimates, lower bounds, and upper bounds for each time step.
 
-### Summarizing AEDSEO results
+### Summarizing aedseo results
 
-The summary method for aedseo objects provides a concise summary of your automated early detection of seasonal epidemic onset (AEDSEO) analysis. You can use it to retrieve important information about your analysis, including the latest growth warning and the total number of growth warnings:
+The summary method for `aedseo` objects provides a concise summary of your automated early detection of seasonal epidemic onset (aedseo) analysis. You can use it to retrieve important information about your analysis, including the latest growth warning and the total number of growth warnings:
 
 
 ```{r summary}
