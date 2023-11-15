@@ -9,8 +9,11 @@
 #'
 #' @param object An `aedseo_tsd` or `aedseo` object
 #' @param linewidth Numeric, the width of the line for the growth rate
-#' @param alpha Numeric, the alpha (transparency) for the confidence interval
-#' ribbon
+#' @param size Numeric, size of observational points.
+#' @param width Numeric, the width of the error bar employed to show the
+#' confidence interval of the growth rate estimate.
+#' @param alpha Numeric, the alpha (transparency) for the observations with a
+#' significantly positive growth rate.
 #' @param ... Additional arguments (not used).
 #'
 #' @return A 'ggplot' object for visualizing the time series data.
@@ -65,19 +68,58 @@ autoplot.aedseo_tsd <- function(object, ...) {
     ggplot2::geom_point() +
     ggplot2::geom_line()
 }
+#' @importFrom grDevices devAskNewPage
 #' @rdname autoplot
 #' @method autoplot aedseo
 #' @export
-autoplot.aedseo <- function(object, linewidth = 0.7, alpha = 0.3, ...) {
-  object %>%
-    ggplot2::ggplot(
-      mapping = ggplot2::aes(
-        x = .data$reference_time,
-        y = .data$growth_rate,
-        ymin = .data$lower_growth_rate,
-        ymax = .data$upper_growth_rate
-      )
-    ) +
-    ggplot2::geom_line(linewidth = linewidth) +
-    ggplot2::geom_ribbon(alpha = alpha)
+autoplot.aedseo <- function(
+    object,
+    linewidth = 0.7,
+    size = 2,
+    alpha = 0.3,
+    width = 0.2,
+    ...) {
+  # Construct the observed cases plot
+  # NOTE: We use print to show plots sequentially
+  suppressWarnings(
+    print(
+      object %>%
+        ggplot2::ggplot(
+          mapping = ggplot2::aes(
+            x = .data$reference_time,
+            y = .data$observed
+          )
+        ) +
+        ggplot2::geom_point(
+          mapping = ggplot2::aes(alpha = .data$seasonal_onset_alarm),
+          size = size
+        ) +
+        ggplot2::geom_line(linewidth = linewidth)
+    )
+  )
+  # Set 'ask' for plotting device to TRUE
+  oask <- devAskNewPage(ask = TRUE)
+  # ... and clean-up on exit
+  on.exit(devAskNewPage(oask))
+  # ... and the growth rate plots
+  print(
+    object %>%
+      ggplot2::ggplot(
+        mapping = ggplot2::aes(
+          x = .data$reference_time,
+          y = .data$growth_rate,
+          ymin = .data$lower_growth_rate,
+          ymax = .data$upper_growth_rate
+        )
+      ) +
+      ggplot2::geom_point(
+        mapping = ggplot2::aes(alpha = .data$growth_warning),
+        size = size
+      ) +
+      ggplot2::geom_errorbar(
+        mapping = ggplot2::aes(alpha = .data$growth_warning),
+        width = width
+      ) +
+      ggplot2::geom_hline(yintercept = 0, linetype = "dashed")
+  )
 }

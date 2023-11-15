@@ -10,7 +10,7 @@ autoplot(object, ...)
 
 \method{autoplot}{aedseo_tsd}(object, ...)
 
-\method{autoplot}{aedseo}(object, linewidth = 0.7, alpha = 0.3, ...)
+\method{autoplot}{aedseo}(object, linewidth = 0.7, size = 2, alpha = 0.3, width = 0.2, ...)
 }
 \arguments{
 \item{object}{An \code{aedseo_tsd} or \code{aedseo} object}
@@ -19,8 +19,13 @@ autoplot(object, ...)
 
 \item{linewidth}{Numeric, the width of the line for the growth rate}
 
-\item{alpha}{Numeric, the alpha (transparency) for the confidence interval
-ribbon}
+\item{size}{Numeric, size of observational points.}
+
+\item{alpha}{Numeric, the alpha (transparency) for the observations with a
+significantly positive growth rate.}
+
+\item{width}{Numeric, the width of the error bar employed to show the
+confidence interval of the growth rate estimate.}
 }
 \value{
 A 'ggplot' object for visualizing the time series data.
