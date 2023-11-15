@@ -14,7 +14,7 @@ The package has been tested on multiple platforms and no errors or warnings were
 
 This patch aims as:
 
-* Enhance clariy and user guidance in the introductory vignette.
+* Enhance clarity and user guidance in the introductory vignette.
 
 * Updated LICENSE.md to have Statens Serum Institut as a copyright holder.
 
