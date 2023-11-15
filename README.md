@@ -49,9 +49,9 @@ To quickly get started with `aedseo`, follow these steps:
 1.  Install the package using the code provided above.
 2.  Load the package with `library(aedseo)`.
 3.  Create a time series data object (`aedseo_tsd`) from your data using
-    the `aedseo::tsd` function.
-4.  Apply the `aedseo::aedseo` function to estimate growth rates and
-    detect seasonal epidemic onsets.
+    the `tsd()` function.
+4.  Apply the `aedseo()` function to estimate growth rates and detect
+    seasonal epidemic onsets.
 
 ``` r
 # Load the package
