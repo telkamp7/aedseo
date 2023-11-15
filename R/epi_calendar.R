@@ -36,7 +36,7 @@
 #' # Expected output: "2023/2024"
 epi_calendar <- function(date, start = 40, end = 20) {
   # Compute the current week
-  current_week <- as.integer(format(x = date, "%V"))
+  current_week <- as.integer(format(x = date, "%U"))
 
   if (current_week <= start && end <= current_week) {
     return("out_of_season")
