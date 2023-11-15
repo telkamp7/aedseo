@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, warning=FALSE, message=FALSE}
 library(aedseo)
 library(tibble)
 library(tidyr)
@@ -30,6 +30,31 @@ The methodology used to detect the onset of seasonal respiratory epidemics can b
 - The sum of cases (SoC) over the past $k$ units of time exceeds a disease-specific threshold.
 
 Here, $k$ denotes the window size employed to obtain the local estimate of the exponential growth rate and the SoC. When both of these criteria are met, an alarm is triggered and the onset of the seasonal epidemic is detected.
+
+### Exponential growth rate
+
+The exponential growth rate, denoted as $r$, represents the per capita change in the number of new cases per unit of time. Given that incidence data are integer-valued, the proposed method relies on generalized linear models (GLM). For count data, the Poisson distribution is a suitable choice as a model. Hence, the count observations denoted as $Y$ are assumed to follow a Poisson distribution
+
+\begin{equation}
+ Y \sim \mathrm{Pois}(\lambda)
+\end{equation}
+
+Here, the link function, $\log()$, connects the linear predictor to the expected value of the data point, expressed as $\log(\lambda)=\mu$. Given a single continuous covariate $t$, the mean $\mu$ can be expressed as
+
+\begin{equation}
+  \mu = \alpha + r t
+\end{equation}
+
+This is equivalent to a multiplicative model for $\lambda$, i.e.
+
+\begin{equation}
+  \lambda = \exp(\alpha + r t) = \exp(\alpha) \exp(r t)
+\end{equation}
+
+Intuitively, negative values of $r$ result in a decline in the number of observed cases, while $r=0$ represents stability, and positive values of $r$ indicate an increase.
+
+It is important to note that the Poisson distribution assumes that the mean and variance are equal. In reality, real data often deviate from this assumption, with the variance ($v$) being significantly larger than the mean. This biological phenomenon, known as overdispersion, can be addressed within a model in various ways. One approach is to employ quasi-Poisson regression, which assumes $v=\sigma\lambda$, or to use negative binomial regression (not implemented yet), which assumes $v=\lambda+\lambda^2/\theta$, where both $\sigma$ and $\theta$ are overdispersion parameters.
+
 
 ## Simulations
 
@@ -128,15 +153,6 @@ A total of three years of weekly data are then simulated with the following set 
 - $\gamma_{\sin} = `r simulation$pars$gamma_sin`$ and $\gamma_{\cos} = `r simulation$pars$gamma_cos`$, representing the seasonality component.
 - $\phi = `r simulation$pars$phi`$, which represents the dispersion parameter for the negative binomial distribution.
 
-In the following figure, the simulated data (solid circles) is visualized alongside the mean (solid line) for the three arbitrary years of weekly data.
-
-```{r}
-# Have a glance at the time varying mean and the simulated data
-sim_data %>%
-  ggplot(mapping = aes(x = Date)) +
-  geom_line(mapping = aes(y = mu_t)) +
-  geom_point(mapping = aes(y = y))
-```
 
 ## Applying the algorithm
 
@@ -145,10 +161,17 @@ In the following section, the application of the algorithm to the simulated data
 ```{r}
 # Construct an 'aedseo_tsd' object with the time series data
 tsd_data <- tsd(
-  observed = simulation$simulation,
-  time = dates,
+  observed = sim_data$y,
+  time = sim_data$Date,
   time_interval = "week"
 )
+```
+
+In the following figure, the simulated data (solid circles) is visualized alongside the mean (solid line) for the three arbitrary years of weekly data.
+
+```{r}
+# Have a glance at the time varying mean and the simulated data
+plot(tsd_data)
 ```
 
 Next, the time series data object is passed to the `aedseo()` function. Here, a window width of $k=5$ is specified, meaning that a total of 5 weeks is used in the local estimate of the exponential growth rate. Additionally, a 95\% confidence interval is specified. Finally, the exponential growth rate is estimated using quasi-Poisson regression to account for overdispersion in the data.
@@ -164,67 +187,18 @@ aedseo_results <- aedseo(
 )
 ```
 
-In the figure below, the observed values from the simulations is visualized alongside the local estimate of the growth rate and its corresponding 95\% confidence interval.
-
-
-```{r}
-# Join the observations and estimated growth rates
-full_data <- full_join(
-  x = tsd_data,
-  y = aedseo_results,
-  by = join_by("time" == "reference_time", "observed" == "observed")
-)
-
-# Data to add horizontal line in growth rate
-ablines <- tibble(name = c("growth_rate", "observed"), x = c(0, NA))
-
-# Make a nice plot
-full_data %>%
-  pivot_longer(cols = c(observed, growth_rate)) %>%
-  ggplot(
-    mapping = aes(
-      x = time,
-      y = value
-    )
-  ) +
-  geom_line() +
-  geom_point(
-    data = aedseo_results %>%
-      mutate(name = "observed"),
-    mapping = aes(
-      x = reference_time,
-      y = observed,
-      alpha = seasonal_onset_alarm
-    )
-  ) +
-  geom_ribbon(
-    data = aedseo_results %>%
-      mutate(name = "growth_rate"),
-    mapping = aes(
-      x = reference_time,
-      ymin = lower_growth_rate,
-      ymax = upper_growth_rate
-    ),
-    inherit.aes = FALSE, alpha = 0.3
-  ) +
-  geom_hline(
-    data = ablines,
-    mapping = aes(yintercept = x),
-    linetype = "dashed"
-  ) +
-  facet_wrap(
-    facets = vars(name),
-    ncol = 1,
-    scale = "free_y"
-  ) +
-  theme(
-    legend.position = "top"
-  )
-```
-
 ## The aedseo package implements S3 methods
 
-In this section, we will explore how to use the `predict` and `summary` S3 methods provided by the `aedseo` package. These methods enhance the functionality of your `aedseo` objects, allowing you to make predictions and obtain concise summaries of your analysis results.
+In this section, we will explore how to use the `plot()`, `predict()` and `summary()` S3 methods provided by the `aedseo` package. These methods enhance the functionality of your `aedseo` objects, allowing you to make predictions and obtain concise summaries of your analysis results.
+
+### Visualizing Growth Rates
+
+In the figure below, we present the local estimate of the growth rate along with its corresponding 95% confidence interval. This visualization can be generated by utilizing the `plot()` S3 method specifically designed for objects of the `aedseo` class.
+
+```{r}
+# Employing the S3 `plot()` method
+plot(aedseo_results)
+```
 
 ### Predicting Growth Rates
 
@@ -237,9 +211,9 @@ The `predict` method for `aedseo` objects allows you to make predictions for fut
 
 In the example above, we use the predict method to predict growth rates for the next 5 time steps. The n_step argument specifies the number of steps into the future you want to forecast. The resulting prediction object will contain estimates, lower bounds, and upper bounds for each time step.
 
-### Summarizing AEDSEO results
+### Summarizing aedseo results
 
-The summary method for aedseo objects provides a concise summary of your automated early detection of seasonal epidemic onset (AEDSEO) analysis. You can use it to retrieve important information about your analysis, including the latest growth warning and the total number of growth warnings:
+The summary method for `aedseo` objects provides a concise summary of your automated early detection of seasonal epidemic onset (aedseo) analysis. You can use it to retrieve important information about your analysis, including the latest growth warning and the total number of growth warnings:
 
 
 ```{r summary}
