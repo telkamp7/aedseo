@@ -34,11 +34,11 @@
 #'
 #' epi_calendar(as.Date("2023-12-01"), start = 40, end = 20)
 #' # Expected output: "2023/2024"
-epi_calendar <- function(date, start = 40, end = 20) {
+epi_calendar <- Vectorize(function(date, start = 40, end = 20) {
   # Compute the current week
-  current_week <- as.integer(format(x = date, "%V"))
+  current_week <- as.integer(format(x = date, "%U"))
 
-  if (current_week <= start && end <= current_week) {
+  if (current_week <= start & end <= current_week) {
     return("out_of_season")
   }
 
@@ -54,4 +54,4 @@ epi_calendar <- function(date, start = 40, end = 20) {
   }
 
   return(ans)
-}
+})
