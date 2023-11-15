@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, warning=FALSE}
+```{r setup, warning=FALSE, message=FALSE}
 library(aedseo)
 library(tibble)
 library(tidyr)
@@ -128,15 +128,6 @@ A total of three years of weekly data are then simulated with the following set 
 - $\gamma_{\sin} = `r simulation$pars$gamma_sin`$ and $\gamma_{\cos} = `r simulation$pars$gamma_cos`$, representing the seasonality component.
 - $\phi = `r simulation$pars$phi`$, which represents the dispersion parameter for the negative binomial distribution.
 
-In the following figure, the simulated data (solid circles) is visualized alongside the mean (solid line) for the three arbitrary years of weekly data.
-
-```{r}
-# Have a glance at the time varying mean and the simulated data
-sim_data %>%
-  ggplot(mapping = aes(x = Date)) +
-  geom_line(mapping = aes(y = mu_t)) +
-  geom_point(mapping = aes(y = y))
-```
 
 ## Applying the algorithm
 
@@ -145,10 +136,17 @@ In the following section, the application of the algorithm to the simulated data
 ```{r}
 # Construct an 'aedseo_tsd' object with the time series data
 tsd_data <- tsd(
-  observed = simulation$simulation,
-  time = dates,
+  observed = sim_data$y,
+  time = sim_data$Date,
   time_interval = "week"
 )
+```
+
+In the following figure, the simulated data (solid circles) is visualized alongside the mean (solid line) for the three arbitrary years of weekly data.
+
+```{r}
+# Have a glance at the time varying mean and the simulated data
+plot(tsd_data)
 ```
 
 Next, the time series data object is passed to the `aedseo()` function. Here, a window width of $k=5$ is specified, meaning that a total of 5 weeks is used in the local estimate of the exponential growth rate. Additionally, a 95\% confidence interval is specified. Finally, the exponential growth rate is estimated using quasi-Poisson regression to account for overdispersion in the data.
