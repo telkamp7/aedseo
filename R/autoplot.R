@@ -92,8 +92,11 @@ autoplot.aedseo <- function(
         ) +
         ggplot2::geom_point(
           mapping = ggplot2::aes(alpha = .data$seasonal_onset_alarm),
-          size = size) +
-        ggplot2::geom_line(linewidth = linewidth)))
+          size = size
+        ) +
+        ggplot2::geom_line(linewidth = linewidth)
+    )
+  )
   # Set 'ask' for plotting device to TRUE
   oask <- devAskNewPage(ask = TRUE)
   # ... and clean-up on exit
@@ -107,13 +110,16 @@ autoplot.aedseo <- function(
           y = .data$growth_rate,
           ymin = .data$lower_growth_rate,
           ymax = .data$upper_growth_rate
-          )
-        ) +
+        )
+      ) +
       ggplot2::geom_point(
         mapping = ggplot2::aes(alpha = .data$growth_warning),
-        size = size) +
+        size = size
+      ) +
       ggplot2::geom_errorbar(
         mapping = ggplot2::aes(alpha = .data$growth_warning),
-        width = width) +
-      ggplot2::geom_hline(yintercept = 0, linetype = "dashed"))
+        width = width
+      ) +
+      ggplot2::geom_hline(yintercept = 0, linetype = "dashed")
+  )
 }
