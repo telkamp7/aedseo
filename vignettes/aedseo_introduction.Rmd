@@ -31,6 +31,31 @@ The methodology used to detect the onset of seasonal respiratory epidemics can b
 
 Here, $k$ denotes the window size employed to obtain the local estimate of the exponential growth rate and the SoC. When both of these criteria are met, an alarm is triggered and the onset of the seasonal epidemic is detected.
 
+### Exponential growth rate
+
+The exponential growth rate, denoted as $r$, represents the per capita change in the number of new cases per unit of time. Given that incidence data are integer-valued, the proposed method relies on generalized linear models (GLM). For count data, the Poisson distribution is a suitable choice as a model. Hence, the count observations denoted as $Y$ are assumed to follow a Poisson distribution
+
+\begin{equation}
+ Y \sim \mathrm{Pois}(\lambda)
+\end{equation}
+
+Here, the link function, $\log()$, connects the linear predictor to the expected value of the data point, expressed as $\log(\lambda)=\mu$. Given a single continuous covariate $t$, the mean $\mu$ can be expressed as
+
+\begin{equation}
+  \mu = \alpha + r t
+\end{equation}
+
+This is equivalent to a multiplicative model for $\lambda$, i.e.
+
+\begin{equation}
+  \lambda = \exp(\alpha + r t) = \exp(\alpha) \exp(r t)
+\end{equation}
+
+Intuitively, negative values of $r$ result in a decline in the number of observed cases, while $r=0$ represents stability, and positive values of $r$ indicate an increase.
+
+It is important to note that the Poisson distribution assumes that the mean and variance are equal. In reality, real data often deviate from this assumption, with the variance ($v$) being significantly larger than the mean. This biological phenomenon, known as overdispersion, can be addressed within a model in various ways. One approach is to employ quasi-Poisson regression, which assumes $v=\sigma\lambda$, or to use negative binomial regression (not implemented yet), which assumes $v=\lambda+\lambda^2/\theta$, where both $\sigma$ and $\theta$ are overdispersion parameters.
+
+
 ## Simulations
 
 To assess the effectiveness of the `aedseo` function, we simulate some data. The simulated data is generated using a negative binomial model with a mean parameter $\mu$ and a variance parameter $\phi\mu$. In this context $\phi$ denotes a dispersion parameter, which is assumed to be greater than or equal to 1. The mean, denoted as $\mu(t)$, is defined by a linear predictor that incorporates both a trend component and seasonality components represented by Fourier terms. The equation $\mu(t)$ is as follows:
