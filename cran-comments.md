@@ -10,11 +10,21 @@
 
 The package has been tested on multiple platforms and no errors or warnings were identified during the tests.
 
-## Reviewer Feedback
+## Patch
 
-We have addressed the feedback from the previous review. Specifically:
+This patch aims as:
 
-1. **Removal of \dontrun{}**: We have removed the `\dontrun{}` wrappers in the examples as we confirmed that the examples run in less than 5 seconds. 
+* Enhance clariy and user guidance in the introductory vignette.
+
+* Updated LICENSE.md to have Statens Serum Institut as a copyright holder.
+
+* Fixed installation guide for the development version in the README.Rmd and README.md
+
+* Added Lasse Engbo Christiansen as an author of the R package.
+
+* Added a new function `epi_calendar()`.
+
+* Introduced additional visualizations in the `autoplot()` and `plot()` methods.
 
 ## Abbreviations
 
@@ -22,10 +32,6 @@ We have addressed the feedback from the previous review. Specifically:
 * 'Lipstich': The surname of one of the authors in the referenced paper.
 * 'Obadia': The surname of one of the authors in the referenced paper.
 * 'et al.': An abbreviation for "et alia" or "and others," which refers to multiple authors of the referenced paper.
-
-## Resubmission
-
-We've addressed the feedback provided, and the package is now ready for resubmission. We appreciate your review and are looking forward to having our package included on CRAN.
 
 Best regards,
 
