@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">aedseo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,24 +51,26 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.0" id="aedseo-010">aedseo 0.1.0<a class="anchor" aria-label="anchor" href="#aedseo-010"></a></h2><p class="text-muted">CRAN release: 2023-11-07</p>
+<h2 class="pkg-version" data-toc-text="0.1.1" id="aedseo-011">aedseo 0.1.1<a class="anchor" aria-label="anchor" href="#aedseo-011"></a></h2><p class="text-muted">CRAN release: 2023-11-16</p>
 <div class="section level3">
-<h3 id="features-0-1-0">Features<a class="anchor" aria-label="anchor" href="#features-0-1-0"></a></h3>
-<ul><li><p>Added the <code>aedseo</code> function, which automates the early detection of seasonal epidemic onsets by estimating growth rates for consecutive time intervals and calculating the Sum of Cases (sum_of_cases).</p></li>
-<li><p>Introduced <code>autoplot</code> and <code>plot</code> methods for visualizing <code>aedseo</code> and <code>aedseo_tsd</code> objects. These functions allow you to create insightful ggplot2 plots for your data.</p></li>
-<li><p>Included the <code>fit_growth_rate</code> function, enabling users to fit growth rate models to time series observations.</p></li>
-<li><p>Introduced the <code>predict</code> method for <code>aedseo</code> objects, which allows you to predict observations for future time steps given the growth rates.</p></li>
-<li><p>Added the <code>summary</code> method for <code>aedseo</code> objects, providing a comprehensive summary of the results.</p></li>
-<li><p>Introduced the <code>tsd</code> function, allowing users to create S3 <code>aedseo_tsd</code> (time-series data) objects from observed data and corresponding dates.</p></li>
-</ul><p>Please note that this is the initial CRAN release of the aedseo package, and we look forward to adding more features and improvements in future updates. We appreciate your feedback and contributions to make this package even more useful for early detection of seasonal epidemics.</p>
-</div>
+<h3 id="improvements-0-1-1">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-1-1"></a></h3>
+<ul><li>Enhanced clarity and user guidance in the introductory vignette, providing a more comprehensive walkthrough of the application of the ‘aeddo’ algorithm on time series data with detailed explanations and illustrative examples.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-changes-0-1-1">Minor changes<a class="anchor" aria-label="anchor" href="#minor-changes-0-1-1"></a></h3>
+<ul><li><p>Updated LICENSE.md to have Statens Serum Institut as a copyright holder.</p></li>
+<li><p>Fixed installation guide for the development version in the README.Rmd and README.md</p></li>
+<li><p>Added Lasse Engbo Christiansen as an author of the R package.</p></li>
+<li><p>Added a new function <code><a href="../reference/epi_calendar.html">epi_calendar()</a></code> that determines the epidemiological season based on a given date, allowing users to easily categorize dates within or outside specified seasons.</p></li>
+<li><p>Introduced additional visualizations in the <code><a href="../reference/autoplot.html">autoplot()</a></code> method, enhancing the capabilities of the <code><a href="../reference/plot.html">plot()</a></code> method with new displays of observed cases and growth rates.</p></li>
+</ul></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Kasper Schou Telkamp, <a href="https://www.ssi.dk/" class="external-link"><img src="https://www.ssi.dk/assets/images/ssi-logo-optimeret.svg" alt="SSI" height="16" style="margin-bottom: 3px;"></a>.</p>
+  <p></p><p>Developed by Kasper Schou Telkamp, Lasse Engbo Christiansen, <a href="https://www.ssi.dk/" class="external-link"><img src="https://www.ssi.dk/assets/images/ssi-logo-optimeret.svg" alt="SSI" height="16" style="margin-bottom: 3px;"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

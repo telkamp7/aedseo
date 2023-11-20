@@ -47,7 +47,7 @@
     
     <a class="navbar-brand me-2" href="index.html">aedseo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -112,7 +112,7 @@
 <p>You can install the development version of <code>aedseo</code> from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"telkamp7/aedseo"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ssi-dk/aedseo"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -122,14 +122,14 @@
 <ol style="list-style-type: decimal">
 <li>Install the package using the code provided above.</li>
 <li>Load the package with <code><a href="https://github.com/ssi-dk/aedseo" class="external-link">library(aedseo)</a></code>.</li>
-<li>Create a time series data object (<code>tsibble</code>) from your data using the <code><a href="reference/tsd.html">aedseo::tsd</a></code> function.</li>
-<li>Apply the <code><a href="reference/aedseo.html">aedseo::aedseo</a></code> function to estimate growth rates and detect seasonal epidemic onsets.</li>
+<li>Create a time series data object (<code>aedseo_tsd</code>) from your data using the <code><a href="reference/tsd.html">tsd()</a></code> function.</li>
+<li>Apply the <code><a href="reference/aedseo.html">aedseo()</a></code> function to estimate growth rates and detect seasonal epidemic onsets.</li>
 </ol>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load the package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ssi-dk/aedseo" class="external-link">aedseo</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Create a tsibble object from your data</span></span>
+<span><span class="co"># Create a aedseo_tsd object from your data</span></span>
 <span><span class="va">tsd_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/tsd.html">tsd</a></span><span class="op">(</span></span>
 <span>  observed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">120</span>, <span class="fl">150</span>, <span class="fl">180</span>, <span class="fl">220</span>, <span class="fl">270</span><span class="op">)</span>,</span>
 <span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -189,6 +189,7 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Kasper Schou Telkamp <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0009-0001-5126-0190" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Lasse Engbo Christiansen <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-5019-1931" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>
 <a href="https://www.ssi.dk/" class="external-link"><img src="https://www.ssi.dk/assets/images/ssi-logo-optimeret.svg" alt="SSI" height="16" style="margin-bottom: 3px;"></a> <br><small class="roles"> Copyright holder, funder </small>  </li>
 </ul>
@@ -199,7 +200,6 @@
 <ul class="list-unstyled">
 <li><a href="https://github.com/ssi-dk/aedseo/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/ssi-dk/aedseo/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://app.codecov.io/gh/ssi-dk/aedseo?branch=master" class="external-link"><img src="https://codecov.io/gh/ssi-dk/aedseo/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: stable"></a></li>
 <li><a href="https://CRAN.R-project.org/package=aedseo" class="external-link"><img src="https://www.r-pkg.org/badges/version/aedseo" alt="CRAN status"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
 </ul>
@@ -211,7 +211,7 @@
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Kasper Schou Telkamp, <a href="https://www.ssi.dk/" class="external-link"><img src="https://www.ssi.dk/assets/images/ssi-logo-optimeret.svg" alt="SSI" height="16" style="margin-bottom: 3px;"></a>.</p>
+<p>Developed by Kasper Schou Telkamp, Lasse Engbo Christiansen, <a href="https://www.ssi.dk/" class="external-link"><img src="https://www.ssi.dk/assets/images/ssi-logo-optimeret.svg" alt="SSI" height="16" style="margin-bottom: 3px;"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

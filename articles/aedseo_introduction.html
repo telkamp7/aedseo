@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">aedseo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,20 +92,7 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     filter, lag</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'ggplot2'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:aedseo':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     autoplot</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -121,6 +108,41 @@ disease-specific threshold.</li>
 employed to obtain the local estimate of the exponential growth rate and
 the SoC. When both of these criteria are met, an alarm is triggered and
 the onset of the seasonal epidemic is detected.</p>
+<div class="section level3">
+<h3 id="exponential-growth-rate">Exponential growth rate<a class="anchor" aria-label="anchor" href="#exponential-growth-rate"></a>
+</h3>
+<p>The exponential growth rate, denoted as <span class="math inline">\(r\)</span>, represents the per capita change in
+the number of new cases per unit of time. Given that incidence data are
+integer-valued, the proposed method relies on generalized linear models
+(GLM). For count data, the Poisson distribution is a suitable choice as
+a model. Hence, the count observations denoted as <span class="math inline">\(Y\)</span> are assumed to follow a Poisson
+distribution</p>
+<p><span class="math display">\[\begin{equation}
+Y \sim \mathrm{Pois}(\lambda)
+\end{equation}\]</span></p>
+<p>Here, the link function, <span class="math inline">\(\log()\)</span>,
+connects the linear predictor to the expected value of the data point,
+expressed as <span class="math inline">\(\log(\lambda)=\mu\)</span>.
+Given a single continuous covariate <span class="math inline">\(t\)</span>, the mean <span class="math inline">\(\mu\)</span> can be expressed as</p>
+<p><span class="math display">\[\begin{equation}
+  \mu = \alpha + r t
+\end{equation}\]</span></p>
+<p>This is equivalent to a multiplicative model for <span class="math inline">\(\lambda\)</span>, i.e.</p>
+<p><span class="math display">\[\begin{equation}
+  \lambda = \exp(\alpha + r t) = \exp(\alpha) \exp(r t)
+\end{equation}\]</span></p>
+<p>Intuitively, negative values of <span class="math inline">\(r\)</span> result in a decline in the number of
+observed cases, while <span class="math inline">\(r=0\)</span>
+represents stability, and positive values of <span class="math inline">\(r\)</span> indicate an increase.</p>
+<p>It is important to note that the Poisson distribution assumes that
+the mean and variance are equal. In reality, real data often deviate
+from this assumption, with the variance (<span class="math inline">\(v\)</span>) being significantly larger than the
+mean. This biological phenomenon, known as overdispersion, can be
+addressed within a model in various ways. One approach is to employ
+quasi-Poisson regression, which assumes <span class="math inline">\(v=\sigma\lambda\)</span>, or to use negative
+binomial regression (not implemented yet), which assumes <span class="math inline">\(v=\lambda+\lambda^2/\theta\)</span>, where both
+<span class="math inline">\(\sigma\)</span> and <span class="math inline">\(\theta\)</span> are overdispersion parameters.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="simulations">Simulations<a class="anchor" aria-label="anchor" href="#simulations"></a>
@@ -233,16 +255,6 @@ seasonality component.</li>
 <span class="math inline">\(\phi = 5\)</span>, which represents the
 dispersion parameter for the negative binomial distribution.</li>
 </ul>
-<p>In the following figure, the simulated data (solid circles) is
-visualized alongside the mean (solid line) for the three arbitrary years
-of weekly data.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Have a glance at the time varying mean and the simulated data</span></span>
-<span><span class="va">sim_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Date</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">mu_t</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="aedseo_introduction_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="applying-the-algorithm">Applying the algorithm<a class="anchor" aria-label="anchor" href="#applying-the-algorithm"></a>
@@ -251,13 +263,20 @@ of weekly data.</p>
 simulated data is outlined. The first step is to transform the simulated
 data into a <code>aedseo_tsd</code> object using the <code><a href="../reference/tsd.html">tsd()</a></code>
 function.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Construct an 'aedseo_tsd' object with the time series data</span></span>
 <span><span class="va">tsd_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tsd.html">tsd</a></span><span class="op">(</span></span>
-<span>  observed <span class="op">=</span> <span class="va">simulation</span><span class="op">$</span><span class="va">simulation</span>,</span>
-<span>  time <span class="op">=</span> <span class="va">dates</span>,</span>
+<span>  observed <span class="op">=</span> <span class="va">sim_data</span><span class="op">$</span><span class="va">y</span>,</span>
+<span>  time <span class="op">=</span> <span class="va">sim_data</span><span class="op">$</span><span class="va">Date</span>,</span>
 <span>  time_interval <span class="op">=</span> <span class="st">"week"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
+<p>In the following figure, the simulated data (solid circles) is
+visualized alongside the mean (solid line) for the three arbitrary years
+of weekly data.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Have a glance at the time varying mean and the simulated data</span></span>
+<span><span class="fu"><a href="../reference/plot.html">plot</a></span><span class="op">(</span><span class="va">tsd_data</span><span class="op">)</span></span></code></pre></div>
+<p><img src="aedseo_introduction_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 <p>Next, the time series data object is passed to the
 <code><a href="../reference/aedseo.html">aedseo()</a></code> function. Here, a window width of <span class="math inline">\(k=5\)</span> is specified, meaning that a total of
 5 weeks is used in the local estimate of the exponential growth rate.
@@ -273,82 +292,38 @@ account for overdispersion in the data.</p>
 <span>  disease_threshold <span class="op">=</span> <span class="fl">2000</span>,</span>
 <span>  family <span class="op">=</span> <span class="st">"quasipoisson"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>In the figure below, the observed values from the simulations is
-visualized alongside the local estimate of the growth rate and its
-corresponding 95% confidence interval.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Join the observations and estimated growth rates</span></span>
-<span><span class="va">full_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">full_join</a></span><span class="op">(</span></span>
-<span>  x <span class="op">=</span> <span class="va">tsd_data</span>,</span>
-<span>  y <span class="op">=</span> <span class="va">aedseo_results</span>,</span>
-<span>  by <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="st">"time"</span> <span class="op">==</span> <span class="st">"reference_time"</span>, <span class="st">"observed"</span> <span class="op">==</span> <span class="st">"observed"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Data to add horizontal line in growth rate</span></span>
-<span><span class="va">ablines</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"growth_rate"</span>, <span class="st">"observed"</span><span class="op">)</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Make a nice plot</span></span>
-<span><span class="va">full_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">observed</span>, <span class="va">growth_rate</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span></span>
-<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
-<span>      x <span class="op">=</span> <span class="va">time</span>,</span>
-<span>      y <span class="op">=</span> <span class="va">value</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">aedseo_results</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"observed"</span><span class="op">)</span>,</span>
-<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
-<span>      x <span class="op">=</span> <span class="va">reference_time</span>,</span>
-<span>      y <span class="op">=</span> <span class="va">observed</span>,</span>
-<span>      alpha <span class="op">=</span> <span class="va">seasonal_onset_alarm</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">geom_ribbon</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">aedseo_results</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"growth_rate"</span><span class="op">)</span>,</span>
-<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
-<span>      x <span class="op">=</span> <span class="va">reference_time</span>,</span>
-<span>      ymin <span class="op">=</span> <span class="va">lower_growth_rate</span>,</span>
-<span>      ymax <span class="op">=</span> <span class="va">upper_growth_rate</span></span>
-<span>    <span class="op">)</span>,</span>
-<span>    inherit.aes <span class="op">=</span> <span class="cn">FALSE</span>, alpha <span class="op">=</span> <span class="fl">0.3</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">ablines</span>,</span>
-<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="va">x</span><span class="op">)</span>,</span>
-<span>    linetype <span class="op">=</span> <span class="st">"dashed"</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span></span>
-<span>    facets <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>,</span>
-<span>    ncol <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>    scale <span class="op">=</span> <span class="st">"free_y"</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
-<span>    legend.position <span class="op">=</span> <span class="st">"top"</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Using alpha for a discrete variable is not advised.</span></span>
-<span><span class="co">#&gt; Warning: Removed 4 rows containing missing values (`geom_line()`).</span></span>
-<span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_hline()`).</span></span></code></pre></div>
-<p><img src="aedseo_introduction_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="the-aedseo-package-implements-s3-methods">The aedseo package implements S3 methods<a class="anchor" aria-label="anchor" href="#the-aedseo-package-implements-s3-methods"></a>
 </h2>
-<p>In this section, we will explore how to use the <code>predict</code>
-and <code>summary</code> S3 methods provided by the <code>aedseo</code>
-package. These methods enhance the functionality of your
-<code>aedseo</code> objects, allowing you to make predictions and obtain
-concise summaries of your analysis results.</p>
+<p>In this section, we will explore how to use the <code><a href="../reference/plot.html">plot()</a></code>,
+<code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> and <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> S3 methods provided by
+the <code>aedseo</code> package. These methods enhance the functionality
+of your <code>aedseo</code> objects, allowing you to make predictions
+and obtain concise summaries of your analysis results.</p>
+<div class="section level3">
+<h3 id="visualizing-growth-rates">Visualizing Growth Rates<a class="anchor" aria-label="anchor" href="#visualizing-growth-rates"></a>
+</h3>
+<p>In the figure below, we present the local estimate of the growth rate
+along with its corresponding 95% confidence interval. This visualization
+can be generated by utilizing the <code><a href="../reference/plot.html">plot()</a></code> S3 method
+specifically designed for objects of the <code>aedseo</code> class.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Employing the S3 `plot()` method</span></span>
+<span><span class="fu"><a href="../reference/plot.html">plot</a></span><span class="op">(</span><span class="va">aedseo_results</span><span class="op">)</span></span></code></pre></div>
+<p><img src="aedseo_introduction_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<pre><code><span><span class="co">#&gt; Warning: Using alpha for a discrete variable is not advised.</span></span></code></pre>
+<p><img src="aedseo_introduction_files/figure-html/unnamed-chunk-6-2.png" width="700"></p>
+<pre><code><span><span class="co">#&gt; Warning: Using alpha for a discrete variable is not advised.</span></span></code></pre>
+<p><img src="aedseo_introduction_files/figure-html/unnamed-chunk-6-3.png" width="700"></p>
+</div>
 <div class="section level3">
 <h3 id="predicting-growth-rates">Predicting Growth Rates<a class="anchor" aria-label="anchor" href="#predicting-growth-rates"></a>
 </h3>
 <p>The <code>predict</code> method for <code>aedseo</code> objects
 allows you to make predictions for future time steps based on the
 estimated growth rates. Here’s how to use it:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Example: Predict growth rates for the next 5 time steps</span></span>
 <span><span class="op">(</span><span class="va">prediction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">aedseo_results</span>, n_step <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
@@ -367,14 +342,14 @@ prediction object will contain estimates, lower bounds, and upper bounds
 for each time step.</p>
 </div>
 <div class="section level3">
-<h3 id="summarizing-aedseo-results">Summarizing AEDSEO results<a class="anchor" aria-label="anchor" href="#summarizing-aedseo-results"></a>
+<h3 id="summarizing-aedseo-results">Summarizing aedseo results<a class="anchor" aria-label="anchor" href="#summarizing-aedseo-results"></a>
 </h3>
-<p>The summary method for aedseo objects provides a concise summary of
-your automated early detection of seasonal epidemic onset (AEDSEO)
-analysis. You can use it to retrieve important information about your
-analysis, including the latest growth warning and the total number of
-growth warnings:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<p>The summary method for <code>aedseo</code> objects provides a concise
+summary of your automated early detection of seasonal epidemic onset
+(aedseo) analysis. You can use it to retrieve important information
+about your analysis, including the latest growth warning and the total
+number of growth warnings:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">aedseo_results</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Summary of aedseo Object</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -421,7 +396,7 @@ findings of your analysis.</p>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Kasper Schou Telkamp, <a href="https://www.ssi.dk/" class="external-link"><img src="https://www.ssi.dk/assets/images/ssi-logo-optimeret.svg" alt="SSI" height="16" style="margin-bottom: 3px;"></a>.</p>
+<p>Developed by Kasper Schou Telkamp, Lasse Engbo Christiansen, <a href="https://www.ssi.dk/" class="external-link"><img src="https://www.ssi.dk/assets/images/ssi-logo-optimeret.svg" alt="SSI" height="16" style="margin-bottom: 3px;"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
