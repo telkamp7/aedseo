@@ -14,17 +14,7 @@ The package has been tested on multiple platforms and no errors or warnings were
 
 This patch aims as:
 
-* Enhance clarity and user guidance in the introductory vignette.
-
-* Updated LICENSE.md to have Statens Serum Institut as a copyright holder.
-
-* Fixed installation guide for the development version in the README.Rmd and README.md
-
-* Added Lasse Engbo Christiansen as an author of the R package.
-
-* Added a new function `epi_calendar()`.
-
-* Introduced additional visualizations in the `autoplot()` and `plot()` methods.
+* Transfer maintainership of the R package to Lasse Engbo Christiansen (LSEC@ssi.dk), and change the e-mail address for the previous maintainer to kasper.telkamp@gmail.com, as his affiliation with Statens Serum Institut (SSI) stops - and the e-mail therefore will be a dead link.
 
 ## Abbreviations
 
