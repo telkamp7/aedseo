@@ -40,6 +40,3 @@ the growth rates.
 - Added the `summary` method for `aedseo` objects, providing a comprehensive summary of the results.
 
 - Introduced the `tsd` function, allowing users to create S3 `aedseo_tsd` (time-series data) objects from observed data and corresponding dates.
-
-Please note that this is the initial CRAN release of the aedseo package, and we look forward to adding more features and improvements in future updates. We appreciate your feedback and contributions to make this package even more useful for early detection of seasonal epidemics.
-* Added a `NEWS.md` file to track changes to the package.
