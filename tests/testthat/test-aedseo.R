@@ -26,14 +26,16 @@ test_that("The growth rate models converge", {
     k = 3,
     level = 0.95,
     family = "poisson",
-    disease_threshold = 20
+    disease_threshold = 20,
+    na_percentage_allowed = 0.2
   )
   aedseo_quasipoisson <- aedseo(
     tsd = tsd_data_nbinom,
     k = 3,
     level = 0.95,
     family = "quasipoisson",
-    disease_threshold = 20
+    disease_threshold = 20,
+    na_percentage_allowed = 0.2
   )
 
   # Check if they all converge

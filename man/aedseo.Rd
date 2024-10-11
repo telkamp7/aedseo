@@ -9,7 +9,8 @@ aedseo(
   k = 5,
   level = 0.95,
   disease_threshold = NA_integer_,
-  family = c("poisson", "quasipoisson")
+  family = c("poisson", "quasipoisson"),
+  na_percentage_allowed = 0.4
 )
 }
 \arguments{
@@ -46,6 +47,7 @@ zero?
 \item 'sum_of_cases_warning': Logical. Does the Sum of Cases exceed the
 disease threshold?
 \item 'seasonal_onset_alarm': Logical. Is there a seasonal onset alarm?
+\item 'skipped_window': Logical. Was the window skipped?
 \item 'converged': Logical. Was the IWLS judged to have converged?
 }
 }
