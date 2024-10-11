@@ -10,7 +10,7 @@ aedseo(
   level = 0.95,
   disease_threshold = NA_integer_,
   family = c("poisson", "quasipoisson"),
-  na_percentage_allowed = 0.4
+  na_fraction_allowed = 0.4
 )
 }
 \arguments{
@@ -28,8 +28,8 @@ a disease outbreak.}
 \item{family}{A character string specifying the family for modeling.
 Choose between "poisson," or "quasipoisson".}
 
-\item{na_percentage_allowed}{A percentage input as a numeric value that determines
-how many NA values that are allowed in the observations for each k window}
+\item{na_fraction_allowed}{A fraction that determines how many NA values
+that are allowed in the observations for each k window}
 }
 \value{
 A \code{aedseo} object containing:
@@ -80,7 +80,7 @@ aedseo_results <- aedseo(
   level = 0.95,
   disease_threshold = 200,
   family = "poisson",
-  na_percentage_allowed = 0.4
+  na_fraction_allowed = 0.4
 )
 
 # Print the AEDSEO results

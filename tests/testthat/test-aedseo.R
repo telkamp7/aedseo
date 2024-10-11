@@ -27,7 +27,7 @@ test_that("The growth rate models converge", {
     level = 0.95,
     family = "poisson",
     disease_threshold = 20,
-    na_percentage_allowed = 0.2
+    na_fraction_allowed = 0.2
   )
   aedseo_quasipoisson <- aedseo(
     tsd = tsd_data_nbinom,
@@ -35,7 +35,7 @@ test_that("The growth rate models converge", {
     level = 0.95,
     family = "quasipoisson",
     disease_threshold = 20,
-    na_percentage_allowed = 0.2
+    na_fraction_allowed = 0.2
   )
 
   # Check if they all converge
@@ -79,18 +79,18 @@ test_that("Test if it works with weeks with NA values", {
     level = 0.95,
     family = "poisson",
     disease_threshold = 20,
-    na_percentage_allowed = 0.4
+    na_fraction_allowed = 0.4
   )
 
   # Test if correct amount of windows with NA are skipped
   k <- 3
-  na_percentage_allowed <- 0.4
+  na_fraction_allowed <- 0.4
   n <- base::nrow(tsd_data_poisson_na)
   skipped_window_count <- 0
 
   for (i in k:n) {
     obs_iter <- tsd_data_poisson_na[(i - k + 1):i, ]
-    if (sum(is.na(obs_iter)) >= k * na_percentage_allowed) {
+    if (sum(is.na(obs_iter)) >= k * na_fraction_allowed) {
       skipped_window_count <- skipped_window_count + 1
     }
   }

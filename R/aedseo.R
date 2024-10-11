@@ -13,13 +13,14 @@
 #' @param level The confidence level for parameter estimates, a numeric value
 #' between 0 and 1.
 #' @param disease_threshold An integer specifying the threshold for considering
-#' a disease outbreak. It defines the one time step disease threshold that has
-#' to be surpassed to trigger a seasonal onset alarm. If the sum of cases in a
-#' k window exceeds this threshold * k, a seasonal onset alarm is triggered.
+#' a disease outbreak. It defines the per time-step disease threshold that has
+#' to be surpassed to possibly trigger a seasonal onset alarm. If the total
+#' number of cases in a window of size k exceeds  `disease_threshold * k`,
+#' a seasonal onset alarm can be triggered.
 #' @param family A character string specifying the family for modeling.
 #' Choose between "poisson," or "quasipoisson".
-#' @param na_percentage_allowed Numeric value specifying how many percentage of
-#' the observables in the k window that are allowed to be NA.
+#' @param na_fraction_allowed Numeric value specifying the fraction of
+#' observables in the window of size k that are allowed to be NA.
 #'
 #' @return A `aedseo` object containing:
 #'   - 'reference_time': The time point for which the growth rate is estimated.
@@ -36,7 +37,7 @@
 #'   disease threshold?
 #'   - 'seasonal_onset_alarm': Logical. Is there a seasonal onset alarm?
 #'   - 'converged': Logical. Was the IWLS judged to have converged?
-#'   - 'skipped_window': Logical. Was the window skipped?
+#'   - 'skipped_window': Logical. Was the window skipped due to missing?
 #'
 #' @export
 #'
@@ -62,7 +63,7 @@
 #'   level = 0.95,
 #'   disease_threshold = 200,
 #'   family = "poisson",
-#'   na_percentage_allowed = 0.4,
+#'   na_fraction_allowed = 0.4,
 #' )
 #'
 #' # Print the AEDSEO results
@@ -77,7 +78,7 @@ aedseo <- function(
       "quasipoisson"
       # TODO: #10 Include negative.binomial regressions. @telkamp7
     ),
-    na_percentage_allowed = 0.4) {
+    na_fraction_allowed = 0.4) {
   # Throw an error if any of the inputs are not supported
   family <- rlang::arg_match(family)
 
@@ -93,7 +94,7 @@ aedseo <- function(
     obs_iter <- tsd[(i - k + 1):i, ]
 
     # Evaluate NA values in windows
-    if (sum(is.na(obs_iter)) >= k * na_percentage_allowed) {
+    if (sum(is.na(obs_iter)) >= k * na_fraction_allowed) {
       skipped_window[i] <- TRUE
       # Set fields to NA since the window is skipped
       growth_rates <- list(estimate = c(NA, NA, NA),
