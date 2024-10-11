@@ -19,8 +19,8 @@
 #' a seasonal onset alarm can be triggered.
 #' @param family A character string specifying the family for modeling.
 #' Choose between "poisson," or "quasipoisson".
-#' @param na_fraction_allowed Numeric value specifying the fraction of
-#' observables in the window of size k that are allowed to be NA.
+#' @param na_fraction_allowed Numeric value between 0 and 1 specifying the
+#' fraction of observables in the window of size k that are allowed to be NA.
 #'
 #' @return A `aedseo` object containing:
 #'   - 'reference_time': The time point for which the growth rate is estimated.
@@ -79,6 +79,16 @@ aedseo <- function(
       # TODO: #10 Include negative.binomial regressions. @telkamp7
     ),
     na_fraction_allowed = 0.4) {
+  # Check input arguments
+  coll <- checkmate::makeAssertCollection()
+  checkmate::assert_data_frame(tsd)
+  checkmate::assert_class(tsd, "aedseo_tsd")
+  checkmate::assert_names(names(tsd), identical.to = c("time", "observed"))
+  checkmate::assert_numeric(c(level, na_fraction_allowed), len = 2,
+                            lower = 0, upper = 1, add = coll)
+  checkmate::assert_integerish(c(k, disease_threshold), len = 2)
+  checkmate::reportAssertions(coll)
+
   # Throw an error if any of the inputs are not supported
   family <- rlang::arg_match(family)
 
@@ -148,6 +158,9 @@ aedseo <- function(
     disease_threshold = disease_threshold,
     family = family
   )
+
+  # Keep attributes from aedseo_tsd
+  attr(ans, "time_interval") <- attr(tsd, "time_interval")
 
   return(ans)
 }

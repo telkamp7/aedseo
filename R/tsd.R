@@ -48,6 +48,12 @@
 #' )
 #'
 tsd <- function(observed, time, time_interval = c("day", "week", "month")) {
+  # Check input arguments
+  coll <- checkmate::makeAssertCollection()
+  checkmate::assert_date(time, add = coll)
+  checkmate::assert_numeric(observed, add = coll)
+  checkmate::reportAssertions(coll)
+
   # Throw an error if any of the inputs are not supported
   time_interval <- rlang::arg_match(time_interval)
 
