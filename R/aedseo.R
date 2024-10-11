@@ -36,6 +36,7 @@
 #'   disease threshold?
 #'   - 'seasonal_onset_alarm': Logical. Is there a seasonal onset alarm?
 #'   - 'converged': Logical. Was the IWLS judged to have converged?
+#'   - 'skipped_window': Logical. Was the window skipped?
 #'
 #' @export
 #'
