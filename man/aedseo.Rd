@@ -9,7 +9,8 @@ aedseo(
   k = 5,
   level = 0.95,
   disease_threshold = NA_integer_,
-  family = c("poisson", "quasipoisson")
+  family = c("poisson", "quasipoisson"),
+  na_fraction_allowed = 0.4
 )
 }
 \arguments{
@@ -26,6 +27,9 @@ a disease outbreak.}
 
 \item{family}{A character string specifying the family for modeling.
 Choose between "poisson," or "quasipoisson".}
+
+\item{na_fraction_allowed}{A fraction that determines how many NA values
+that are allowed in the observations for each k window}
 }
 \value{
 A \code{aedseo} object containing:
@@ -43,6 +47,7 @@ zero?
 \item 'sum_of_cases_warning': Logical. Does the Sum of Cases exceed the
 disease threshold?
 \item 'seasonal_onset_alarm': Logical. Is there a seasonal onset alarm?
+\item 'skipped_window': Logical. Was the window skipped?
 \item 'converged': Logical. Was the IWLS judged to have converged?
 }
 }
@@ -74,7 +79,8 @@ aedseo_results <- aedseo(
   k = 3,
   level = 0.95,
   disease_threshold = 200,
-  family = "poisson"
+  family = "poisson",
+  na_fraction_allowed = 0.4
 )
 
 # Print the AEDSEO results
