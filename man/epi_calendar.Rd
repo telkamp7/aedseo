@@ -4,7 +4,7 @@
 \alias{epi_calendar}
 \title{Determine Epidemiological Season}
 \usage{
-epi_calendar(date, start = 40, end = 20)
+epi_calendar(date, start = 21, end = 20)
 }
 \arguments{
 \item{date}{A date object representing the date to check.}
@@ -33,15 +33,15 @@ according to the ISO week date system.
 }
 \examples{
 # Check if a date is within the epidemiological season
-epi_calendar(as.Date("2023-09-15"), start = 40, end = 20)
+epi_calendar(as.Date("2023-09-15"), start = 21, end = 20)
 # Expected output: "2022/2023"
 
-epi_calendar(as.Date("2023-05-01"), start = 40, end = 20)
+epi_calendar(as.Date("2023-09-15"), start = 40, end = 20)
 # Expected output: "out_of_season"
 
-epi_calendar(as.Date("2023-01-15"), start = 40, end = 20)
+epi_calendar(as.Date("2023-01-15"), start = 21, end = 20)
 # Expected output: "2022/2023"
 
-epi_calendar(as.Date("2023-12-01"), start = 40, end = 20)
+epi_calendar(as.Date("2023-12-01"), start = 21, end = 20)
 # Expected output: "2023/2024"
 }
