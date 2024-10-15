@@ -83,10 +83,12 @@ aedseo <- function(
   coll <- checkmate::makeAssertCollection()
   checkmate::assert_data_frame(tsd)
   checkmate::assert_class(tsd, "aedseo_tsd")
-  checkmate::assert_names(names(tsd), identical.to = c("time", "observed"))
-  checkmate::assert_numeric(c(level, na_fraction_allowed), len = 2,
-                            lower = 0, upper = 1, add = coll)
-  checkmate::assert_integerish(c(k, disease_threshold), len = 2)
+  checkmate::assert_names(colnames(tsd), identical.to = c("time", "observed"))
+  checkmate::assert_numeric(level, lower = 0, upper = 1, add = coll)
+  checkmate::assert_numeric(na_fraction_allowed, lower = 0, upper = 1,
+                            add = coll)
+  checkmate::assert_integerish(k, add = coll)
+  checkmate::assert_integerish(disease_threshold, add = coll)
   checkmate::reportAssertions(coll)
 
   # Throw an error if any of the inputs are not supported

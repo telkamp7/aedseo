@@ -32,6 +32,7 @@ Suggests:
 Config/testthat/edition: 3
 Imports:
     base,
+    checkmate,
     dplyr,
     ggplot2,
     lifecycle,
@@ -39,7 +40,6 @@ Imports:
     purrr,
     rlang,
     stats,
-    tibble,
-    checkmate
+    tibble
 Config/Needs/website: rmarkdown
 VignetteBuilder: knitr
