@@ -25,11 +25,10 @@ the epidemiological season.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This function identifies the epidemiological season to which a given date
-belongs.
+This function identifies the epidemiological season, (spanning two years)
+to which a given date belongs.
 The epidemiological season is defined by a start and end week, where weeks
-are numbered
-according to the ISO week date system.
+are numbered according to the ISO week date system.
 }
 \examples{
 # Check if a date is within the epidemiological season
@@ -39,8 +38,8 @@ epi_calendar(as.Date("2023-09-15"), start = 21, end = 20)
 epi_calendar(as.Date("2023-05-30"), start = 40, end = 20)
 # Expected output: "out_of_season"
 
-epi_calendar(as.Date("2023-01-15"), start = 21, end = 20)
-# Expected output: "2022/2023"
+epi_calendar(as.Date("2023-01-15"), start = 1, end = 40)
+# Expected output: "out_of_season"
 
 epi_calendar(as.Date("2023-12-01"), start = 21, end = 20)
 # Expected output: "2023/2024"

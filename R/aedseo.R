@@ -21,14 +21,14 @@
 #' Choose between "poisson," or "quasipoisson".
 #' @param na_fraction_allowed Numeric value between 0 and 1 specifying the
 #' fraction of observables in the window of size k that are allowed to be NA.
-#' @param season A numeric vector of length 2 c(start,end) with the start and
-#' end weeks of the seasons to stratify the observations by.
-#' Ex: season = c(21,20). Default is NULL.
+#' @param season A numeric vector of length 2, `c(start,end)`, with the start
+#' and end weeks of the seasons to stratify the observations by.
+#' Ex: `season = c(21,20)`. Default, `NULL`, is no stratification by season.
 #'
 #' @return A `aedseo` object containing:
 #'   - 'reference_time': The time point for which the growth rate is estimated.
 #'   - 'observed': The observed value in the reference time point.
-#'   - 'season': A stratification of observables in corresponding seasons.
+#'   - 'season': The stratification of observables in corresponding seasons.
 #'   - 'growth_rate': The estimated growth rate.
 #'   - 'lower_growth_rate': The lower bound of the growth rate's confidence
 #'   interval.
@@ -95,6 +95,8 @@ aedseo <- function(
                             add = coll)
   checkmate::assert_integerish(k, add = coll)
   checkmate::assert_integerish(disease_threshold, add = coll)
+  checkmate::assert_integerish(season, len = 2, lower = 1, upper = 53,
+                               null.ok = TRUE, add = coll)
   checkmate::reportAssertions(coll)
 
   # Throw an error if any of the inputs are not supported
@@ -109,9 +111,9 @@ aedseo <- function(
 
   # Add the seasons to tsd if available
   if (!is.null(season)) {
-    tsd <- tsd |> dplyr::mutate(Season = epi_calendar(time))
+    tsd <- tsd |> dplyr::mutate(season = epi_calendar(time))
   } else {
-    tsd <- tsd |> dplyr::mutate(Season = "Not defined")
+    tsd <- tsd |> dplyr::mutate(season = "not_defined")
   }
 
   for (i in k:n) {
@@ -151,7 +153,7 @@ aedseo <- function(
       tibble::tibble(
         reference_time = tsd$time[i],
         observed = tsd$observed[i],
-        season = tsd$Season[i],
+        season = tsd$season[i],
         growth_rate = growth_rates$estimate[1],
         lower_growth_rate = growth_rates$estimate[2],
         upper_growth_rate = growth_rates$estimate[3],

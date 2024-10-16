@@ -35,16 +35,16 @@ Choose between "poisson," or "quasipoisson".}
 \item{na_fraction_allowed}{Numeric value between 0 and 1 specifying the
 fraction of observables in the window of size k that are allowed to be NA.}
 
-\item{season}{A numeric vector of length 2 c(start,end) with the start and
-end weeks of the seasons to stratify the observations by.
-Ex: season = c(21,20). Default is NULL.}
+\item{season}{A numeric vector of length 2, \code{c(start,end)}, with the start
+and end weeks of the seasons to stratify the observations by.
+Ex: \code{season = c(21,20)}. Default, \code{NULL}, is no stratification by season.}
 }
 \value{
 A \code{aedseo} object containing:
 \itemize{
 \item 'reference_time': The time point for which the growth rate is estimated.
 \item 'observed': The observed value in the reference time point.
-\item 'season': A stratification of observables in corresponding seasons.
+\item 'season': The stratification of observables in corresponding seasons.
 \item 'growth_rate': The estimated growth rate.
 \item 'lower_growth_rate': The lower bound of the growth rate's confidence
 interval.

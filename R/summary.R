@@ -50,8 +50,7 @@ summary.aedseo <- function(object, ...) {
   time_interval <- attr(object, "time_interval")
 
   # Extract the seasons
-  seasons <- unique(object$season)
-  seasons <- paste(seasons, collapse = ", ")
+  seasons <- toString(unique(object$season))
 
   # Latest sum of cases
   latest_sum_of_cases <- object %>%
