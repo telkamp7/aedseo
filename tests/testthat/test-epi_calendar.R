@@ -32,8 +32,8 @@ test_that("All dates from week 53 belongs to correct season 2015/2016", {
   week_53_season_15_16 <- c("2015-12-28", "2015-12-29", "2015-12-30",
                             "2015-12-31", "2016-01-01", "2016-01-02",
                             "2016-01-03")
-  results <- map(week_53_season_15_16,
-                 ~ epi_calendar(as.Date(.x), start = 21, end = 20))
+  results <- purrr::map(week_53_season_15_16,
+                        ~ epi_calendar(as.Date(.x), start = 21, end = 20))
   results_vector <- unlist(results)
 
   expect_equal(results_vector, rep("2015/2016", length(week_53_season_15_16)))

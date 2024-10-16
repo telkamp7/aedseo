@@ -28,9 +28,6 @@ a disease outbreak.}
 \item{family}{A character string specifying the family for modeling.
 Choose between "poisson," or "quasipoisson".}
 
-\item{na_fraction_allowed}{A fraction that determines how many NA values
-that are allowed in the observations for each k window}
-}
 \value{
 A \code{aedseo} object containing:
 \itemize{
