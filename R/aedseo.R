@@ -68,6 +68,7 @@
 #'   disease_threshold = 200,
 #'   family = "poisson",
 #'   na_fraction_allowed = 0.4,
+#'   season = NULL
 #' )
 #'
 #' # Print the AEDSEO results
