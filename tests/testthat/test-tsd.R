@@ -7,3 +7,62 @@ test_that("Can correctly make an 'aedseo_tsd' class object", {
 
   expect_s3_class(object = tsd_day, class = "aedseo_tsd")
 })
+
+test_that("Test that input argument checks work", {
+  # Expect no error
+  expect_no_error(tsd(
+    observed = c(100, 120, 150, 180, 220, 270),
+    time = as.Date(c(
+      "2023-01-01",
+      "2023-01-02",
+      "2023-01-03",
+      "2023-01-04",
+      "2023-01-05",
+      "2023-01-06"
+    )),
+    time_interval = "day"
+  ))
+
+  #  Expect error for observed not being numeric
+  expect_error(tsd(
+    observed = c("100", "120", "150", "180", "220", "270"),
+    time = as.Date(c(
+      "2023-01-01",
+      "2023-01-02",
+      "2023-01-03",
+      "2023-01-04",
+      "2023-01-05",
+      "2023-01-06"
+    )),
+    time_interval = "day"
+  ))
+
+  #  Expect error for time not being dates
+  expect_error(tsd(
+    observed = c(100, 120, 150, 180, 220, 270),
+    time = c(
+      "2023-01-01",
+      "2023-01-02",
+      "2023-01-03",
+      "2023-01-04",
+      "2023-01-05",
+      "2023-01-06"
+    ),
+    time_interval = "day"
+  ))
+
+  #  Expect error for wrong time_interval
+  expect_error(tsd(
+    observed = c(100, 120, 150, 180, 220, 270),
+    time = as.Date(c(
+      "2023-01-01",
+      "2023-01-02",
+      "2023-01-03",
+      "2023-01-04",
+      "2023-01-05",
+      "2023-01-06"
+    )),
+    time_interval = "year"
+  ))
+
+})

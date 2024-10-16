@@ -100,3 +100,52 @@ test_that("Test if it works with weeks with NA values", {
   # Count if the skipped windows are = ones in output
   expect_equal(skipped_window_count, sum(aedseo_poisson_na$skipped_window))
 })
+
+test_that("Test that input argument checks work", {
+
+  # Expect no error
+  tsd_data <- tsd(
+    observed = c(100, 120, 150, 180, 220, 270),
+    time = as.Date(c(
+      "2023-01-01",
+      "2023-01-02",
+      "2023-01-03",
+      "2023-01-04",
+      "2023-01-05",
+      "2023-01-06"
+    )),
+    time_interval = "day"
+  )
+
+  expect_no_error(aedseo(tsd_data))
+
+  # Expect error when not matching family
+  expect_error(aedseo(tsd_data, family = "ttt"))
+
+  # Expect errors from wrong input arguments
+  expect_error(aedseo(tsd_data, k = 1.4, disease_threshold = 1.5))
+  expect_error(aedseo(tsd_data, disease_threshold = 1.5))
+  expect_error(aedseo(tsd_data, level = 2))
+  expect_error(aedseo(tsd_data, na_fraction_allowed = 2))
+
+  # Expect error with random data frame
+  r_df <- data.frame(
+    observed = c(100, 120, 150, 180, 220, 270),
+    time = as.Date(c(
+      "2023-01-01",
+      "2023-01-02",
+      "2023-01-03",
+      "2023-01-04",
+      "2023-01-05",
+      "2023-01-06"
+    )),
+    time_interval = "day"
+  )
+
+  expect_error(aedseo(r_df))
+
+  # Expect error with wrong column names
+  colnames(tsd_data) <- c("hey", "test")
+  expect_error(aedseo(tsd_data))
+
+})
