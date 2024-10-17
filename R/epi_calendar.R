@@ -28,7 +28,7 @@
 #' epi_calendar(as.Date("2023-05-30"), start = 40, end = 20)
 #' # Expected output: "out_of_season"
 #'
-#' epi_calendar(as.Date("2023-01-15"), start = 1, end = 40)
+#' try(epi_calendar(as.Date("2023-01-15"), start = 1, end = 40))
 #' # Expected error: "`start` must be greater than `end`!"
 #'
 #' epi_calendar(as.Date("2023-10-06"), start = 40, end = 11)

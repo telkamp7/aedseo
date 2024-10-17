@@ -111,7 +111,7 @@ aedseo <- function(
 
   # Add the seasons to tsd if available
   if (!is.null(season)) {
-    tsd <- tsd |> dplyr::mutate(season = epi_calendar(time))
+    tsd <- tsd |> dplyr::mutate(season = epi_calendar(.data$time))
   } else {
     tsd <- tsd |> dplyr::mutate(season = "not_defined")
   }
