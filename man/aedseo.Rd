@@ -36,8 +36,9 @@ Choose between "poisson," or "quasipoisson".}
 fraction of observables in the window of size k that are allowed to be NA.}
 
 \item{season}{A numeric vector of length 2, \code{c(start,end)}, with the start
-and end weeks of the seasons to stratify the observations by.
-Ex: \code{season = c(21,20)}. Default, \code{NULL}, is no stratification by season.}
+and end weeks of the seasons to stratify the observations by. Must spand
+the new year; ex: \code{season = c(21,20)}. Default, \code{NULL}, is no
+stratification by season.}
 }
 \value{
 A \code{aedseo} object containing:

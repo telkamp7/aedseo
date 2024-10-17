@@ -22,8 +22,9 @@
 #' @param na_fraction_allowed Numeric value between 0 and 1 specifying the
 #' fraction of observables in the window of size k that are allowed to be NA.
 #' @param season A numeric vector of length 2, `c(start,end)`, with the start
-#' and end weeks of the seasons to stratify the observations by.
-#' Ex: `season = c(21,20)`. Default, `NULL`, is no stratification by season.
+#' and end weeks of the seasons to stratify the observations by. Must spand
+#' the new year; ex: `season = c(21,20)`. Default, `NULL`, is no
+#' stratification by season.
 #'
 #' @return A `aedseo` object containing:
 #'   - 'reference_time': The time point for which the growth rate is estimated.
