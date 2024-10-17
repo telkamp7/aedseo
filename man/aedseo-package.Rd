@@ -3,7 +3,6 @@
 \docType{package}
 \name{aedseo-package}
 \alias{aedseo-package}
-\alias{_PACKAGE}
 \title{aedseo: Automated and Early Detection of Seasonal Epidemic Onset}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}

@@ -10,7 +10,8 @@ aedseo(
   level = 0.95,
   disease_threshold = NA_integer_,
   family = c("poisson", "quasipoisson"),
-  na_fraction_allowed = 0.4
+  na_fraction_allowed = 0.4,
+  season = NULL
 )
 }
 \arguments{
@@ -23,19 +24,28 @@ aedseo(
 between 0 and 1.}
 
 \item{disease_threshold}{An integer specifying the threshold for considering
-a disease outbreak.}
+a disease outbreak. It defines the per time-step disease threshold that has
+to be surpassed to possibly trigger a seasonal onset alarm. If the total
+number of cases in a window of size k exceeds  \code{disease_threshold * k},
+a seasonal onset alarm can be triggered.}
 
 \item{family}{A character string specifying the family for modeling.
 Choose between "poisson," or "quasipoisson".}
 
-\item{na_fraction_allowed}{A fraction that determines how many NA values
-that are allowed in the observations for each k window}
+\item{na_fraction_allowed}{Numeric value between 0 and 1 specifying the
+fraction of observables in the window of size k that are allowed to be NA.}
+
+\item{season}{A numeric vector of length 2, \code{c(start,end)}, with the start
+and end weeks of the seasons to stratify the observations by. Must spand
+the new year; ex: \code{season = c(21,20)}. Default, \code{NULL}, is no
+stratification by season.}
 }
 \value{
 A \code{aedseo} object containing:
 \itemize{
 \item 'reference_time': The time point for which the growth rate is estimated.
 \item 'observed': The observed value in the reference time point.
+\item 'season': The stratification of observables in corresponding seasons.
 \item 'growth_rate': The estimated growth rate.
 \item 'lower_growth_rate': The lower bound of the growth rate's confidence
 interval.
@@ -47,7 +57,7 @@ zero?
 \item 'sum_of_cases_warning': Logical. Does the Sum of Cases exceed the
 disease threshold?
 \item 'seasonal_onset_alarm': Logical. Is there a seasonal onset alarm?
-\item 'skipped_window': Logical. Was the window skipped?
+\item 'skipped_window': Logical. Was the window skipped due to missing?
 \item 'converged': Logical. Was the IWLS judged to have converged?
 }
 }
@@ -80,7 +90,8 @@ aedseo_results <- aedseo(
   level = 0.95,
   disease_threshold = 200,
   family = "poisson",
-  na_fraction_allowed = 0.4
+  na_fraction_allowed = 0.4,
+  season = NULL
 )
 
 # Print the AEDSEO results

@@ -46,6 +46,12 @@ summary.aedseo <- function(object, ...) {
   # Extract the reference time
   reference_time <- last_observation$reference_time
 
+  # Extract the time_interval
+  time_interval <- attr(object, "time_interval")
+
+  # Extract the seasons
+  seasons <- toString(unique(object$season))
+
   # Latest sum of cases
   latest_sum_of_cases <- object %>%
     dplyr::filter(dplyr::row_number() == dplyr::n()) %>%
@@ -102,6 +108,9 @@ summary.aedseo <- function(object, ...) {
     calculation of sum of cases:
       %d
 
+    The time interval for the observations:
+      %s
+
     Disease specific threshold:
       %d
 
@@ -123,9 +132,13 @@ summary.aedseo <- function(object, ...) {
       %s
 
     Latest seasonal onset alarm:
+      %s
+
+    The seasons defined in the series:
       %s",
     family,
     k,
+    time_interval,
     disease_threshold,
     as.character(reference_time),
     latest_sum_of_cases,
@@ -137,7 +150,8 @@ summary.aedseo <- function(object, ...) {
     last_observation$upper_growth_rate,
     sum_of_growth_warnings,
     as.character(latest_growth_warning),
-    as.character(latest_seasonal_onset_alarm)
+    as.character(latest_seasonal_onset_alarm),
+    seasons
   )
 
   # Print the summary message
