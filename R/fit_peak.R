@@ -7,8 +7,12 @@
 #' observations to each available season based on previouse seasons.
 #' It provides low, medium, high intensity levels.
 #'
-#' @param n_observations A numeric vector of size k containing the
-#' time series observations.
+#' @param weighted_observations A tibble containing two columns of size n;
+#' `observation`, which represents the data points, and `weight`.
+#' The weight is the importance assigned to an observation. Higher weights
+#' indicate that an observation has more influence on the model outcome, while
+#' lower weights reduce its impact. The structure is:
+#' `weighted_observations = tibble(observation = c(...), weight = c(...))`
 #' @param conf_levels The confidence levels for parameter estimates, a numeric
 #' vector of length 3. Default is c(0.95, 0.90, 0.50).
 #' @param family A character string specifying the family for
@@ -24,7 +28,7 @@
 #'   - 'family':
 
 fit_peak <- function(
-  n_observations,
+  weighted_observations,
   conf_levels = c(0.95, 0.90, 0.5),
   family = c("weibull",
              "lnorm",
@@ -33,4 +37,39 @@ fit_peak <- function(
   # Match the arguements
   family <- rlang::arg_match(family)
 
+  # Initialising parameters based on family
+  init_par_fun <- function(family, weighted_observations) {
+    init_params <- switch(family,
+      weibull = log(c(1.5, mean(weighted_observations$observation))),
+      lnorm = c(mean(log(weighted_observations$observation)),
+                sd(log(weighted_observations$observation))),
+      exp = log(1.5)
+    )
+    return(init_params)
+  }
+
+  # The weighted negative loglikelihood function
+  nll <- function(par, weighted_observations, family = "weibull") {
+    switch(family,
+      weibull = -sum(dweibull(weighted_observations$observation,
+                              shape = exp(par[1]), scale = exp(par[2]),
+                              log = TRUE) * weighted_observations$weight),
+      lnorm = -sum(dlnorm(weighted_observations$observation,
+                          meanlog =  par[1], sdlog = par[2],
+                          log = TRUE) * weighted_observations$weight),
+      exp =  -sum(dexp(weighted_observations$observation, rate = exp(par[1]),
+                       log = TRUE) * weighted_observations$weight)
+    )
+  }
+
+  # Run optimization for weighted observations
+  optim_obj <- weighted_observations |>
+    dplyr::group_by(weights) |>
+    dplyr::group_map(~ {
+      optim(par = init_par_fun(family = family,
+                               weighted_observations = .x$observation),
+            fn = nll,
+            data = .x,
+            family = family)
+    })
 }
