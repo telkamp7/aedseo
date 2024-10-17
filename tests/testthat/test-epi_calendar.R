@@ -43,6 +43,16 @@ test_that("Within one year, out_of_season is returned", {
   )
 })
 
+# Test that boundary weeks are included if end < start
+test_that("Within the season, boundary weeks are included if end < start", {
+  expect_equal(
+    epi_calendar(as.Date("2023-03-15"), start = 40, end = 11), "2022/2023"
+  )
+  expect_equal(
+    epi_calendar(as.Date("2024-09-30"), start = 40, end = 11), "2024/2025"
+  )
+})
+
 # Test that all dates from week 53 belongs to correct season 2015/2016
 test_that("All dates from week 53 belongs to correct season 2015/2016", {
   week_53_season_15_16 <- c("2015-12-28", "2015-12-29", "2015-12-30",
