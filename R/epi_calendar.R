@@ -29,20 +29,23 @@
 #' # Expected output: "out_of_season"
 #'
 #' epi_calendar(as.Date("2023-01-15"), start = 1, end = 40)
-#' # Expected output: "out_of_season"
+#' # Expected error: "`start` must be greater than `end`!"
 #'
 #' epi_calendar(as.Date("2023-10-06"), start = 40, end = 11)
 #' # Expected output: "2023/2024"
 epi_calendar <- Vectorize(function(date, start = 21, end = 20) {
+  # Ensure that season spans two years
+  coll <- checkmate::makeAssertCollection()
+  checkmate::assert_integerish(start, add = coll)
+  checkmate::assert_integerish(end, add = coll)
+  if (start < end) coll$push("`start` must be greater than `end`!")
+  checkmate::reportAssertions(coll)
+
   # Compute the current week
   current_week <- as.integer(format(x = date, "%V"))
 
-  # Season is contained to a single year
-  if (start <= end && (dplyr::between(current_week, start, end) |
-                         !dplyr::between(current_week, start, end))) {
-    return("out_of_season")
-    # Season spans new-year
-  } else if (end < start && dplyr::between(current_week, end + 1, start - 1)) {
+  # Ensure that season spans new-year
+  if (end < start && dplyr::between(current_week, end + 1, start - 1)) {
     return("out_of_season")
   }
 

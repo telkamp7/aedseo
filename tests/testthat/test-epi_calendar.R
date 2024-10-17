@@ -29,17 +29,21 @@ test_that("Outside the season, 'out_of_season' is returned", {
 
 # Test if algorithm returns out_of_season when start:end only spand one year
 test_that("Within one year, out_of_season is returned", {
-  expect_equal(
-    epi_calendar(as.Date("2023-03-15"), start = 2, end = 5), "out_of_season"
+  expect_error(
+    epi_calendar(as.Date("2023-03-15"), start = 2, end = 5),
+    "`start` must be greater than `end`!"
   )
-  expect_equal(
-    epi_calendar(as.Date("2023-05-01"), start = 1, end = 53), "out_of_season"
+  expect_error(
+    epi_calendar(as.Date("2023-05-01"), start = 1, end = 53),
+    "`start` must be greater than `end`!"
   )
-  expect_equal(
-    epi_calendar(as.Date("2023-01-15"), start = 30, end = 40), "out_of_season"
+  expect_error(
+    epi_calendar(as.Date("2023-01-15"), start = 30, end = 40),
+    "`start` must be greater than `end`!"
   )
-  expect_equal(
-    epi_calendar(as.Date("2023-12-01"), start = 3, end = 20), "out_of_season"
+  expect_error(
+    epi_calendar(as.Date("2023-12-01"), start = 3, end = 20),
+    "`start` must be greater than `end`!"
   )
 })
 
