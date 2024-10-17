@@ -3,9 +3,13 @@
 #' @description
 #' `r lifecycle::badge("stable")`
 #'
-#' This function calculates the intensity levels of time series
+#' This function calculates the intensity levels of peak time series
 #' observations to each available season based on previouse seasons.
-#' It provides low, medium, high intensity levels.
+#' Peak observations are the n highest observations from each season.
+#' It provides low, medium, high intensity levels, that reflect the
+#' current intensity of infection based on previous seasons. Hence it
+#' uses the peak observations from each previous season it can only
+#' explain the current intensity in relation to the peak of the season.
 #'
 #' @param weighted_observations A tibble containing two columns of size n;
 #' `observation`, which represents the data points, and `weight`.
