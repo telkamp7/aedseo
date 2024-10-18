@@ -91,7 +91,7 @@ aedseo_results <- aedseo(
   disease_threshold = 200,
   family = "poisson",
   na_fraction_allowed = 0.4,
-  season_week = NULL
+  season_weeks = NULL
 )
 
 # Print the AEDSEO results
