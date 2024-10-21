@@ -1,30 +1,19 @@
-#' Fit a peak algorithm to weighted time series observations.
+#' Compute intensity levels with weighted time series observations.
 #'
 #' @description
 #' `r lifecycle::badge("stable")`
 #'
-#' This function calculates the intensity levels of peak time series
-#' observations to the next comming season based on previouse seasons.
-#' Peak observations are the n highest observations from each season.
-#' It provides low, medium, high intensity levels, that reflect the
-#' current intensity of infection based on previous seasons. Hence it
-#' uses the peak observations from each previous season it can only
-#' explain the current intensity in relation to the peak of the season.
+#' This function calculates the intensity levels of weighted time series observations. The output contain low, medium,
+#' high intensity levels, that predict the intensity levels of the next series of observations.
 #'
-#' @param weighted_observations A tibble containing two columns of size n;
-#' `observation`, which represents the data points, and `weight`, which is the
-#' importance assigned to an observation. Higher weights indicate that an
-#' observation has more influence on the model outcome, while lower weights
-#' reduce its impact. The structure is:
-#' `weighted_observations = tibble(observation = c(...), weight = c(...))`
-#' @param conf_levels The confidence levels for parameter estimates, a numeric
-#' vector of length 3. Default is c(0.50, 0.90, 0.95).
-#' @param family A character string specifying the family for
-#' modeling. Choose between "weibull", "lnorm" or "exp".
-#' @param optim_method A character string specifying the method to be used in
-#' the optimisation. Lookup ?optim::stats for details about methods.
-#' Default is Nelder-Mead. If using the exp family it is recomended to use
-#' Brent as it is a one-dimensional optimisation.
+#' @param weighted_observations A tibble containing two columns of length n; `observation`, which contains the data
+#' points, and `weight`, which is the importance assigned to the observation. Higher weights indicate that an
+#' observation has more influence on the model outcome, while lower weights reduce its impact.
+#' @param conf_levels The confidence levels for parameter estimates, a numeric vector of length 3.
+#' @param family A character string specifying the family for modeling. Choose between "weibull", "lnorm" or "exp".
+#' @param optim_method A character string specifying the method to be used in the optimisation. Lookup `?optim::stats`
+#' for details about methods.
+#' If using the exp family it is recommended to use Brent as it is a one-dimensional optimisation.
 #' @param lower_optim A numeric value for the optimisation. Default is -Inf.
 #' @param upper_optim A numeric value for the optimisation. Default is Inf.
 #'
@@ -66,11 +55,11 @@
 #' )
 #'
 #' # Use the peak model
-#' fit_peak(weighted_observations = peak_input,
-#'          conf_levels = c(0.50, 0.90, 0.95),
-#'          family = "weibull")
+#' compute_weighted_intensity_levels(weighted_observations = peak_input,
+#'                                   conf_levels = c(0.50, 0.90, 0.95),
+#'                                   family = "weibull")
 
-fit_peak <- function(
+compute_weighted_intensity_levels <- function(
   weighted_observations,
   conf_levels = c(0.50, 0.90, 0.95),
   family = c("weibull",
@@ -88,12 +77,13 @@ fit_peak <- function(
   # Check input arguments
   coll <- checkmate::makeAssertCollection()
   checkmate::assert_tibble(weighted_observations, add = coll)
+  checkmate::assert_numeric(conf_levels, lower = 0, upper = 1, len = 3)
   checkmate::assert_names(colnames(weighted_observations),
                           identical.to = c("observation", "weight"), add = coll)
   checkmate::assert_numeric(lower_optim, add = coll)
   checkmate::assert_numeric(upper_optim, add = coll)
   checkmate::reportAssertions(coll)
-  # Match the arguements.
+  # Match the arguments.
   family <- rlang::arg_match(family)
   optim_method <- rlang::arg_match(optim_method)
 
@@ -109,32 +99,25 @@ fit_peak <- function(
   }
 
   # The weighted negative loglikelihood function
-  nll <- function(par, weighted_observations, family = "weibull") {
+  nll <- function(par, weighted_observations, family = family) {
     switch(family,
-      weibull = -sum(stats::dweibull(weighted_observations$observation,
-                                     shape = exp(par[1]), scale = exp(par[2]),
-                                     log = TRUE) *
-                       weighted_observations$weight),
-      lnorm = -sum(stats::dlnorm(weighted_observations$observation,
-                                 meanlog =  par[1], sdlog = par[2],
+      weibull = -sum(stats::dweibull(weighted_observations$observation, shape = exp(par[1]), scale = exp(par[2]),
+                                     log = TRUE) * weighted_observations$weight),
+      lnorm = -sum(stats::dlnorm(weighted_observations$observation, meanlog =  par[1], sdlog = par[2],
                                  log = TRUE) * weighted_observations$weight),
-      exp =  -sum(stats::dexp(weighted_observations$observation,
-                              rate = exp(par[1]),
+      exp =  -sum(stats::dexp(weighted_observations$observation, rate = exp(par[1]),
                               log = TRUE) * weighted_observations$weight)
     )
   }
 
   # Run optimisation for weighted observations
-  optim_obj <-
-    stats::optim(par = init_par_fun(family = family,
-                                    observations =
-                                      weighted_observations$observation),
-                 fn = nll,
-                 weighted_observations = weighted_observations,
-                 family = family,
-                 method = optim_method,
-                 lower = lower_optim,
-                 upper = upper_optim)
+  optim_obj <- stats::optim(par = init_par_fun(family = family, observations = weighted_observations$observation),
+                            fn = nll,
+                            weighted_observations = weighted_observations,
+                            family = family,
+                            method = optim_method,
+                            lower = lower_optim,
+                            upper = upper_optim)
 
   # Back-transform optimized parameters to their original scale if needed.
   # This is done by exponentiating the parameters, as they were
@@ -147,14 +130,9 @@ fit_peak <- function(
 
   # Calculate the low, medium, high intensity levels based on input `conf_level`
   quantiles <- switch(family,
-    weibull = stats::qweibull(p = c(0.50, 0.90, 0.95),
-                              shape = par_fit[1],
-                              scale = par_fit[2]),
-    lnorm = stats::qlnorm(p = c(0.50, 0.90, 0.95),
-                          meanlog = par_fit[1],
-                          sdlog = par_fit[2]),
-    exp = stats::qexp(p = c(0.50, 0.90, 0.95),
-                      rate = par_fit[1])
+    weibull = stats::qweibull(p = c(0.50, 0.90, 0.95), shape = par_fit[1], scale = par_fit[2]),
+    lnorm = stats::qlnorm(p = c(0.50, 0.90, 0.95), meanlog = par_fit[1], sdlog = par_fit[2]),
+    exp = stats::qexp(p = c(0.50, 0.90, 0.95), rate = par_fit[1])
   )
 
   # Create a tibble with the fit parameters

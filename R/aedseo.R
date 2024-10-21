@@ -23,7 +23,7 @@
 #' fraction of observables in the window of size k that are allowed to be NA.
 #' @param season_weeks A numeric vector of length 2, `c(start,end)`, with the
 #' start and end weeks of the seasons to stratify the observations by. Must
-#' spand the new year; ex: `season_weeks = c(21,20)`. Default, `NULL`, is no
+#' span the new year; ex: `season_weeks = c(21,20)`. Default, `NULL`, is no
 #' stratification by season.
 #'
 #' @return A `aedseo` object containing:
@@ -47,7 +47,7 @@
 #' @export
 #'
 #' @examples
-#' # Create a tsibble object from sample data
+#' # Create a tibble object from sample data
 #' tsd_data <- tsd(
 #'   observed = c(100, 120, 150, 180, 220, 270),
 #'   time = as.Date(c(
