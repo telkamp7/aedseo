@@ -1,4 +1,4 @@
-#' Fit a peak algorithm to time series observations in a set of seasons.
+#' Fit a peak algorithm to weighted time series observations.
 #'
 #' @description
 #' `r lifecycle::badge("stable")`
