@@ -83,10 +83,10 @@ explain the current intensity in relation to the peak of the season.
 obs = 10
 season = c("2018/2019", "2019/2020", "2020/2021")
 season_num_rev <- rev(seq(from = 1, to = length(season)))
-observations = rep(rnorm(10,obs), length(season))
+observations = rep(stats::rnorm(10,obs), length(season))
 
 # Add into a tibble with weight decreasing going one season step back
-peak_input <- tibble(
+peak_input <- tibble::tibble(
   observation = observations,
   weight = 0.8^rep(season_num_rev, each = obs),
   season = season[rep(seq(from = 1, to = length(season)), each = obs)]
