@@ -95,7 +95,7 @@ fit_peak <- function(
     init_params <- switch(family,
       weibull = log(c(1.5, mean(observations))),
       lnorm = c(mean(log(observations)),
-                sd(log(observations))),
+                stats::sd(log(observations))),
       exp = log(1.5)
     )
     return(init_params)
@@ -104,27 +104,30 @@ fit_peak <- function(
   # The weighted negative loglikelihood function
   nll <- function(par, weighted_observations, family = "weibull") {
     switch(family,
-      weibull = -sum(dweibull(weighted_observations$observation,
-                              shape = exp(par[1]), scale = exp(par[2]),
-                              log = TRUE) * weighted_observations$weight),
-      lnorm = -sum(dlnorm(weighted_observations$observation,
-                          meanlog =  par[1], sdlog = par[2],
-                          log = TRUE) * weighted_observations$weight),
-      exp =  -sum(dexp(weighted_observations$observation, rate = exp(par[1]),
-                       log = TRUE) * weighted_observations$weight)
+      weibull = -sum(stats::dweibull(weighted_observations$observation,
+                                     shape = exp(par[1]), scale = exp(par[2]),
+                                     log = TRUE) *
+                       weighted_observations$weight),
+      lnorm = -sum(stats::dlnorm(weighted_observations$observation,
+                                 meanlog =  par[1], sdlog = par[2],
+                                 log = TRUE) * weighted_observations$weight),
+      exp =  -sum(stats::dexp(weighted_observations$observation,
+                              rate = exp(par[1]),
+                              log = TRUE) * weighted_observations$weight)
     )
   }
 
   # Run optimisation for weighted observations
-  optim_obj <- optim(par = init_par_fun(family = family,
-                                        observations =
-                                          weighted_observations$observation),
-                     fn = nll,
-                     weighted_observations = weighted_observations,
-                     family = family,
-                     method = optim_method,
-                     lower = lower_optim,
-                     upper = upper_optim)
+  optim_obj <-
+    stats::optim(par = init_par_fun(family = family,
+                                    observations =
+                                      weighted_observations$observation),
+                 fn = nll,
+                 weighted_observations = weighted_observations,
+                 family = family,
+                 method = optim_method,
+                 lower = lower_optim,
+                 upper = upper_optim)
 
   # Back-transform optimized parameters to their original scale if needed.
   # This is done by exponentiating the parameters, as they were
