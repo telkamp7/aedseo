@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_peak.R
 \name{fit_peak}
 \alias{fit_peak}
-\title{Fit a peak algorithm to time series observations in a set of seasons.}
+\title{Fit a peak algorithm to weighted time series observations.}
 \usage{
 fit_peak(
   weighted_observations,
