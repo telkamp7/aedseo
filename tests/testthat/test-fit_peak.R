@@ -8,8 +8,7 @@ test_that("Can run the fit_peak fun without error", {
 
   peak_input <- tibble::tibble(
     observation = observations,
-    weight = 0.8^rep(season_num_rev, each = obs),
-    season = season[rep(seq(from = 1, to = length(season)), each = obs)]
+    weight = 0.8^rep(season_num_rev, each = obs)
   )
 
   expect_no_error(fit_peak(weighted_observations = peak_input))

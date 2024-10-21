@@ -11,7 +11,7 @@
 #' uses the peak observations from each previous season it can only
 #' explain the current intensity in relation to the peak of the season.
 #'
-#' @param weighted_observations A tibble containing three columns of size n;
+#' @param weighted_observations A tibble containing two columns of size n;
 #' `observation`, which represents the data points, and `weight`, which is the
 #' importance assigned to an observation. Higher weights indicate that an
 #' observation has more influence on the model outcome, while lower weights
@@ -62,8 +62,7 @@
 #' # Add into a tibble with weight decreasing going one season step back
 #' peak_input <- tibble::tibble(
 #'   observation = observations,
-#'   weight = 0.8^rep(season_num_rev, each = obs),
-#'   season = season[rep(seq(from = 1, to = length(season)), each = obs)]
+#'   weight = 0.8^rep(season_num_rev, each = obs)
 #' )
 #'
 #' # Use the peak model
@@ -86,6 +85,14 @@ fit_peak <- function(
   lower_optim = -Inf,
   upper_optim = Inf
 ) {
+  # Check input arguments
+  coll <- checkmate::makeAssertCollection()
+  checkmate::assert_tibble(weighted_observations, add = coll)
+  checkmate::assert_names(colnames(weighted_observations),
+                          identical.to = c("observation", "weight"), add = coll)
+  checkmate::assert_numeric(lower_optim, add = coll)
+  checkmate::assert_numeric(upper_optim, add = coll)
+  checkmate::reportAssertions(coll)
   # Match the arguements.
   family <- rlang::arg_match(family)
   optim_method <- rlang::arg_match(optim_method)

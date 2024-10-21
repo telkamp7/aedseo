@@ -14,7 +14,7 @@ fit_peak(
 )
 }
 \arguments{
-\item{weighted_observations}{A tibble containing three columns of size n;
+\item{weighted_observations}{A tibble containing two columns of size n;
 \code{observation}, which represents the data points, and \code{weight}, which is the
 importance assigned to an observation. Higher weights indicate that an
 observation has more influence on the model outcome, while lower weights
@@ -88,8 +88,7 @@ observations = rep(stats::rnorm(10,obs), length(season))
 # Add into a tibble with weight decreasing going one season step back
 peak_input <- tibble::tibble(
   observation = observations,
-  weight = 0.8^rep(season_num_rev, each = obs),
-  season = season[rep(seq(from = 1, to = length(season)), each = obs)]
+  weight = 0.8^rep(season_num_rev, each = obs)
 )
 
 # Use the peak model
