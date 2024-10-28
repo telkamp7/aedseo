@@ -1,5 +1,25 @@
 # aedseo (development version)
 
+# aedseo 0.1.3
+
+## Features
+
+* Added the compute_weigthed_intensity_levels function, which optimises a user selected distribution and calculates the intensity levels based on observations and weights. It is meant to be used within the soon coming intensity_level function.
+
+## Improvements
+
+* Improved the aedseo function to work with NA values. The user now defines how many NA values the function should allow in each k window.
+
+* Improved the `epi_calendar()` function to work for a season spanning new year.
+
+* The aedseo function now allows for the choice of adding season as an input argument.
+
+* Checkmate assertions have been added to all functions to enhance user feedback with clearer error messages and to ensure functions operate correctly by validating inputs.
+
+## Minor changes
+
+* The disease_threshold argument now reflects the disease threshold in one time step. If the total number of cases in a window of size k exceeds  `disease_threshold * k`, a seasonal onset alarm can be triggered.
+
 # aedseo 0.1.2
 
 ## Minor changes
@@ -34,7 +54,7 @@
 
 - Included the `fit_growth_rate` function, enabling users to fit growth rate models to time series observations.
 
-- Introduced the `predict` method for `aedseo` objects, which allows you to predict observations for future time steps given 
+- Introduced the `predict` method for `aedseo` objects, which allows you to predict observations for future time steps given
 the growth rates.
 
 - Added the `summary` method for `aedseo` objects, providing a comprehensive summary of the results.
