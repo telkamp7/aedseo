@@ -14,7 +14,7 @@ compute_weighted_intensity_levels(
 )
 }
 \arguments{
-\item{weighted_observations}{A tibble containing two columns of length n; \code{observation}, which contains the data
+\item{weighted_observations}{A tibble containing two columns of length n; \code{observed}, which contains the data
 points, and \code{weight}, which is the importance assigned to the observation. Higher weights indicate that an
 observation has more influence on the model outcome, while lower weights reduce its impact.}
 
@@ -77,7 +77,7 @@ observations <- rep(stats::rnorm(10, obs), length(season))
 
 # Add into a tibble with decreasing weight for older seasons
 data_input <- tibble::tibble(
-  observation = observations,
+  observed = observations,
   weight = 0.8^rep(season_num_rev, each = obs)
 )
 

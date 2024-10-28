@@ -14,7 +14,7 @@ intensity_levels(
 )
 }
 \arguments{
-\item{tsd}{A \code{aedseo_tsd} object containing time series data with 'time' and 'observed.}
+\item{tsd}{A \code{aedseo_tsd} object containing time series data with 'time' and 'observed'.}
 
 \item{decay_factor}{A numeric value between 0 and 1, that specifies the weight applied to previous seasons in
 calculations. It is used as \code{memory_factor}^(seasons back), whereby the weight for the most recent season will be
@@ -22,12 +22,15 @@ calculations. It is used as \code{memory_factor}^(seasons back), whereby the wei
 previous seasons increases, the influence of older seasons diminishes exponentially.}
 
 \item{disease_threshold}{An integer specifying the threshold for considering a disease outbreak. It defines the per
-time-step disease threshold that has to be surpassed for the observation to be included in the calculations.
-#' @param n_peak A numeric value specifying the number of peak observations to be selected from each season in the
+time-step disease threshold that has to be surpassed for the observation to be included in the calculations.}
+
+\item{n_peak}{A numeric value specifying the number of peak observations to be selected from each season in the
 intensity level calculations. The n_peak observations have to surpass the disease_threshold to be included.}
 
 \item{season_weeks}{A numeric vector of length 2, \code{c(start,end)}, with the start and end weeks of the seasons to
 stratify the observations by. Must span the new year; ex: \code{season_weeks = c(21, 20)}.}
+
+\item{...}{arguments that can be passed to the \code{compute_weighted_intensity_levels} function.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
