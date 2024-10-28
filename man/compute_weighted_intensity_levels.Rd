@@ -18,7 +18,8 @@ compute_weighted_intensity_levels(
 points, and \code{weight}, which is the importance assigned to the observation. Higher weights indicate that an
 observation has more influence on the model outcome, while lower weights reduce its impact.}
 
-\item{conf_levels}{The confidence levels for parameter estimates, a numeric vector of length 3.}
+\item{conf_levels}{The confidence levels for parameter estimates, a numeric vector of length 3. The three values
+have to be unique and in ascending order, such as the low level is first and high level is last.}
 
 \item{family}{A character string specifying the family for modeling. Choose between "weibull", "lnorm" or "exp".}
 
@@ -33,9 +34,9 @@ If using the exp family it is recommended to use Brent as it is a one-dimensiona
 \value{
 A tibble containing:
 \itemize{
-\item 'high_level': The highest peak intensity level
-\item 'medium_level': The medium peak intensity level
 \item 'low_level': The lowest intensity level
+\item 'medium_level': The medium intensity level
+\item 'high_level': The highest intensity level
 \item 'optim_fit_par_1': The first fit parameter for the chosen family.
 \itemize{
 \item For 'weibull': Shape parameter (k).
@@ -75,13 +76,13 @@ season_num_rev <- rev(seq(from = 1, to = length(season)))
 observations = rep(stats::rnorm(10,obs), length(season))
 
 # Add into a tibble with weight decreasing going one season step back
-peak_input <- tibble::tibble(
+data_input <- tibble::tibble(
   observation = observations,
   weight = 0.8^rep(season_num_rev, each = obs)
 )
 
-# Use the peak model
-compute_weighted_intensity_levels(weighted_observations = peak_input,
+# Use the model
+compute_weighted_intensity_levels(weighted_observations = data_input,
                                   conf_levels = c(0.50, 0.90, 0.95),
                                   family = "weibull")
 }

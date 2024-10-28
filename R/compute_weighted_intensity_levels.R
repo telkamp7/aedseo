@@ -9,7 +9,8 @@
 #' @param weighted_observations A tibble containing two columns of length n; `observation`, which contains the data
 #' points, and `weight`, which is the importance assigned to the observation. Higher weights indicate that an
 #' observation has more influence on the model outcome, while lower weights reduce its impact.
-#' @param conf_levels The confidence levels for parameter estimates, a numeric vector of length 3.
+#' @param conf_levels The confidence levels for parameter estimates, a numeric vector of length 3. The three values
+#' have to be unique and in ascending order, such as the low level is first and high level is last.
 #' @param family A character string specifying the family for modeling. Choose between "weibull", "lnorm" or "exp".
 #' @param optim_method A character string specifying the method to be used in the optimisation. Lookup `?optim::stats`
 #' for details about methods.
@@ -18,9 +19,9 @@
 #' @param upper_optim A numeric value for the optimisation. Default is Inf.
 #'
 #' @return A tibble containing:
-#'   - 'high_level': The highest peak intensity level
-#'   - 'medium_level': The medium peak intensity level
 #'   - 'low_level': The lowest intensity level
+#'   - 'medium_level': The medium intensity level
+#'   - 'high_level': The highest intensity level
 #'   - 'optim_fit_par_1': The first fit parameter for the chosen family.
 #'       - For 'weibull': Shape parameter (k).
 #'       - For 'lnorm': Mean of the log-transformed observations.
@@ -49,13 +50,13 @@
 #' observations = rep(stats::rnorm(10,obs), length(season))
 #'
 #' # Add into a tibble with weight decreasing going one season step back
-#' peak_input <- tibble::tibble(
+#' data_input <- tibble::tibble(
 #'   observation = observations,
 #'   weight = 0.8^rep(season_num_rev, each = obs)
 #' )
 #'
-#' # Use the peak model
-#' compute_weighted_intensity_levels(weighted_observations = peak_input,
+#' # Use the model
+#' compute_weighted_intensity_levels(weighted_observations = data_input,
 #'                                   conf_levels = c(0.50, 0.90, 0.95),
 #'                                   family = "weibull")
 
@@ -77,7 +78,8 @@ compute_weighted_intensity_levels <- function(
   # Check input arguments
   coll <- checkmate::makeAssertCollection()
   checkmate::assert_tibble(weighted_observations, add = coll)
-  checkmate::assert_numeric(conf_levels, lower = 0, upper = 1, len = 3)
+  checkmate::assert_numeric(conf_levels, lower = 0, upper = 1, len = 3,
+                            unique = TRUE, sorted = TRUE, add = coll)
   checkmate::assert_names(colnames(weighted_observations),
                           identical.to = c("observation", "weight"), add = coll)
   checkmate::assert_numeric(lower_optim, add = coll)
@@ -91,8 +93,7 @@ compute_weighted_intensity_levels <- function(
   init_par_fun <- function(family, observations) {
     init_params <- switch(family,
       weibull = log(c(1.5, mean(observations))),
-      lnorm = c(mean(log(observations)),
-                stats::sd(log(observations))),
+      lnorm = c(mean(log(observations)), stats::sd(log(observations))),
       exp = log(1.5)
     )
     return(init_params)
@@ -137,9 +138,9 @@ compute_weighted_intensity_levels <- function(
 
   # Create a tibble with the fit parameters
   optim_results <- tibble::tibble(
-    high_level = quantiles[3],
-    medium_level = quantiles[2],
     low_level = quantiles[1],
+    medium_level = quantiles[2],
+    high_level = quantiles[3],
     optim_fit_par_1 = par_fit[1],
     optim_fit_par_2 = ifelse(length(par_fit) == 2, par_fit[2], NA),
     obj_value = optim_obj$value,
