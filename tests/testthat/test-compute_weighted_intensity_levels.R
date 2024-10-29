@@ -1,6 +1,6 @@
 test_that("Test if checkmate checks work", {
 
-  # Weibull fit
+  # Create data
   obs <- 10
   season <- c("2018/2019", "2019/2020", "2020/2021")
   season_num_rev <- rev(seq(from = 1, to = length(season)))
@@ -17,7 +17,8 @@ test_that("Test if checkmate checks work", {
                                                     lower_optim = 0,
                                                     upper_optim = 1000))
 
-expect_error(compute_weighted_intensity_levels(weighted_observations = peak_input, conf_levels = c(0.2, 0.9, 0.9)))
-expect_error(compute_weighted_intensity_levels(weighted_observations = peak_input, conf_levels = c(0.9, 0.7, 0.2)))
+  # Test conf_levels checkmate
+  expect_error(compute_weighted_intensity_levels(weighted_observations = peak_input, conf_levels = c(0.2, 0.9, 0.9)))
+  expect_error(compute_weighted_intensity_levels(weighted_observations = peak_input, conf_levels = c(0.9, 0.7, 0.2)))
 
 })
