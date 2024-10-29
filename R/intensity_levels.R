@@ -7,13 +7,13 @@
 #' It uses the previous seasons to calculate the intensity levels of the newest season.
 #' It can provide two different types of intensity levels, by using one of following functions:
 #' - `compute_weighted_intensity_levels` which calculates the lower, medium and high intensity levels.
-#' - `compute_even_log_intensity_levels` which calculates the very low, low, medium and high
+#' - `compute_relative_dist_intensity_levels` which calculates the very low, low, medium and high
 #'    intensity levels with use of the highest intensity level from `compute_weighted_intensity_levels`
 #'    as the high intensity level and the disease_threshold as the very low intensity level.
 #'
 #' @param tsd A `aedseo_tsd` object containing time series data with 'time' and 'observed'.
 #' @param decay_factor A numeric value between 0 and 1, that specifies the weight applied to previous seasons in
-#' calculations. It is used as `memory_factor`^(seasons back), whereby the weight for the most recent season will be
+#' calculations. It is used as `decay_factor`^(seasons back), whereby the weight for the most recent season will be
 #' 0.8^0 = 1. This parameter allows for a decreasing weight assigned to prior seasons, such that as the number of
 #' previous seasons increases, the influence of older seasons diminishes exponentially.
 #' @param disease_threshold An integer specifying the threshold for considering a disease outbreak. It defines the per
