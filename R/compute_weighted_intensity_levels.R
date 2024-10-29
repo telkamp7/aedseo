@@ -102,10 +102,10 @@ compute_weighted_intensity_levels <- function(
   # The weighted negative loglikelihood function
   nll <- function(par, weighted_observations, family = family) {
     log_probability <- switch(family,
-      weibull = stats::dweibull(weighted_observations$observation, shape = exp(par[1]), scale = exp(par[2]),
+      weibull = stats::dweibull(weighted_observations$observed, shape = exp(par[1]), scale = exp(par[2]),
                                 log = TRUE),
-      lnorm = stats::dlnorm(weighted_observations$observation, meanlog =  par[1], sdlog = par[2], log = TRUE),
-      exp = stats::dexp(weighted_observations$observation, rate = exp(par[1]), log = TRUE)
+      lnorm = stats::dlnorm(weighted_observations$observed, meanlog =  par[1], sdlog = par[2], log = TRUE),
+      exp = stats::dexp(weighted_observations$observed, rate = exp(par[1]), log = TRUE)
     )
     return(-sum(log_probability * weighted_observations$weight))
   }
