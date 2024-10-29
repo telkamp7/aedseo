@@ -144,7 +144,7 @@ compute_weighted_intensity_levels <- function(
     optim_fit_par_1 = par_fit[1],
     optim_fit_par_2 = ifelse(length(par_fit) == 2, par_fit[2], NA),
     obj_value = optim_obj$value,
-    converged = ifelse(optim_obj$convergence == 0, TRUE, FALSE),
+    converged = optim_obj$convergence == 0,
     family = family
   )
 
