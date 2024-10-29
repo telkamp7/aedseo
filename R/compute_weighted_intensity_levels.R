@@ -44,12 +44,12 @@
 #'
 #' @examples
 #' # Create three seasons with random observations
-#' obs = 10
-#' season = c("2018/2019", "2019/2020", "2020/2021")
+#' obs <- 10
+#' season <- c("2018/2019", "2019/2020", "2020/2021")
 #' season_num_rev <- rev(seq(from = 1, to = length(season)))
-#' observations <- rep(stats::rnorm(10,obs), length(season))
+#' observations <- rep(stats::rnorm(10, obs), length(season))
 #'
-#' Add into a tibble with decreasing weight for older seasons
+#' # Add into a tibble with decreasing weight for older seasons
 #' data_input <- tibble::tibble(
 #'   observation = observations,
 #'   weight = 0.8^rep(season_num_rev, each = obs)
@@ -102,11 +102,11 @@ compute_weighted_intensity_levels <- function(
   # The weighted negative loglikelihood function
   nll <- function(par, weighted_observations, family = family) {
     log_probability <- switch(family,
-      weibull = stats::dweibull(weighted_observations$observation, shape = exp(par[1]), scale = exp(par[2]), log = TRUE),
+      weibull = stats::dweibull(weighted_observations$observation, shape = exp(par[1]), scale = exp(par[2]),
+                                log = TRUE),
       lnorm = stats::dlnorm(weighted_observations$observation, meanlog =  par[1], sdlog = par[2], log = TRUE),
-      exp = stats::dexp(weighted_observations$observation, rate = exp(par[1]), log = TRUE) 
+      exp = stats::dexp(weighted_observations$observation, rate = exp(par[1]), log = TRUE)
     )
-    
     return(-sum(log_probability * weighted_observations$weight))
   }
 
@@ -128,11 +128,11 @@ compute_weighted_intensity_levels <- function(
     exp = c(exp(optim_obj$par), NA)
   )
 
-  # Calculate the low, medium, high intensity levels based on input `conf_level`
+  # Calculate the low, medium, high intensity levels based on input `conf_levels`
   quantiles <- switch(family,
-    weibull = stats::qweibull(p = conf_level, shape = par_fit[1], scale = par_fit[2]),
-    lnorm = stats::qlnorm(p = conf_level, meanlog = par_fit[1], sdlog = par_fit[2]),
-    exp = stats::qexp(p = conf_level, rate = par_fit[1])
+    weibull = stats::qweibull(p = conf_levels, shape = par_fit[1], scale = par_fit[2]),
+    lnorm = stats::qlnorm(p = conf_levels, meanlog = par_fit[1], sdlog = par_fit[2]),
+    exp = stats::qexp(p = conf_levels, rate = par_fit[1])
   )
 
   # Create a tibble with the fit parameters

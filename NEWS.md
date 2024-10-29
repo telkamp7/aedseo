@@ -10,7 +10,7 @@
 
 * The `aedseo()` function now allows for the choice of adding season as an input argument (#34).
 
-* `{{checkmate}}` assertions have been added to enhance user feedback with clearer error messages and to ensure functions operate correctly by validating inputs (#33).
+* `{checkmate}` assertions have been added to enhance user feedback with clearer error messages and to ensure functions operate correctly by validating inputs (#33).
 
 * Improved the `aedseo()` function to work with `NA` values. The user now defines how many `NA` values the function should allow in each window (#32).
 

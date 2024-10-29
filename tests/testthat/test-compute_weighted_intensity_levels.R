@@ -1,4 +1,4 @@
-test_that("Can run the compute_weighted_intensity_levels fun without error", {
+test_that("Test if checkmate checks work", {
 
   # Weibull fit
   obs <- 10
@@ -10,20 +10,14 @@ test_that("Can run the compute_weighted_intensity_levels fun without error", {
     observation = observations,
     weight = 0.8^rep(season_num_rev, each = obs)
   )
-
-  expect_no_error(compute_weighted_intensity_levels(weighted_observations = peak_input))
-
   # Exp fit
   expect_no_error(compute_weighted_intensity_levels(weighted_observations = peak_input,
                                                     family = "exp",
                                                     optim_method = "Brent",
                                                     lower_optim = 0,
                                                     upper_optim = 1000))
-})
 
-test_that("Can checkmate checks work", {
-
-  expect_error(compute_weighted_intensity_levels(weighted_observations = peak_input, conf_levels = c(0.2, 0.9, 0.9)))
-  expect_error(compute_weighted_intensity_levels(weighted_observations = peak_input, conf_levels = c(0.9, 0.7, 0.2)))
+expect_error(compute_weighted_intensity_levels(weighted_observations = peak_input, conf_levels = c(0.2, 0.9, 0.9)))
+expect_error(compute_weighted_intensity_levels(weighted_observations = peak_input, conf_levels = c(0.9, 0.7, 0.2)))
 
 })

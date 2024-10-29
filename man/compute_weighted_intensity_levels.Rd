@@ -27,9 +27,9 @@ have to be unique and in ascending order, such as the low level is first and hig
 for details about methods.
 If using the exp family it is recommended to use Brent as it is a one-dimensional optimisation.}
 
-\item{lower_optim}{A numeric value for the optimisation. Default is -Inf.}
+\item{lower_optim}{A numeric value for the optimisation.}
 
-\item{upper_optim}{A numeric value for the optimisation. Default is Inf.}
+\item{upper_optim}{A numeric value for the optimisation.}
 }
 \value{
 A tibble containing:
@@ -70,12 +70,12 @@ high intensity levels, that predict the intensity levels of the next series of o
 }
 \examples{
 # Create three seasons with random observations
-obs = 10
-season = c("2018/2019", "2019/2020", "2020/2021")
+obs <- 10
+season <- c("2018/2019", "2019/2020", "2020/2021")
 season_num_rev <- rev(seq(from = 1, to = length(season)))
-observations = rep(stats::rnorm(10,obs), length(season))
+observations <- rep(stats::rnorm(10, obs), length(season))
 
-# Add into a tibble with weight decreasing going one season step back
+# Add into a tibble with decreasing weight for older seasons
 data_input <- tibble::tibble(
   observation = observations,
   weight = 0.8^rep(season_num_rev, each = obs)
