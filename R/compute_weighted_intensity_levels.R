@@ -15,8 +15,8 @@
 #' @param optim_method A character string specifying the method to be used in the optimisation. Lookup `?optim::stats`
 #' for details about methods.
 #' If using the exp family it is recommended to use Brent as it is a one-dimensional optimisation.
-#' @param lower_optim A numeric value for the optimisation. Default is -Inf.
-#' @param upper_optim A numeric value for the optimisation. Default is Inf.
+#' @param lower_optim A numeric value for the optimisation.
+#' @param upper_optim A numeric value for the optimisation.
 #'
 #' @return A tibble containing:
 #'   - 'low_level': The lowest intensity level
@@ -47,9 +47,9 @@
 #' obs = 10
 #' season = c("2018/2019", "2019/2020", "2020/2021")
 #' season_num_rev <- rev(seq(from = 1, to = length(season)))
-#' observations = rep(stats::rnorm(10,obs), length(season))
+#' observations <- rep(stats::rnorm(10,obs), length(season))
 #'
-#' # Add into a tibble with weight decreasing going one season step back
+#' Add into a tibble with decreasing weight for older seasons
 #' data_input <- tibble::tibble(
 #'   observation = observations,
 #'   weight = 0.8^rep(season_num_rev, each = obs)

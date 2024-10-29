@@ -1,24 +1,22 @@
 # aedseo (development version)
 
-# aedseo 0.1.3
-
 ## Features
 
-* Added the compute_weigthed_intensity_levels function, which optimises a user selected distribution and calculates the intensity levels based on observations and weights. It is meant to be used within the soon coming intensity_level function.
+* Added the `compute_weighted_intensity_levels()` function, which optimises a user selected distribution and calculates the intensity levels based on observations and weights. It is meant to be used within the soon coming `intensity_level()` function (#35).
 
 ## Improvements
 
-* Improved the aedseo function to work with NA values. The user now defines how many NA values the function should allow in each k window.
+* Improved the `epi_calendar()` function to work for a season spanning new year (#34).
 
-* Improved the `epi_calendar()` function to work for a season spanning new year.
+* The `aedseo()` function now allows for the choice of adding season as an input argument (#34).
 
-* The aedseo function now allows for the choice of adding season as an input argument.
+* `{{checkmate}}` assertions have been added to enhance user feedback with clearer error messages and to ensure functions operate correctly by validating inputs (#33).
 
-* Checkmate assertions have been added to all functions to enhance user feedback with clearer error messages and to ensure functions operate correctly by validating inputs.
+* Improved the `aedseo()` function to work with `NA` values. The user now defines how many `NA` values the function should allow in each window (#32).
 
 ## Minor changes
 
-* The disease_threshold argument now reflects the disease threshold in one time step. If the total number of cases in a window of size k exceeds  `disease_threshold * k`, a seasonal onset alarm can be triggered.
+* The `disease_threshold` argument now reflects the disease threshold in one time step. If the total number of cases in a window of size `k` exceeds  `disease_threshold * k`, a seasonal onset alarm can be triggered (#32).
 
 # aedseo 0.1.2
 
