@@ -131,9 +131,9 @@ compute_weighted_intensity_levels <- function(
 
   # Calculate the low, medium, high intensity levels based on input `conf_level`
   quantiles <- switch(family,
-    weibull = stats::qweibull(p = c(0.50, 0.90, 0.95), shape = par_fit[1], scale = par_fit[2]),
-    lnorm = stats::qlnorm(p = c(0.50, 0.90, 0.95), meanlog = par_fit[1], sdlog = par_fit[2]),
-    exp = stats::qexp(p = c(0.50, 0.90, 0.95), rate = par_fit[1])
+    weibull = stats::qweibull(p = conf_level, shape = par_fit[1], scale = par_fit[2]),
+    lnorm = stats::qlnorm(p = conf_level, meanlog = par_fit[1], sdlog = par_fit[2]),
+    exp = stats::qexp(p = conf_level, rate = par_fit[1])
   )
 
   # Create a tibble with the fit parameters
