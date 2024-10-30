@@ -2,6 +2,8 @@
 
 ## Features
 
+* Added the `intensity_levels()` function, which currently calculates peak intensity levels with the `compute_weighted_intensity_levels()` function for the newest season in input tsd data. Soon the `compute_relative_dist_intensity_levels()` function will be an option to calculate intensity levels in the `intensity_levels()` function (#36).
+
 * Added the `compute_weighted_intensity_levels()` function, which optimises a user selected distribution and calculates the intensity levels based on observations and weights. It is meant to be used within the soon coming `intensity_level()` function (#35).
 
 ## Improvements
