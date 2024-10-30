@@ -44,22 +44,34 @@ intensity_levels <- function(
                                null.ok = FALSE, add = coll)
   checkmate::reportAssertions(coll)
 
-  # Add the seasons and weights to tsd
-  tsd <- tsd |>
+  # Add the seasons to data
+  seasonal_tsd <- tsd |>
     dplyr::mutate(season = epi_calendar(.data$time, start = season_weeks[1], end = season_weeks[2])) |>
-    dplyr::arrange(dplyr::desc(.data$season)) |>
+    dplyr::arrange(dplyr::desc(.data$season))
+
+  # Add weights and remove newest season to get predictions for this season
+  weighted_seasonal_tsd <- seasonal_tsd |>
+    dplyr::filter(!.data$season == max(.data$season)) |>
     dplyr::mutate(year = purrr::map_chr(.data$season, ~ strsplit(.x, "/")[[1]][2]) |>
                     as.numeric()) |>
     dplyr::mutate(weight = decay_factor^(max(.data$year) - .data$year))
 
-  # Select n_peak highest observations and run compute_weighted_intensity_levels algo on data
-  season_levels <- tsd |>
+  # Select n_peak highest observations and filter observations >= disease_threshold
+  season_observations_and_weights <- weighted_seasonal_tsd |>
     dplyr::select(-c("year", "time")) |>
     dplyr::group_by(.data$season) |>
     dplyr::slice_max(.data$observed, n = n_peak, with_ties = FALSE) |>
     dplyr::filter(.data$observed >= disease_threshold) |>
-    dplyr::group_modify(\(.x, .y) compute_weighted_intensity_levels(weighted_observations = .x, ...)) |>
     dplyr::ungroup()
 
-  return(season_levels)
+  # Run `compute_weighted_intensity_levels` on data to get peak intensity levels
+  computed_peak_levels <- compute_weighted_intensity_levels(weighted_observations = season_observations_and_weights |>
+                                                              dplyr::select(.data$observed, .data$weight), ...)
+
+  # Select the newest season for intensity level output
+  season_peak_levels <- computed_peak_levels |>
+    dplyr::mutate(season = unique(max(seasonal_tsd$season))) |>
+    dplyr::relocate(.data$season, .before = dplyr::everything())
+
+  return(season_peak_levels)
 }
