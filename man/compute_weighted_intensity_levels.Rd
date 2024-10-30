@@ -2,7 +2,7 @@
 % Please edit documentation in R/compute_weighted_intensity_levels.R
 \name{compute_weighted_intensity_levels}
 \alias{compute_weighted_intensity_levels}
-\title{Compute intensity levels with weighted time series observations.}
+\title{Compute intensity levels with weighted time series observations (quantile model).}
 \usage{
 compute_weighted_intensity_levels(
   weighted_observations,
@@ -34,9 +34,9 @@ If using the exp family it is recommended to use Brent as it is a one-dimensiona
 \value{
 A tibble containing:
 \itemize{
-\item 'low_level': The lowest intensity level
+\item 'low_level': The low intensity level
 \item 'medium_level': The medium intensity level
-\item 'high_level': The highest intensity level
+\item 'high_level': The high intensity level
 \item 'optim_fit_par_1': The first fit parameter for the chosen family.
 \itemize{
 \item For 'weibull': Shape parameter (k).

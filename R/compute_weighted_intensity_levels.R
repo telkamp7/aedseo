@@ -1,4 +1,4 @@
-#' Compute intensity levels with weighted time series observations.
+#' Compute intensity levels with weighted time series observations (quantile model).
 #'
 #' @description
 #' `r lifecycle::badge("stable")`
@@ -19,9 +19,9 @@
 #' @param upper_optim A numeric value for the optimisation.
 #'
 #' @return A tibble containing:
-#'   - 'low_level': The lowest intensity level
+#'   - 'low_level': The low intensity level
 #'   - 'medium_level': The medium intensity level
-#'   - 'high_level': The highest intensity level
+#'   - 'high_level': The high intensity level
 #'   - 'optim_fit_par_1': The first fit parameter for the chosen family.
 #'       - For 'weibull': Shape parameter (k).
 #'       - For 'lnorm': Mean of the log-transformed observations.
