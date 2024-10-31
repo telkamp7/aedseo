@@ -40,6 +40,7 @@ Imports:
     purrr,
     rlang,
     stats,
+    stringr,
     tibble
 Config/Needs/website: rmarkdown
 VignetteBuilder: knitr
