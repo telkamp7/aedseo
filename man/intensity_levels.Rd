@@ -2,7 +2,7 @@
 % Please edit documentation in R/intensity_levels.R
 \name{intensity_levels}
 \alias{intensity_levels}
-\title{Compute intensity levels with seasonal time series observations.}
+\title{Compute burden levels with seasonal time series observations.}
 \usage{
 intensity_levels(
   tsd,
@@ -25,23 +25,55 @@ the influence of older seasons diminishes exponentially.}
 time-step disease threshold that has to be surpassed for the observation to be included in the calculations.}
 
 \item{n_peak}{A numeric value specifying the number of peak observations to be selected from each season in the
-intensity level calculations. The \code{n_peak} observations have to surpass the \code{disease_threshold} to be included.}
+level calculations. The \code{n_peak} observations have to surpass the \code{disease_threshold} to be included.}
 
 \item{season_weeks}{A numeric vector of length 2, \code{c(start, end)}, with the start and end weeks of the seasons to
 stratify the observations by. Must span the new year; e.g.: \code{season_weeks = c(21, 20)}.}
 
 \item{...}{arguments that can be passed to the \code{compute_weighted_intensity_levels()} function.}
+
+\item{method}{A character string specifying the model to be used in the level calculations.
+Choose between intensity_levels or peak_levels. Both model predict the levels of the next series of observations.
+\itemize{
+\item \code{intensity_levels}: models the risk compared to what has been observed in previous years.
+\item \code{peak_levels}: models the risk compared to what has been observed in the \code{n_peak} observations each season.
+}}
+}
+\value{
+A tibble containing:
+\itemize{
+\item 'very_low_level': The very low burden level
+\item 'low_level': The low burden level
+\item 'medium_level': The medium burden level
+\item 'high_level': The high burden level
+\item 'optim_fit_par_1': The first fit parameter for the chosen family.
+\itemize{
+\item For 'weibull': Shape parameter (k).
+\item For 'lnorm': Mean of the log-transformed observations.
+\item For 'exp': Rate parameter (λ).
+}
+\item 'optim_fit_par_2': The second fit parameter for the chosen family.
+\itemize{
+\item For 'weibull': Scale parameter (λ).
+\item For 'lnorm': Standard deviation of the log-transformed observations.
+\item For 'exp': Not applicable (set to NA).
+}
+\item 'obj_value': The value of the objective function
+(negative log-likelihood), which represent the minimized objective
+function value from the optimisation. Smaller value equals better
+optimisation.
+\item 'converged': Logical. TRUE if the optimisation converged.
+\item 'family': The distribution family used for the optimization.
+\itemize{
+\item 'weibull': Uses the Weibull distribution for fitting.
+\item 'lnorm': Uses the Log-normal distribution for fitting.
+\item 'exp': Uses the Exponential distribution for fitting.
+}
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This function calculates the intensity levels of time series of observations that are stratified by season.
-It uses the previous seasons to calculate the intensity levels of the newest season.
-It can provide two different types of intensity levels, by using one of following functions:
-\itemize{
-\item \code{compute_weighted_intensity_levels()} which calculates the "low", "medium" and "high" intensity levels.
-\item \code{compute_relative_dist_intensity_levels()} which calculates the "very low", "low", "medium" and "high"
-intensity levels with use of the highest intensity level from \code{compute_weighted_intensity_levels()}
-as the high intensity level and the disease_threshold as the very low intensity level.
-}
+This function calculates the burden levels of time series of observations that are stratified by season.
+It uses the previous seasons to calculate the levels of the newest season.
 }

@@ -31,8 +31,7 @@ test_that("Test that input argument checks work", {
 
   expect_error(
     checkmate_err_msg(intensity_levels(tsd_data, disease_threshold = "hey"),
-      "'disease_threshold': Must be of type 'integerish', not 'character'.",
-      fixed = TRUE
+      "'disease_threshold': Must be of type 'integerish', not 'character'."
     )
   )
 
