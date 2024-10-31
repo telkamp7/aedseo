@@ -17,31 +17,31 @@ intensity_levels(
 \item{tsd}{A \code{aedseo_tsd} object containing time series data with 'time' and 'observed'.}
 
 \item{decay_factor}{A numeric value between 0 and 1, that specifies the weight applied to previous seasons in
-calculations. It is used as \code{decay_factor}^(seasons back), whereby the weight for the most recent season will be
-0.8^0 = 1. This parameter allows for a decreasing weight assigned to prior seasons, such that as the number of
-previous seasons increases, the influence of older seasons diminishes exponentially.}
+calculations. It is used as \code{decay_factor}^(number of seasons back), whereby the weight for the most recent season
+will be \code{decay_factor}^0 = 1. This parameter allows for a decreasing weight assigned to prior seasons, such that
+the influence of older seasons diminishes exponentially.}
 
 \item{disease_threshold}{An integer specifying the threshold for considering a disease outbreak. It defines the per
 time-step disease threshold that has to be surpassed for the observation to be included in the calculations.}
 
 \item{n_peak}{A numeric value specifying the number of peak observations to be selected from each season in the
-intensity level calculations. The n_peak observations have to surpass the disease_threshold to be included.}
+intensity level calculations. The \code{n_peak} observations have to surpass the \code{disease_threshold} to be included.}
 
-\item{season_weeks}{A numeric vector of length 2, \code{c(start,end)}, with the start and end weeks of the seasons to
-stratify the observations by. Must span the new year; ex: \code{season_weeks = c(21, 20)}.}
+\item{season_weeks}{A numeric vector of length 2, \code{c(start, end)}, with the start and end weeks of the seasons to
+stratify the observations by. Must span the new year; e.g.: \code{season_weeks = c(21, 20)}.}
 
-\item{...}{arguments that can be passed to the \code{compute_weighted_intensity_levels} function.}
+\item{...}{arguments that can be passed to the \code{compute_weighted_intensity_levels()} function.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This function calculates the intensity levels of time series observations that are stratified by season.
+This function calculates the intensity levels of time series of observations that are stratified by season.
 It uses the previous seasons to calculate the intensity levels of the newest season.
 It can provide two different types of intensity levels, by using one of following functions:
 \itemize{
-\item \code{compute_weighted_intensity_levels} which calculates the lower, medium and high intensity levels.
-\item \code{compute_relative_dist_intensity_levels} which calculates the very low, low, medium and high
-intensity levels with use of the highest intensity level from \code{compute_weighted_intensity_levels}
+\item \code{compute_weighted_intensity_levels()} which calculates the "low", "medium" and "high" intensity levels.
+\item \code{compute_relative_dist_intensity_levels()} which calculates the "very low", "low", "medium" and "high"
+intensity levels with use of the highest intensity level from \code{compute_weighted_intensity_levels()}
 as the high intensity level and the disease_threshold as the very low intensity level.
 }
 }
