@@ -11,7 +11,7 @@ test_that("Test if checkmate checks work", {
     weight = 0.8^rep(season_num_rev, each = obs)
   )
 
-  fit_quantiles(weighted_observations = peak_input, conf_levels = c(0.1,0.2,0.4,0.8,0.9))
+  fit_quantiles(weighted_observations = peak_input, conf_levels = c(0.1, 0.2, 0.4, 0.8, 0.9))
 
   # Exp fit
   expect_no_error(fit_quantiles(weighted_observations = peak_input,

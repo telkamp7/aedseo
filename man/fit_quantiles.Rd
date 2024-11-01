@@ -38,13 +38,13 @@ A list containing:
 \item 'quantiles': The quantile results from the fit.
 \item 'par': The fit parameters for the chosen family.
 \itemize{
-\item par\link{1}:
+\item par_1:
 \itemize{
 \item For 'weibull': Shape parameter (k).
 \item For 'lnorm': Mean of the log-transformed observations.
 \item For 'exp': Rate parameter (λ).
 }
-\item 'par\link{2}':
+\item 'par_2':
 \itemize{
 \item For 'weibull': Scale parameter (λ).
 \item For 'lnorm': Standard deviation of the log-transformed observations.
@@ -82,7 +82,8 @@ data_input <- tibble::tibble(
 )
 
 # Use the model
-fit_quantiles(weighted_observations = data_input,
+quantile_results <- fit_quantiles(weighted_observations = data_input,
                                   conf_levels = c(0.50, 0.90, 0.95),
                                   family = "weibull")
+print(quantile_results)
 }

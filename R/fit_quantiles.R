@@ -22,11 +22,11 @@
 #'   - 'conf_levels': The conf_levels chosen to fit the quantiles.
 #'   - 'quantiles': The quantile results from the fit.
 #'   - 'par': The fit parameters for the chosen family.
-#'       - par[1]:
+#'       - par_1:
 #'          - For 'weibull': Shape parameter (k).
 #'          - For 'lnorm': Mean of the log-transformed observations.
 #'          - For 'exp': Rate parameter (λ).
-#'       - 'par[2]':
+#'       - 'par_2':
 #'          - For 'weibull': Scale parameter (λ).
 #'          - For 'lnorm': Standard deviation of the log-transformed observations.
 #'          - For 'exp': Not applicable (set to NA).
@@ -54,10 +54,10 @@
 #' )
 #'
 #' # Use the model
-#' fit_quantiles(weighted_observations = data_input,
+#' quantile_results <- fit_quantiles(weighted_observations = data_input,
 #'                                   conf_levels = c(0.50, 0.90, 0.95),
 #'                                   family = "weibull")
-
+#' print(quantile_results)
 fit_quantiles <- function(
   weighted_observations,
   conf_levels = c(0.50, 0.90, 0.95),
@@ -136,7 +136,7 @@ fit_quantiles <- function(
   # Create return fit parameters
   return(list(
     conf_levels = conf_levels,
-    quantiles = as.numeric(quantiles),
+    values = as.numeric(quantiles),
     par = list(par_fit[1], ifelse(length(par_fit) == 2, par_fit[2], NA)),
     obj_value = optim_obj$value,
     converged = optim_obj$convergence == 0,
