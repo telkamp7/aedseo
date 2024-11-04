@@ -16,7 +16,7 @@ seasonal_burden_levels(
 )
 }
 \arguments{
-\item{tsd}{A \code{aedseo_tsd} object containing time series data with 'time' and 'observed'.}
+\item{tsd}{A \code{aedseo_tsd} object containing time series data with 'time' and 'observation'.}
 
 \item{season_weeks}{A numeric vector of length 2, \code{c(start, end)}, with the start and end weeks of the seasons to
 stratify the observations by. Must span the new year; e.g.: \code{season_weeks = c(21, 20)}.
@@ -88,8 +88,6 @@ objective function value from the optimisation. Smaller value equals better opti
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 This function calculates the burden levels of time series of observations that are stratified by season.
 It uses the previous seasons to calculate the levels of the newest season.
 }
@@ -103,10 +101,10 @@ generate_flu_season <- function(start = 1, end = 1000) {
   add_to_max <- c(50, 100, 200, 100)
   peak <- add_to_max + max(random_increasing_obs)
 
-  # Combine into a single observed sequence
-  observed <- c(random_increasing_obs, peak, random_decreasing_obs)
+  # Combine into a single observations sequence
+  observations <- c(random_increasing_obs, peak, random_decreasing_obs)
 
- return(observed)
+ return(observations)
 }
 
 season_1 <- generate_flu_season()
@@ -120,7 +118,7 @@ weekly_dates <- seq.Date(from = start_date,
                          by = "week")
 
 tsd_data <- tsd(
-  observed = c(season_1, season_2),
+  observation = c(season_1, season_2),
   time = as.Date(weekly_dates),
   time_interval = "week"
 )

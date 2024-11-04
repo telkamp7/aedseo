@@ -11,7 +11,7 @@ test_that("Summary prints without errors", {
 
   # Data
   tsd_data_poisson <- tsd(
-    observed = rpois(n = n, lambda = 1:n),
+    observation = rpois(n = n, lambda = 1:n),
     time = time,
     time_interval = "day"
   )

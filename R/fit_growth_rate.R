@@ -1,7 +1,6 @@
 #' Fit a growth rate model to time series observations.
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' This function fits a growth rate model to time series observations and
 #' provides parameter estimates along with confidence intervals.

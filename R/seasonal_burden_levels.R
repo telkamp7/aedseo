@@ -1,12 +1,11 @@
 #' Compute burden levels from seasonal time series observations.
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' This function calculates the burden levels of time series of observations that are stratified by season.
 #' It uses the previous seasons to calculate the levels of the newest season.
 #'
-#' @param tsd A `aedseo_tsd` object containing time series data with 'time' and 'observed'.
+#' @param tsd A `aedseo_tsd` object containing time series data with 'time' and 'observation'.
 #' @param season_weeks A numeric vector of length 2, `c(start, end)`, with the start and end weeks of the seasons to
 #' stratify the observations by. Must span the new year; e.g.: `season_weeks = c(21, 20)`.
 #' NOTE: The data must include data for a complete previous season to make predictions for the newest season.
@@ -67,10 +66,10 @@
 #'   add_to_max <- c(50, 100, 200, 100)
 #'   peak <- add_to_max + max(random_increasing_obs)
 #'
-#'   # Combine into a single observed sequence
-#'   observed <- c(random_increasing_obs, peak, random_decreasing_obs)
+#'   # Combine into a single observations sequence
+#'   observations <- c(random_increasing_obs, peak, random_decreasing_obs)
 #'
-#'  return(observed)
+#'  return(observations)
 #' }
 #'
 #' season_1 <- generate_flu_season()
@@ -84,7 +83,7 @@
 #'                          by = "week")
 #'
 #' tsd_data <- tsd(
-#'   observed = c(season_1, season_2),
+#'   observation = c(season_1, season_2),
 #'   time = as.Date(weekly_dates),
 #'   time_interval = "week"
 #' )
@@ -106,7 +105,7 @@ seasonal_burden_levels <- function(
   coll <- checkmate::makeAssertCollection()
   checkmate::assert_data_frame(tsd, add = coll)
   checkmate::assert_class(tsd, "aedseo_tsd", add = coll)
-  checkmate::assert_names(colnames(tsd), identical.to = c("time", "observed"), add = coll)
+  checkmate::assert_names(colnames(tsd), identical.to = c("time", "observation"), add = coll)
   checkmate::assert_integerish(season_weeks, len = 2, lower = 1, upper = 53,
                                null.ok = FALSE, add = coll)
   checkmate::assert_numeric(decay_factor, lower = 0, upper = 1, len = 1, add = coll)
@@ -139,12 +138,12 @@ seasonal_burden_levels <- function(
   # Select n_peak highest observations and filter observations >= disease_threshold
   season_observations_and_weights <- weighted_seasonal_tsd |>
     dplyr::select(-c("year", "time")) |>
-    dplyr::filter(.data$observed >= disease_threshold) |>
-    dplyr::slice_max(.data$observed, n = n_peak, with_ties = FALSE, by = "season")
+    dplyr::filter(.data$observation >= disease_threshold) |>
+    dplyr::slice_max(.data$observation, n = n_peak, with_ties = FALSE, by = "season")
 
   # Run quantiles_fit function
   quantiles_fit <- season_observations_and_weights |>
-    dplyr::select("observed", "weight") |>
+    dplyr::select("observation", "weight") |>
     fit_quantiles(weighted_observations = _, conf_levels = conf_levels, ...)
 
   # If method intensity_levels was chosen; use the high level from the `fit_quantiles` function as the high

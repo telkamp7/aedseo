@@ -1,7 +1,6 @@
 #' Summary method for aedseo objects
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' Summarize the results of an aedseo analysis, including the latest growth rate
 #' estimate, the confidence interval, and information about growth warnings.
@@ -18,7 +17,7 @@
 #' @examples
 #' # Create a tsibble object from sample data
 #' tsd_data <- tsd(
-#'   observed = c(100, 120, 150, 180, 220, 270),
+#'   observation = c(100, 120, 150, 180, 220, 270),
 #'   time = as.Date(c(
 #'     "2023-01-01",
 #'     "2023-01-02",

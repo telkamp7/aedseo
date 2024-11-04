@@ -21,8 +21,6 @@ rates, including time, estimated growth rate, lower confidence interval,
 and upper confidence interval for the specified number of future time steps.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 This function is used to predict future growth rates based on a model object
 created using the 'aedseo' package. It takes the model object and the number
 of future time steps (\code{n_step}) for which you want to make predictions and
@@ -31,7 +29,7 @@ returns a prediction tibble.
 \examples{
 # Analyze the data using the aedseo package
 tsd_data <- tsd(
-  observed = c(100, 120, 150, 180, 220, 270),
+  observation = c(100, 120, 150, 180, 220, 270),
   time = as.Date(c(
     "2023-01-01",
     "2023-01-02",

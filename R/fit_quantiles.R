@@ -1,12 +1,11 @@
 #' Fits weighted observations to distribution and returns quantiles
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' This function calculates the quantiles of weighted time series observations. The output contains the quantiles
 #' from the fitted distribution.
 #'
-#' @param weighted_observations A tibble containing two columns of length n; `observed`, which contains the data
+#' @param weighted_observations A tibble containing two columns of length n; `observation`, which contains the data
 #' points, and `weight`, which is the importance assigned to the observation. Higher weights indicate that an
 #' observation has more influence on the model outcome, while lower weights reduce its impact.
 #' @param conf_levels A numeric vector specifying the confidence levels for parameter estimates. The values have
@@ -49,7 +48,7 @@
 #'
 #' # Add into a tibble with decreasing weight for older seasons
 #' data_input <- tibble::tibble(
-#'   observed = observations,
+#'   observation = observations,
 #'   weight = 0.8^rep(season_num_rev, each = obs)
 #' )
 #'
@@ -78,7 +77,7 @@ fit_quantiles <- function(
   checkmate::assert_numeric(conf_levels, lower = 0, upper = 1,
                             unique = TRUE, sorted = TRUE, add = coll)
   checkmate::assert_names(colnames(weighted_observations),
-                          identical.to = c("observed", "weight"), add = coll)
+                          identical.to = c("observation", "weight"), add = coll)
   checkmate::assert_numeric(lower_optim, add = coll)
   checkmate::assert_numeric(upper_optim, add = coll)
   checkmate::reportAssertions(coll)
@@ -99,16 +98,16 @@ fit_quantiles <- function(
   # The weighted negative loglikelihood function
   nll <- function(par, weighted_observations, family = family) {
     log_probability <- switch(family,
-      weibull = stats::dweibull(weighted_observations$observed, shape = exp(par[1]), scale = exp(par[2]),
+      weibull = stats::dweibull(weighted_observations$observation, shape = exp(par[1]), scale = exp(par[2]),
                                 log = TRUE),
-      lnorm = stats::dlnorm(weighted_observations$observed, meanlog =  par[1], sdlog = par[2], log = TRUE),
-      exp = stats::dexp(weighted_observations$observed, rate = exp(par[1]), log = TRUE)
+      lnorm = stats::dlnorm(weighted_observations$observation, meanlog =  par[1], sdlog = par[2], log = TRUE),
+      exp = stats::dexp(weighted_observations$observation, rate = exp(par[1]), log = TRUE)
     )
     return(-sum(log_probability * weighted_observations$weight))
   }
 
   # Run optimisation for weighted observations
-  optim_obj <- stats::optim(par = init_par_fun(family = family, observations = weighted_observations$observed),
+  optim_obj <- stats::optim(par = init_par_fun(family = family, observations = weighted_observations$observation),
                             fn = nll,
                             weighted_observations = weighted_observations,
                             family = family,

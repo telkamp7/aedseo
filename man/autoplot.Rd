@@ -31,8 +31,6 @@ confidence interval of the growth rate estimate.}
 A 'ggplot' object for visualizing the time series data.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 This function generates a complete 'ggplot' object suitable for
 visualizing time series data in an \code{aedseo_tsd} object. It creates a line
 plot connecting the observations and adds points at each data point.
@@ -40,7 +38,7 @@ plot connecting the observations and adds points at each data point.
 \examples{
 # Create an example aedseo_tsd object
 aedseo_tsd_object <- tsd(
-  observed = c(100, 120, 150, 180, 220, 270),
+  observation = c(100, 120, 150, 180, 220, 270),
   time = as.Date(c(
     "2023-01-01",
     "2023-01-02",

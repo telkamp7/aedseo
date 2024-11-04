@@ -10,7 +10,7 @@ test_that("Test that input argument checks work", {
   obs <- stats::rpois(length(weekly_dates), 1000)
 
   tsd_data <- tsd(
-    observed = obs,
+    observation = obs,
     time = as.Date(weekly_dates),
     time_interval = "week"
   )
@@ -55,7 +55,8 @@ test_that("Test that input argument checks work", {
 
   expect_error(
     checkmate_err_msg(seasonal_burden_levels(tsd_fail),
-      "Variable 'colnames(tsd)': Names must be a identical to set {'time','observed'}, but is {'week','observed'}.",
+      paste("Variable 'colnames(tsd)': Names must be a identical to set {'time','observation'},
+             but is {'week','observation'}."),
       fixed = TRUE
     )
   )
@@ -78,7 +79,7 @@ test_that("Test that we get correct season output for newest season", {
   obs <- stats::rpois(length(weekly_dates), 1000)
 
   tsd_data <- tsd(
-    observed = obs,
+    observation = obs,
     time = as.Date(weekly_dates),
     time_interval = "week"
   )
@@ -105,7 +106,7 @@ test_that("Test that we have same numbers of outputs for both methods", {
   obs <- stats::rpois(length(weekly_dates), 1000)
 
   tsd_data <- tsd(
-    observed = obs,
+    observation = obs,
     time = as.Date(weekly_dates),
     time_interval = "week"
   )
@@ -129,7 +130,7 @@ test_that("Test that function fail with less than two seasons", {
   obs <- stats::rpois(length(weekly_dates), 1000)
 
   tsd_one_season <- tsd(
-    observed = obs,
+    observation = obs,
     time = as.Date(weekly_dates),
     time_interval = "week"
   )

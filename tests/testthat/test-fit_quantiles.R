@@ -7,7 +7,7 @@ test_that("Test if checkmate checks work", {
   observations <- rep(stats::rnorm(10, obs), length(season))
 
   peak_input <- tibble::tibble(
-    observed = observations,
+    observation = observations,
     weight = 0.8^rep(season_num_rev, each = obs)
   )
 

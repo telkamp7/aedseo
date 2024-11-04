@@ -14,7 +14,7 @@ fit_quantiles(
 )
 }
 \arguments{
-\item{weighted_observations}{A tibble containing two columns of length n; \code{observed}, which contains the data
+\item{weighted_observations}{A tibble containing two columns of length n; \code{observation}, which contains the data
 points, and \code{weight}, which is the importance assigned to the observation. Higher weights indicate that an
 observation has more influence on the model outcome, while lower weights reduce its impact.}
 
@@ -63,8 +63,6 @@ objective function value from the optimisation. Smaller value equals better opti
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 This function calculates the quantiles of weighted time series observations. The output contains the quantiles
 from the fitted distribution.
 }
@@ -77,7 +75,7 @@ observations <- rep(stats::rnorm(10, obs), length(season))
 
 # Add into a tibble with decreasing weight for older seasons
 data_input <- tibble::tibble(
-  observed = observations,
+  observation = observations,
   weight = 0.8^rep(season_num_rev, each = obs)
 )
 

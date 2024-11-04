@@ -16,7 +16,7 @@ aedseo(
 }
 \arguments{
 \item{tsd}{A \code{aedseo_tsd} object containing time series data with 'time' and
-'observed.'}
+'observation.'}
 
 \item{k}{An integer specifying the window size for modeling growth rates.}
 
@@ -44,7 +44,7 @@ stratification by season.}
 A \code{aedseo} object containing:
 \itemize{
 \item 'reference_time': The time point for which the growth rate is estimated.
-\item 'observed': The observed value in the reference time point.
+\item 'observation': The observation in the reference time point.
 \item 'season': The stratification of observables in corresponding seasons.
 \item 'growth_rate': The estimated growth rate.
 \item 'lower_growth_rate': The lower bound of the growth rate's confidence
@@ -62,8 +62,6 @@ disease threshold?
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 This function performs automated and early detection of seasonal epidemic
 onsets (aedseo) on a time series dataset. It estimates growth rates for
 consecutive time intervals and calculates the sum of cases (sum_of_cases).
@@ -71,7 +69,7 @@ consecutive time intervals and calculates the sum of cases (sum_of_cases).
 \examples{
 # Create a tibble object from sample data
 tsd_data <- tsd(
-  observed = c(100, 120, 150, 180, 220, 270),
+  observation = c(100, 120, 150, 180, 220, 270),
   time = as.Date(c(
     "2023-01-01",
     "2023-01-02",

@@ -1,7 +1,6 @@
 #' Create a complete 'ggplot' appropriate to a particular data type
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #'  This function generates a complete 'ggplot' object suitable for
 #'  visualizing time series data in an `aedseo_tsd` object. It creates a line
@@ -19,7 +18,7 @@
 #' @examples
 #' # Create an example aedseo_tsd object
 #' aedseo_tsd_object <- tsd(
-#'   observed = c(100, 120, 150, 180, 220, 270),
+#'   observation = c(100, 120, 150, 180, 220, 270),
 #'   time = as.Date(c(
 #'     "2023-01-01",
 #'     "2023-01-02",

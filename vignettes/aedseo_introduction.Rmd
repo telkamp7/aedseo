@@ -161,7 +161,7 @@ In the following section, the application of the algorithm to the simulated data
 ```{r}
 # Construct an 'aedseo_tsd' object with the time series data
 tsd_data <- tsd(
-  observed = sim_data$y,
+  observation = sim_data$y,
   time = sim_data$Date,
   time_interval = "week"
 )
