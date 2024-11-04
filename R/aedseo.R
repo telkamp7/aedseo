@@ -1,14 +1,13 @@
 #' Automated and Early Detection of Seasonal Epidemic Onset
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' This function performs automated and early detection of seasonal epidemic
 #' onsets (aedseo) on a time series dataset. It estimates growth rates for
 #' consecutive time intervals and calculates the sum of cases (sum_of_cases).
 #'
 #' @param tsd A `aedseo_tsd` object containing time series data with 'time' and
-#' 'observed.'
+#' 'observation.'
 #' @param k An integer specifying the window size for modeling growth rates.
 #' @param level The confidence level for parameter estimates, a numeric value
 #' between 0 and 1.
@@ -28,7 +27,7 @@
 #'
 #' @return A `aedseo` object containing:
 #'   - 'reference_time': The time point for which the growth rate is estimated.
-#'   - 'observed': The observed value in the reference time point.
+#'   - 'observation': The observation in the reference time point.
 #'   - 'season': The stratification of observables in corresponding seasons.
 #'   - 'growth_rate': The estimated growth rate.
 #'   - 'lower_growth_rate': The lower bound of the growth rate's confidence
@@ -49,7 +48,7 @@
 #' @examples
 #' # Create a tibble object from sample data
 #' tsd_data <- tsd(
-#'   observed = c(100, 120, 150, 180, 220, 270),
+#'   observation = c(100, 120, 150, 180, 220, 270),
 #'   time = as.Date(c(
 #'     "2023-01-01",
 #'     "2023-01-02",
@@ -90,7 +89,7 @@ aedseo <- function(
   coll <- checkmate::makeAssertCollection()
   checkmate::assert_data_frame(tsd, add = coll)
   checkmate::assert_class(tsd, "aedseo_tsd", add = coll)
-  checkmate::assert_names(colnames(tsd), identical.to = c("time", "observed"), add = coll)
+  checkmate::assert_names(colnames(tsd), identical.to = c("time", "observation"), add = coll)
   checkmate::assert_numeric(level, lower = 0, upper = 1, add = coll)
   checkmate::assert_numeric(na_fraction_allowed, lower = 0, upper = 1,
                             add = coll)
@@ -130,7 +129,7 @@ aedseo <- function(
     } else {
       # Calculate growth rates
       growth_rates <- fit_growth_rate(
-        observations = obs_iter$observed,
+        observations = obs_iter$observation,
         level = level,
         family = family
       )
@@ -140,7 +139,7 @@ aedseo <- function(
     growth_warning <- growth_rates$estimate[2] > 0
 
     # Calculate Sum of Cases (sum_of_cases)
-    sum_of_cases <- base::sum(obs_iter$observed, na.rm = TRUE)
+    sum_of_cases <- base::sum(obs_iter$observation, na.rm = TRUE)
 
     # Evaluate if sum_of_cases exceeds disease_threshold
     sum_of_cases_warning <- sum_of_cases > (disease_threshold * k)
@@ -153,7 +152,7 @@ aedseo <- function(
       res,
       tibble::tibble(
         reference_time = tsd$time[i],
-        observed = tsd$observed[i],
+        observation = tsd$observation[i],
         season = tsd$season[i],
         growth_rate = growth_rates$estimate[1],
         lower_growth_rate = growth_rates$estimate[2],

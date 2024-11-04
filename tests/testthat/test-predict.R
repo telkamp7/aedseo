@@ -1,7 +1,7 @@
 test_that("Returns the desired length", {
   # Generate some sample data
   tsd_data <- tsd(
-    observed = c(100, 120, 150, 180, 220, 270),
+    observation = c(100, 120, 150, 180, 220, 270),
     time = as.Date(c(
       "2023-01-01",
       "2023-01-02",
@@ -34,7 +34,7 @@ test_that("Returns the desired length", {
 test_that("Can correctly make an 'aedseo_predics' class object", {
   # Generate some sample data
   tsd_data <- tsd(
-    observed = c(100, 120, 150, 180, 220, 270),
+    observation = c(100, 120, 150, 180, 220, 270),
     time = as.Date(c(
       "2023-01-01",
       "2023-01-02",

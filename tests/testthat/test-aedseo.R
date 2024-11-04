@@ -10,12 +10,12 @@ test_that("The growth rate models converge", {
 
   # Data
   tsd_data_poisson <- tsd(
-    observed = rpois(n = n, lambda = 1:n),
+    observation = rpois(n = n, lambda = 1:n),
     time = time,
     time_interval = "day"
   )
   tsd_data_nbinom <- tsd(
-    observed = rnbinom(n = n, mu = 1:n, size = 5),
+    observation = rnbinom(n = n, mu = 1:n, size = 5),
     time = time,
     time_interval = "day"
   )
@@ -53,21 +53,21 @@ test_that("Test if it works with weeks with NA values", {
   # Count the number of observations
   n <- length(time)
 
-  # Add NA values to observed
+  # Add NA values to observation
   na_count <- 15
 
   # Randomly select indices to replace with NA
   na_indices <- sample(1:n, na_count, replace = FALSE)
 
   # Create observable
-  observed <- rpois(n = n, lambda = 1:n)
+  observation <- rpois(n = n, lambda = 1:n)
 
   # Add NA values
-  observed[na_indices] <- NA
+  observation[na_indices] <- NA
 
   # Data
   tsd_data_poisson_na <- tsd(
-    observed = observed,
+    observation = observation,
     time = time,
     time_interval = "day"
   )
@@ -105,7 +105,7 @@ test_that("Test that input argument checks work", {
 
   # Expect no error
   tsd_data <- tsd(
-    observed = c(100, 120, 150, 180, 220, 270),
+    observation = c(100, 120, 150, 180, 220, 270),
     time = as.Date(c(
       "2023-01-01",
       "2023-01-02",
@@ -130,7 +130,7 @@ test_that("Test that input argument checks work", {
 
   # Expect error with random data frame
   r_df <- data.frame(
-    observed = c(100, 120, 150, 180, 220, 270),
+    observation = c(100, 120, 150, 180, 220, 270),
     time = as.Date(c(
       "2023-01-01",
       "2023-01-02",

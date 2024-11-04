@@ -31,8 +31,6 @@ confidence intervals.
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 This function fits a growth rate model to time series observations and
 provides parameter estimates along with confidence intervals.
 }

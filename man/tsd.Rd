@@ -2,13 +2,12 @@
 % Please edit documentation in R/tsd.R
 \name{tsd}
 \alias{tsd}
-\title{Create a S3 \code{aedseo_tsd} (time-series data) object from observed data
-and corresponding dates.}
+\title{Create a S3 \code{aedseo_tsd} (time-series data) object from observed data and corresponding dates.}
 \usage{
-tsd(observed, time, time_interval = c("day", "week", "month"))
+tsd(observation, time, time_interval = c("day", "week", "month"))
 }
 \arguments{
-\item{observed}{A numeric vector containing the observations.}
+\item{observation}{A numeric vector containing the observations.}
 
 \item{time}{A date vector containing the corresponding dates.}
 
@@ -18,21 +17,19 @@ Choose between "day," "week," or "month."}
 \value{
 A \code{aedseo_tsd} object containing:
 \itemize{
-\item 'time': The time point for for where the observations is observed.
-\item 'observed': The observed value at the time point.
+\item 'time': The time point for for when the observation is observed.
+\item 'observation': The observed value at the time point.
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
-This function takes observed data and the corresponding date vector and
+This function takes observations and the corresponding date vector and
 converts it into a \code{aedseo_tsd} object, which is a time series
 data structure that can be used for time series analysis.
 }
 \examples{
 # Create a `aedseo_tsd` object from daily data
 daily_tsd <- tsd(
-  observed = c(10, 15, 20, 18),
+  observation = c(10, 15, 20, 18),
   time = as.Date(
     c("2023-01-01", "2023-01-02", "2023-01-03", "2023-01-04")
   ),
@@ -41,7 +38,7 @@ daily_tsd <- tsd(
 
 # Create a `aedseo_tsd` object from weekly data
 weekly_tsd <- tsd(
-  observed = c(100, 120, 130),
+  observation = c(100, 120, 130),
   time = as.Date(
     c("2023-01-01", "2023-01-08", "2023-01-15")
   ),
@@ -50,7 +47,7 @@ weekly_tsd <- tsd(
 
 # Create a `aedseo_tsd` object from monthly data
 monthly_tsd <- tsd(
-  observed = c(500, 520, 540),
+  observation = c(500, 520, 540),
   time = as.Date(
     c("2023-01-01", "2023-02-01", "2023-03-01")
   ),

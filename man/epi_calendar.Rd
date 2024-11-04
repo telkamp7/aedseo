@@ -23,8 +23,6 @@ the epidemiological season.
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 This function identifies the epidemiological season, (must span new year)
 to which a given date belongs.
 The epidemiological season is defined by a start and end week, where weeks

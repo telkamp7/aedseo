@@ -1,7 +1,6 @@
 #' Predict Growth Rates for Future Time Steps
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' This function is used to predict future growth rates based on a model object
 #' created using the 'aedseo' package. It takes the model object and the number
@@ -25,7 +24,7 @@
 #' @examples
 #' # Analyze the data using the aedseo package
 #' tsd_data <- tsd(
-#'   observed = c(100, 120, 150, 180, 220, 270),
+#'   observation = c(100, 120, 150, 180, 220, 270),
 #'   time = as.Date(c(
 #'     "2023-01-01",
 #'     "2023-01-02",
@@ -56,9 +55,9 @@ predict.aedseo <- function(object, n_step = 3, ...) {
     dplyr::reframe(
       t = 0:n_step,
       time = .data$reference_time + t,
-      estimate = exp(log(.data$observed) + .data$growth_rate * t),
-      lower = exp(log(.data$observed) + .data$lower_growth_rate * t),
-      upper = exp(log(.data$observed) + .data$upper_growth_rate * t)
+      estimate = exp(log(.data$observation) + .data$growth_rate * t),
+      lower = exp(log(.data$observation) + .data$lower_growth_rate * t),
+      upper = exp(log(.data$observation) + .data$upper_growth_rate * t)
     )
 
   # Extract the attributes from the object

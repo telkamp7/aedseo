@@ -1,7 +1,6 @@
 #' Determine Epidemiological Season
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' This function identifies the epidemiological season, (must span new year)
 #' to which a given date belongs.
