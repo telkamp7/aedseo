@@ -1,16 +1,16 @@
-#' Compute intensity levels with weighted time series observations.
+#' Fits weighted observations to distribution and returns quantiles
 #'
 #' @description
 #' `r lifecycle::badge("stable")`
 #'
-#' This function calculates the intensity levels of weighted time series observations. The output contain low, medium,
-#' high intensity levels, that predict the intensity levels of the next series of observations.
+#' This function calculates the quantiles of weighted time series observations. The output contains the quantiles
+#' from the fitted distribution.
 #'
 #' @param weighted_observations A tibble containing two columns of length n; `observed`, which contains the data
 #' points, and `weight`, which is the importance assigned to the observation. Higher weights indicate that an
 #' observation has more influence on the model outcome, while lower weights reduce its impact.
-#' @param conf_levels The confidence levels for parameter estimates, a numeric vector of length 3. The three values
-#' have to be unique and in ascending order, such as the low level is first and high level is last.
+#' @param conf_levels A numeric vector specifying the confidence levels for parameter estimates. The values have
+#' to be unique and in ascending order, that is the lowest level is first and highest level is last.
 #' @param family A character string specifying the family for modeling. Choose between "weibull", "lnorm" or "exp".
 #' @param optim_method A character string specifying the method to be used in the optimisation. Lookup `?optim::stats`
 #' for details about methods.
@@ -18,22 +18,20 @@
 #' @param lower_optim A numeric value for the optimisation.
 #' @param upper_optim A numeric value for the optimisation.
 #'
-#' @return A tibble containing:
-#'   - 'low_level': The lowest intensity level
-#'   - 'medium_level': The medium intensity level
-#'   - 'high_level': The highest intensity level
-#'   - 'optim_fit_par_1': The first fit parameter for the chosen family.
-#'       - For 'weibull': Shape parameter (k).
-#'       - For 'lnorm': Mean of the log-transformed observations.
-#'       - For 'exp': Rate parameter (λ).
-#'   - 'optim_fit_par_2': The second fit parameter for the chosen family.
-#'      - For 'weibull': Scale parameter (λ).
-#'      - For 'lnorm': Standard deviation of the log-transformed observations.
-#'      - For 'exp': Not applicable (set to NA).
-#'   - 'obj_value': The value of the objective function
-#'     (negative log-likelihood), which represent the minimized objective
-#'      function value from the optimisation. Smaller value equals better
-#'      optimisation.
+#' @return A list containing:
+#'   - 'conf_levels': The conf_levels chosen to fit the quantiles.
+#'   - 'quantiles': The quantile results from the fit.
+#'   - 'par': The fit parameters for the chosen family.
+#'       - par_1:
+#'          - For 'weibull': Shape parameter (k).
+#'          - For 'lnorm': Mean of the log-transformed observations.
+#'          - For 'exp': Rate parameter (λ).
+#'       - 'par_2':
+#'          - For 'weibull': Scale parameter (λ).
+#'          - For 'lnorm': Standard deviation of the log-transformed observations.
+#'          - For 'exp': Not applicable (set to NA).
+#'   - 'obj_value': The value of the objective function - (negative log-likelihood), which represent the minimized
+#'                  objective function value from the optimisation. Smaller value equals better optimisation.
 #'   - 'converged': Logical. TRUE if the optimisation converged.
 #'   - 'family': The distribution family used for the optimization.
 #'      - 'weibull': Uses the Weibull distribution for fitting.
@@ -56,11 +54,10 @@
 #' )
 #'
 #' # Use the model
-#' compute_weighted_intensity_levels(weighted_observations = data_input,
-#'                                   conf_levels = c(0.50, 0.90, 0.95),
-#'                                   family = "weibull")
-
-compute_weighted_intensity_levels <- function(
+#' fit_quantiles(weighted_observations = data_input,
+#'               conf_levels = c(0.50, 0.90, 0.95),
+#'               family = "weibull")
+fit_quantiles <- function(
   weighted_observations,
   conf_levels = c(0.50, 0.90, 0.95),
   family = c("weibull",
@@ -78,7 +75,7 @@ compute_weighted_intensity_levels <- function(
   # Check input arguments
   coll <- checkmate::makeAssertCollection()
   checkmate::assert_tibble(weighted_observations, add = coll)
-  checkmate::assert_numeric(conf_levels, lower = 0, upper = 1, len = 3,
+  checkmate::assert_numeric(conf_levels, lower = 0, upper = 1,
                             unique = TRUE, sorted = TRUE, add = coll)
   checkmate::assert_names(colnames(weighted_observations),
                           identical.to = c("observed", "weight"), add = coll)
@@ -135,17 +132,13 @@ compute_weighted_intensity_levels <- function(
     exp = stats::qexp(p = conf_levels, rate = par_fit[1])
   )
 
-  # Create a tibble with the fit parameters
-  optim_results <- tibble::tibble(
-    low_level = quantiles[1],
-    medium_level = quantiles[2],
-    high_level = quantiles[3],
-    optim_fit_par_1 = par_fit[1],
-    optim_fit_par_2 = ifelse(length(par_fit) == 2, par_fit[2], NA),
+  # Create return fit parameters
+  return(list(
+    conf_levels = conf_levels,
+    values = as.numeric(quantiles),
+    par = par_fit[1:2], # Returns NA in second position if optim_method = "exp"
     obj_value = optim_obj$value,
     converged = optim_obj$convergence == 0,
     family = family
-  )
-
-  return(optim_results)
+  ))
 }
