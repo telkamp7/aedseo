@@ -2,9 +2,9 @@
 
 ## Features
 
-* Added the `intensity_levels()` function, which currently calculates peak intensity levels with the `compute_weighted_intensity_levels()` function for the newest season in input tsd data. Soon the `compute_relative_dist_intensity_levels()` function will be an option to calculate intensity levels in the `intensity_levels()` function (#36).
+* Added the `seasonal_burden_levels()` function, which calculates burden levels based on data from previous seasons with two different methods; peak_levels or intensity_levels (#37).
 
-* Added the `compute_weighted_intensity_levels()` function, which optimises a user selected distribution and calculates the intensity levels based on observations and weights. It is meant to be used within the soon coming `intensity_level()` function (#35).
+* Added the `fit_quantiles()` function, which optimises a user selected distribution and calculates the quantiles based on observations and weights. It is meant to be used within the soon coming `seasonal_burden_levels()` function (#35) and edited in (#37).
 
 ## Improvements
 

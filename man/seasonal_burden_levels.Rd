@@ -35,7 +35,7 @@ The \code{conf_levels} are specific for each method:
 \itemize{
 \item for \code{intensity_levels} only specify the highest confidence level e.g.: \code{0.95}, which is the highest level
 that has been observed in previous seasons.
-\item for \code{peak_levels} specify three confidence levels e.g.: c(0.5, 0.9, 0.95), which are the three confidence
+\item for \code{peak_levels} specify three confidence levels e.g.: \code{c(0.5, 0.9, 0.95)}, which are the three confidence
 levels low, medium and high that reflect the levels of the peaks that have been observed in previous seasons.
 }}
 
@@ -96,11 +96,11 @@ It uses the previous seasons to calculate the levels of the newest season.
 \examples{
 # Generate random flu season
 generate_flu_season <- function(start = 1, end = 1000) {
-  random_increasing_obs <- round(sort(runif(21, min = start, max = end)))
+  random_increasing_obs <- round(sort(runif(24, min = start, max = end)))
   random_decreasing_obs <- round(rev(random_increasing_obs))
 
   # Generate peak numbers
-  add_to_max <- c(50, 75, 100, 200, 250, 300, 200, 100, 75, 50)
+  add_to_max <- c(50, 100, 200, 100)
   peak <- add_to_max + max(random_increasing_obs)
 
   # Combine into a single observed sequence
