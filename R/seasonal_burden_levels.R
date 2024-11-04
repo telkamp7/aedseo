@@ -1,4 +1,4 @@
-#' Compute burden levels with seasonal time series observations.
+#' Compute burden levels from seasonal time series observations.
 #'
 #' @description
 #' `r lifecycle::badge("stable")`
@@ -11,16 +11,17 @@
 #' stratify the observations by. Must span the new year; e.g.: `season_weeks = c(21, 20)`.
 #' NOTE: The data must include data for a complete previous season to make predictions for the newest season.
 #' @param method A character string specifying the model to be used in the level calculations.
-#' Choose between intensity_levels or peak_levels. Both model predict the levels of the newest series of observations.
-#'  - `intensity_levels`: models the risk compared to what has been observed in previous years.
+#' Choose between "intensity_levels" or "peak_levels". Both model predict the levels of the newest series of
+#' observations.
+#'  - `intensity_levels`: models the risk compared to what has been observed in previous seasons.
 #'  - `peak_levels`: models the risk compared to what has been observed in the `n_peak` observations each season.
 #' @param conf_levels A numeric vector specifying the confidence levels for parameter estimates. The values have
-#' to be unique and in ascending order, such as the lowest level is first and highest level is last.
+#' to be unique and in ascending order, (i.e. the lowest level is first and highest level is last).
 #' The `conf_levels` are specific for each method:
-#'   - for `intensity_levels` only specify the highest confidence level e.g.: `0.95`, which is the highest level
+#'   - for `intensity_levels` only specify the highest confidence level e.g.: `0.95`, which is the highest intensity
 #'     that has been observed in previous seasons.
 #'   - for `peak_levels` specify three confidence levels e.g.: `c(0.5, 0.9, 0.95)`, which are the three confidence
-#'     levels low, medium and high that reflect the levels of the peaks that have been observed in previous seasons.
+#'     levels low, medium and high that reflect the peak severity relative to those observed in previous seasons.
 #' @param decay_factor A numeric value between 0 and 1, that specifies the weight applied to previous seasons in
 #' calculations. It is used as `decay_factor`^(number of seasons back), whereby the weight for the most recent season
 #' will be `decay_factor`^0 = 1. This parameter allows for a decreasing weight assigned to prior seasons, such that
@@ -29,13 +30,13 @@
 #' time-step disease threshold that has to be surpassed for the observation to be included in the calculations.
 #' @param n_peak A numeric value specifying the number of peak observations to be selected from each season in the
 #' level calculations. The `n_peak` observations have to surpass the `disease_threshold` to be included.
-#' @param ... arguments that can be passed to the `compute_weighted_intensity_levels()` function.
+#' @param ... arguments that can be passed to the `fit_quantiles()` function.
 #'
 #' @return A list containing:
 #'   - 'season': The season that burden levels are calculated for.
-#'   - 'high_conf_level': (intensity_level method) The conf_level chosen for the high level.
-#'   - 'conf_levels': (peak_level method) The conf_levels chosen to fit the low, medium and high levels.
-#'   - 'levels': The output levels from the model, always; very low, low, medium, high.
+#'   - 'high_conf_level': (only for intensity_level method) The conf_level chosen for the high level.
+#'   - 'conf_levels': (only for peak_level method) The conf_levels chosen to fit the "low", "medium", "high" levels.
+#'   - 'levels': The output levels from the model, always; "very low", "low", "medium", "high".
 #'   - 'values': The level values from corresponding method.
 #'   - 'par': The fit parameters for the chosen family.
 #'       - par_1:
@@ -90,8 +91,7 @@
 #' )
 #'
 #' # Print seasonal burden results
-#' intensity_levels <- seasonal_burden_levels(tsd_data)
-#' print(intensity_levels)
+#' seasonal_burden_levels(tsd_data)
 seasonal_burden_levels <- function(
   tsd,
   season_weeks = c(21, 20),
@@ -143,23 +143,10 @@ seasonal_burden_levels <- function(
     dplyr::filter(.data$observed >= disease_threshold) |>
     dplyr::slice_max(.data$observed, n = n_peak, with_ties = FALSE, by = "season")
 
-  # Run quantiles_fit function which selected method
-  # Wrap to pass ... arguments
-  wrap_fit_quantiles <- function(method, conf_levels, ...) {
-    switch(method,
-      peak_levels =
-        fit_quantiles(weighted_observations = season_observations_and_weights |>
-                        dplyr::select(.data$observed, .data$weight),
-                      conf_levels,
-                      ...),
-      intensity_levels =
-        fit_quantiles(weighted_observations = season_observations_and_weights |>
-                        dplyr::select(.data$observed, .data$weight),
-                      conf_levels,
-                      ...)
-    )
-  }
-  quantiles_fit <- wrap_fit_quantiles(method, conf_levels, ...)
+  # Run quantiles_fit function
+  quantiles_fit <- season_observations_and_weights |>
+    dplyr::select("observed", "weight") |>
+    fit_quantiles(weighted_observations = _, conf_levels = conf_levels, ...)
 
   # If method intensity_levels was chosen; use the high level from the `fit_quantiles` function as the high
   # level and the disease_threshold as the very low level. The low and medium levels are defined as the relative
@@ -172,22 +159,11 @@ seasonal_burden_levels <- function(
       model_output <- append(model_output, list(disease_threshold = disease_threshold))
     },
     intensity_levels = {
-      # Log transform levels
-      high_level_log <- log(quantiles_fit$values)
-      very_low_level_log <- log(disease_threshold)
-
-      # Relative distance between very low and high level
-      relative_dist <- (log(quantiles_fit$values) - log(disease_threshold)) / 3
-
-      # Calculate low and medium levels
-      medium_level <- exp(high_level_log - relative_dist)
-      low_level <- exp(very_low_level_log + relative_dist)
-
+      level_step_log <- pracma::logseq(disease_threshold, quantiles_fit$values, n = 4)
       model_output <- list(
         season = max(seasonal_tsd$season),
         high_conf_level = quantiles_fit$conf_levels,
-        levels = c("very low", "low", "medium", "high"),
-        values = c(disease_threshold, low_level, medium_level, quantiles_fit$values),
+        level_values = stats::setNames(level_step_log, c("very low", "low", "medium", "high")),
         par = quantiles_fit$par,
         obj_value = quantiles_fit$conf_levels,
         converged = quantiles_fit$converged,

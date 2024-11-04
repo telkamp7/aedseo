@@ -10,7 +10,7 @@
 #' points, and `weight`, which is the importance assigned to the observation. Higher weights indicate that an
 #' observation has more influence on the model outcome, while lower weights reduce its impact.
 #' @param conf_levels A numeric vector specifying the confidence levels for parameter estimates. The values have
-#' to be unique and in ascending order, such as the lowest level is first and highest level is last.
+#' to be unique and in ascending order, that is the lowest level is first and highest level is last.
 #' @param family A character string specifying the family for modeling. Choose between "weibull", "lnorm" or "exp".
 #' @param optim_method A character string specifying the method to be used in the optimisation. Lookup `?optim::stats`
 #' for details about methods.
@@ -54,10 +54,9 @@
 #' )
 #'
 #' # Use the model
-#' quantile_results <- fit_quantiles(weighted_observations = data_input,
-#'                                   conf_levels = c(0.50, 0.90, 0.95),
-#'                                   family = "weibull")
-#' print(quantile_results)
+#' fit_quantiles(weighted_observations = data_input,
+#'               conf_levels = c(0.50, 0.90, 0.95),
+#'               family = "weibull")
 fit_quantiles <- function(
   weighted_observations,
   conf_levels = c(0.50, 0.90, 0.95),
@@ -137,7 +136,7 @@ fit_quantiles <- function(
   return(list(
     conf_levels = conf_levels,
     values = as.numeric(quantiles),
-    par = list(par_fit[1], ifelse(length(par_fit) == 2, par_fit[2], NA)),
+    par = par_fit[1:2] # Returns NA in second position if optim_method = "exp"
     obj_value = optim_obj$value,
     converged = optim_obj$convergence == 0,
     family = family

@@ -2,9 +2,9 @@
 
 ## Features
 
-* Added the `seasonal_burden_levels()` function, which calculates burden levels based on data from previous seasons with two different methods; peak_levels or intensity_levels (#37).
+* Added the `seasonal_burden_levels()` function, which calculates burden levels based on data from previous seasons with two different methods; "peak_levels" or "intensity_levels" (#37).
 
-* Added the `fit_quantiles()` function, which optimises a user selected distribution and calculates the quantiles based on observations and weights. It is meant to be used within the soon coming `seasonal_burden_levels()` function (#35) and edited in (#37).
+* Added the `fit_quantiles()` function, which optimises a user selected distribution and calculates the quantiles based on observations and weights. It is meant to be used within the `seasonal_burden_levels()` function (#35, #37).
 
 ## Improvements
 
