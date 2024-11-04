@@ -154,7 +154,7 @@ seasonal_burden_levels <- function(
     peak_levels = {
       model_output <- append(quantiles_fit, list(season = max(seasonal_tsd$season)), after = 0)
       model_output$values <- stats::setNames(c(disease_threshold, model_output$values),
-                                              c("very low", "low", "medium", "high"))
+                                             c("very low", "low", "medium", "high"))
       model_output <- append(model_output, list(disease_threshold = disease_threshold))
     },
     intensity_levels = {
