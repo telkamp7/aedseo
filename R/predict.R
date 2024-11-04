@@ -2,20 +2,17 @@
 #'
 #' @description
 #'
-#' This function is used to predict future growth rates based on a model object
-#' created using the 'aedseo' package. It takes the model object and the number
-#' of future time steps (`n_step`) for which you want to make predictions and
+#' This function is used to predict future growth rates based on a model object created using the 'aedseo' package.
+#' It takes the model object and the number of future time steps (`n_step`) for which you want to make predictions and
 #' returns a prediction tibble.
 #'
-#' @param object A model object created using the `aedseo` package, typically
-#' the result of the `aedseo()` function.
-#' @param n_step An integer specifying the number of future time steps for
-#' which you want to predict growth rates. Default is 3.
+#' @param object A model object created using the `seasonal_onset()` function.
+#' @param n_step An integer specifying the number of future time steps for which you want to predict growth rates.
 #' @param ... Additional arguments (not used).
 #'
-#' @return  A tibble S3 object called `aedseo` containing the predicted growth
-#' rates, including time, estimated growth rate, lower confidence interval,
-#' and upper confidence interval for the specified number of future time steps.
+#' @return  A tibble S3 object called `seasonal_onset` containing the predicted growth rates, including time,
+#' estimated growth rate, lower confidence interval, and upper confidence interval for the specified number of
+#' future time steps.
 #'
 #' @export
 #'
@@ -36,7 +33,7 @@
 #'   time_interval = "day"
 #' )
 #'
-#' aedseo_results <- aedseo(
+#' tsd_results <- season_onset(
 #'   tsd = tsd_data,
 #'   k = 3,
 #'   level = 0.95,
@@ -44,12 +41,8 @@
 #' )
 #'
 #' # Predict growth rates for the next 5 time steps
-#' prediction <- predict(object = aedseo_results, n_step = 5)
-#'
-#' # Print the prediction
-#' print(prediction)
-#'
-predict.aedseo <- function(object, n_step = 3, ...) {
+#' predict(object = tsd_results, n_step = 5)
+predict.seasonal_onset <- function(object, n_step = 3, ...) {
   # Calculate the prediction
   res <- dplyr::last(object) %>%
     dplyr::reframe(

@@ -1,24 +1,23 @@
-#' Create a S3 `aedseo_tsd` (time-series data) object from observed data and corresponding dates.
+#' Create a S3 `tsd` (time-series data) object from observed data and corresponding dates.
 #'
 #' @description
 #'
-#' This function takes observations and the corresponding date vector and
-#' converts it into a `aedseo_tsd` object, which is a time series
-#' data structure that can be used for time series analysis.
+#' This function takes observations and the corresponding date vector and converts it into a `tsd` object, which is
+#' a time series data structure that can be used for time series analysis.
 #'
 #' @param observation A numeric vector containing the observations.
 #' @param time A date vector containing the corresponding dates.
 #' @param time_interval A character vector specifying the time interval.
 #' Choose between "day," "week," or "month."
 #'
-#' @return A `aedseo_tsd` object containing:
+#' @return A `tsd` object containing:
 #'   - 'time': The time point for for when the observation is observed.
 #'   - 'observation': The observed value at the time point.
 #'
 #' @export
 #'
 #' @examples
-#' # Create a `aedseo_tsd` object from daily data
+#' # Create a `tsd` object from daily data
 #' daily_tsd <- tsd(
 #'   observation = c(10, 15, 20, 18),
 #'   time = as.Date(
@@ -27,7 +26,7 @@
 #'   time_interval = "day"
 #' )
 #'
-#' # Create a `aedseo_tsd` object from weekly data
+#' # Create a `tsd` object from weekly data
 #' weekly_tsd <- tsd(
 #'   observation = c(100, 120, 130),
 #'   time = as.Date(
@@ -36,7 +35,7 @@
 #'   time_interval = "week"
 #' )
 #'
-#' # Create a `aedseo_tsd` object from monthly data
+#' # Create a `aedseo` object from monthly data
 #' monthly_tsd <- tsd(
 #'   observation = c(500, 520, 540),
 #'   time = as.Date(
@@ -64,7 +63,7 @@ tsd <- function(observation, time, time_interval = c("day", "week", "month")) {
   # Create the time series data object
   tsd <- tibble::new_tibble(
     x = tbl,
-    class = "aedseo_tsd",
+    class = "tsd",
     time_interval = time_interval
   )
 

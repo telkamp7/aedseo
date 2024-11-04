@@ -11,14 +11,11 @@ fit_growth_rate(
 )
 }
 \arguments{
-\item{observations}{A numeric vector containing the time series
-observations.}
+\item{observations}{A numeric vector containing the time series observations.}
 
-\item{level}{The confidence level for parameter estimates, a numeric
-value between 0 and 1.}
+\item{level}{The confidence level for parameter estimates, a numeric value between 0 and 1.}
 
-\item{family}{A character string specifying the family for modeling.
-Choose between "poisson," or "quasipoisson".}
+\item{family}{A character string specifying the family for modeling. Choose between "poisson," or "quasipoisson".}
 }
 \value{
 A list containing:
@@ -31,20 +28,16 @@ confidence intervals.
 }
 }
 \description{
-This function fits a growth rate model to time series observations and
-provides parameter estimates along with confidence intervals.
+This function fits a growth rate model to time series observations and provides parameter estimates along with
+confidence intervals.
 }
 \examples{
 # Fit a growth rate model to a time series of counts
 # (e.g., population growth)
 data <- c(100, 120, 150, 180, 220, 270)
-growth_rate_model <- fit_growth_rate(
+fit_growth_rate(
   observations = data,
   level = 0.95,
   family = "poisson"
 )
-
-# Print the estimated growth rate and confidence interval
-print(growth_rate_model$estimate)
-
 }

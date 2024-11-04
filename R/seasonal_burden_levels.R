@@ -104,7 +104,7 @@ seasonal_burden_levels <- function(
   method <- rlang::arg_match(method)
   coll <- checkmate::makeAssertCollection()
   checkmate::assert_data_frame(tsd, add = coll)
-  checkmate::assert_class(tsd, "aedseo_tsd", add = coll)
+  checkmate::assert_class(tsd, "tsd", add = coll)
   checkmate::assert_names(colnames(tsd), identical.to = c("time", "observation"), add = coll)
   checkmate::assert_integerish(season_weeks, len = 2, lower = 1, upper = 53,
                                null.ok = FALSE, add = coll)

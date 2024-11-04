@@ -2,30 +2,24 @@
 #'
 #' @description
 #'
-#' This function performs automated and early detection of seasonal epidemic
-#' onsets (aedseo) on a time series dataset. It estimates growth rates for
-#' consecutive time intervals and calculates the sum of cases (sum_of_cases).
+#' This function performs automated and early detection of seasonal epidemic onsets on a time series dataset.
+#' It estimates growth rates for consecutive time intervals and calculates the sum of cases (sum_of_cases).
 #'
-#' @param tsd A `aedseo_tsd` object containing time series data with 'time' and
-#' 'observation.'
+#' @param tsd An object containing time series data with 'time' and 'observation.'
 #' @param k An integer specifying the window size for modeling growth rates.
-#' @param level The confidence level for parameter estimates, a numeric value
-#' between 0 and 1.
-#' @param disease_threshold An integer specifying the threshold for considering
-#' a disease outbreak. It defines the per time-step disease threshold that has
-#' to be surpassed to possibly trigger a seasonal onset alarm. If the total
-#' number of cases in a window of size k exceeds `disease_threshold * k`,
-#' a seasonal onset alarm can be triggered.
-#' @param family A character string specifying the family for modeling.
-#' Choose between "poisson," or "quasipoisson".
-#' @param na_fraction_allowed Numeric value between 0 and 1 specifying the
-#' fraction of observables in the window of size k that are allowed to be NA.
-#' @param season_weeks A numeric vector of length 2, `c(start,end)`, with the
-#' start and end weeks of the seasons to stratify the observations by. Must
-#' span the new year; ex: `season_weeks = c(21, 20)`. Default, `NULL`, is no
+#' @param level The confidence level for parameter estimates, a numeric value between 0 and 1.
+#' @param disease_threshold An integer specifying the threshold for considering a disease outbreak. It defines
+#' the per time-step disease threshold that has to be surpassed to possibly trigger a seasonal onset alarm.
+#' If the total number of cases in a window of size k exceeds `disease_threshold * k`, a seasonal onset alarm
+#' can be triggered.
+#' @param family A character string specifying the family for modeling. Choose between "poisson," or "quasipoisson".
+#' @param na_fraction_allowed Numeric value between 0 and 1 specifying the fraction of observables in the window
+#' of size k that are allowed to be NA.
+#' @param season_weeks A numeric vector of length 2, `c(start,end)`, with the start and end weeks of the seasons to
+#' stratify the observations by. Must span the new year; ex: `season_weeks = c(21, 20)`. Default, `NULL`, is no
 #' stratification by season.
 #'
-#' @return A `aedseo` object containing:
+#' @return A `seasonal_onset` object containing:
 #'   - 'reference_time': The time point for which the growth rate is estimated.
 #'   - 'observation': The observation in the reference time point.
 #'   - 'season': The stratification of observables in corresponding seasons.
@@ -60,8 +54,8 @@
 #'   time_interval = "day"
 #' )
 #'
-#' # Calculate AEDSEO with a 3-day window and a Poisson family model
-#' aedseo_results <- aedseo(
+#' # Calculate seasonal onset with a 3-day window and a Poisson family model
+#' seasonal_onset(
 #'   tsd = tsd_data,
 #'   k = 3,
 #'   level = 0.95,
@@ -70,10 +64,7 @@
 #'   na_fraction_allowed = 0.4,
 #'   season_weeks = NULL
 #' )
-#'
-#' # Print the AEDSEO results
-#' print(aedseo_results)
-aedseo <- function(
+seasonal_onset <- function(
     tsd,
     k = 5,
     level = 0.95,
@@ -88,7 +79,7 @@ aedseo <- function(
   # Check input arguments
   coll <- checkmate::makeAssertCollection()
   checkmate::assert_data_frame(tsd, add = coll)
-  checkmate::assert_class(tsd, "aedseo_tsd", add = coll)
+  checkmate::assert_class(tsd, "tsd", add = coll)
   checkmate::assert_names(colnames(tsd), identical.to = c("time", "observation"), add = coll)
   checkmate::assert_numeric(level, lower = 0, upper = 1, add = coll)
   checkmate::assert_numeric(na_fraction_allowed, lower = 0, upper = 1,
@@ -167,18 +158,28 @@ aedseo <- function(
     )
   }
 
-  # Turn the results into an `aedseo` class
+  # Turn the results into an `seasonal_onset` class
   ans <- tibble::new_tibble(
     x = res,
-    class = "aedseo",
+    class = "seasonal_onset",
     k = k,
     level = level,
     disease_threshold = disease_threshold,
     family = family
   )
 
-  # Keep attributes from aedseo_tsd
+  # Keep attributes from the `tsd` class
   attr(ans, "time_interval") <- attr(tsd, "time_interval")
 
   return(ans)
+}
+
+#' Deprecated aedseo function
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#' @param ... Arguments passed to `seasonal_onset()`
+#' @export
+aedseo <- function(...) {
+  warning("`aedseo()` is deprecated. Please use `seasonal_onset()` instead.")
+  seasonal_onset(...)
 }

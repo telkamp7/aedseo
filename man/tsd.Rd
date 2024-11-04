@@ -2,7 +2,7 @@
 % Please edit documentation in R/tsd.R
 \name{tsd}
 \alias{tsd}
-\title{Create a S3 \code{aedseo_tsd} (time-series data) object from observed data and corresponding dates.}
+\title{Create a S3 \code{tsd} (time-series data) object from observed data and corresponding dates.}
 \usage{
 tsd(observation, time, time_interval = c("day", "week", "month"))
 }
@@ -15,19 +15,18 @@ tsd(observation, time, time_interval = c("day", "week", "month"))
 Choose between "day," "week," or "month."}
 }
 \value{
-A \code{aedseo_tsd} object containing:
+A \code{tsd} object containing:
 \itemize{
 \item 'time': The time point for for when the observation is observed.
 \item 'observation': The observed value at the time point.
 }
 }
 \description{
-This function takes observations and the corresponding date vector and
-converts it into a \code{aedseo_tsd} object, which is a time series
-data structure that can be used for time series analysis.
+This function takes observations and the corresponding date vector and converts it into a \code{tsd} object, which is
+a time series data structure that can be used for time series analysis.
 }
 \examples{
-# Create a `aedseo_tsd` object from daily data
+# Create a `tsd` object from daily data
 daily_tsd <- tsd(
   observation = c(10, 15, 20, 18),
   time = as.Date(
@@ -36,7 +35,7 @@ daily_tsd <- tsd(
   time_interval = "day"
 )
 
-# Create a `aedseo_tsd` object from weekly data
+# Create a `tsd` object from weekly data
 weekly_tsd <- tsd(
   observation = c(100, 120, 130),
   time = as.Date(
@@ -45,7 +44,7 @@ weekly_tsd <- tsd(
   time_interval = "week"
 )
 
-# Create a `aedseo_tsd` object from monthly data
+# Create a `aedseo` object from monthly data
 monthly_tsd <- tsd(
   observation = c(500, 520, 540),
   time = as.Date(

@@ -2,14 +2,12 @@
 #'
 #' @description
 #'
-#' This function identifies the epidemiological season, (must span new year)
-#' to which a given date belongs.
-#' The epidemiological season is defined by a start and end week, where weeks
-#' are numbered according to the ISO week date system.
+#' This function identifies the epidemiological season, (must span new year) to which a given date belongs.
+#' The epidemiological season is defined by a start and end week, where weeks are numbered according to the
+#' ISO week date system.
 #'
 #' @param date A date object representing the date to check.
-#' @param start An integer specifying the start week of the epidemiological
-#' season.
+#' @param start An integer specifying the start week of the epidemiological season.
 #' @param end An integer specifying the end week of the epidemiological season.
 #'
 #' @return A character vector indicating the season:
