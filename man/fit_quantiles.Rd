@@ -19,7 +19,7 @@ points, and \code{weight}, which is the importance assigned to the observation. 
 observation has more influence on the model outcome, while lower weights reduce its impact.}
 
 \item{conf_levels}{A numeric vector specifying the confidence levels for parameter estimates. The values have
-to be unique and in ascending order, such as the lowest level is first and highest level is last.}
+to be unique and in ascending order, that is the lowest level is first and highest level is last.}
 
 \item{family}{A character string specifying the family for modeling. Choose between "weibull", "lnorm" or "exp".}
 
@@ -82,8 +82,7 @@ data_input <- tibble::tibble(
 )
 
 # Use the model
-quantile_results <- fit_quantiles(weighted_observations = data_input,
-                                  conf_levels = c(0.50, 0.90, 0.95),
-                                  family = "weibull")
-print(quantile_results)
+fit_quantiles(weighted_observations = data_input,
+              conf_levels = c(0.50, 0.90, 0.95),
+              family = "weibull")
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/seasonal_burden_levels.R
 \name{seasonal_burden_levels}
 \alias{seasonal_burden_levels}
-\title{Compute burden levels with seasonal time series observations.}
+\title{Compute burden levels from seasonal time series observations.}
 \usage{
 seasonal_burden_levels(
   tsd,
@@ -23,20 +23,21 @@ stratify the observations by. Must span the new year; e.g.: \code{season_weeks =
 NOTE: The data must include data for a complete previous season to make predictions for the newest season.}
 
 \item{method}{A character string specifying the model to be used in the level calculations.
-Choose between intensity_levels or peak_levels. Both model predict the levels of the newest series of observations.
+Choose between "intensity_levels" or "peak_levels". Both model predict the levels of the newest series of
+observations.
 \itemize{
-\item \code{intensity_levels}: models the risk compared to what has been observed in previous years.
+\item \code{intensity_levels}: models the risk compared to what has been observed in previous seasons.
 \item \code{peak_levels}: models the risk compared to what has been observed in the \code{n_peak} observations each season.
 }}
 
 \item{conf_levels}{A numeric vector specifying the confidence levels for parameter estimates. The values have
-to be unique and in ascending order, such as the lowest level is first and highest level is last.
+to be unique and in ascending order, (i.e. the lowest level is first and highest level is last).
 The \code{conf_levels} are specific for each method:
 \itemize{
-\item for \code{intensity_levels} only specify the highest confidence level e.g.: \code{0.95}, which is the highest level
+\item for \code{intensity_levels} only specify the highest confidence level e.g.: \code{0.95}, which is the highest intensity
 that has been observed in previous seasons.
 \item for \code{peak_levels} specify three confidence levels e.g.: \code{c(0.5, 0.9, 0.95)}, which are the three confidence
-levels low, medium and high that reflect the levels of the peaks that have been observed in previous seasons.
+levels low, medium and high that reflect the peak severity relative to those observed in previous seasons.
 }}
 
 \item{decay_factor}{A numeric value between 0 and 1, that specifies the weight applied to previous seasons in
@@ -50,16 +51,15 @@ time-step disease threshold that has to be surpassed for the observation to be i
 \item{n_peak}{A numeric value specifying the number of peak observations to be selected from each season in the
 level calculations. The \code{n_peak} observations have to surpass the \code{disease_threshold} to be included.}
 
-\item{...}{arguments that can be passed to the \code{compute_weighted_intensity_levels()} function.}
+\item{...}{arguments that can be passed to the \code{fit_quantiles()} function.}
 }
 \value{
 A list containing:
 \itemize{
 \item 'season': The season that burden levels are calculated for.
-\item 'high_conf_level': (intensity_level method) The conf_level chosen for the high level.
-\item 'conf_levels': (peak_level method) The conf_levels chosen to fit the low, medium and high levels.
-\item 'levels': The output levels from the model, always; very low, low, medium, high.
-\item 'values': The level values from corresponding method.
+\item 'high_conf_level': (only for intensity_level method) The conf_level chosen for the high level.
+\item 'conf_levels': (only for peak_level method) The conf_levels chosen to fit the "low", "medium", "high" levels.
+\item 'values': A named vector with values for "very low", "low", "medium", "high" levels.
 \item 'par': The fit parameters for the chosen family.
 \itemize{
 \item par_1:
@@ -126,6 +126,5 @@ tsd_data <- tsd(
 )
 
 # Print seasonal burden results
-intensity_levels <- seasonal_burden_levels(tsd_data)
-print(intensity_levels)
+seasonal_burden_levels(tsd_data)
 }

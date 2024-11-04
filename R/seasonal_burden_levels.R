@@ -36,8 +36,7 @@
 #'   - 'season': The season that burden levels are calculated for.
 #'   - 'high_conf_level': (only for intensity_level method) The conf_level chosen for the high level.
 #'   - 'conf_levels': (only for peak_level method) The conf_levels chosen to fit the "low", "medium", "high" levels.
-#'   - 'levels': The output levels from the model, always; "very low", "low", "medium", "high".
-#'   - 'values': The level values from corresponding method.
+#'   - 'values': A named vector with values for "very low", "low", "medium", "high" levels.
 #'   - 'par': The fit parameters for the chosen family.
 #'       - par_1:
 #'          - For 'weibull': Shape parameter (k).
@@ -154,8 +153,8 @@ seasonal_burden_levels <- function(
   results <- switch(method,
     peak_levels = {
       model_output <- append(quantiles_fit, list(season = max(seasonal_tsd$season)), after = 0)
-      model_output <- append(model_output, list(levels = c("very low", "low", "medium", "high")), after = 2)
-      model_output$values <- c(disease_threshold, model_output$values)
+      model_output$values <- stats::setNames(c(disease_threshold, model_output$values),
+                                              c("very low", "low", "medium", "high"))
       model_output <- append(model_output, list(disease_threshold = disease_threshold))
     },
     intensity_levels = {
@@ -163,7 +162,7 @@ seasonal_burden_levels <- function(
       model_output <- list(
         season = max(seasonal_tsd$season),
         high_conf_level = quantiles_fit$conf_levels,
-        level_values = stats::setNames(level_step_log, c("very low", "low", "medium", "high")),
+        values = stats::setNames(level_step_log, c("very low", "low", "medium", "high")),
         par = quantiles_fit$par,
         obj_value = quantiles_fit$conf_levels,
         converged = quantiles_fit$converged,

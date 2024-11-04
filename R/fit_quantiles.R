@@ -136,7 +136,7 @@ fit_quantiles <- function(
   return(list(
     conf_levels = conf_levels,
     values = as.numeric(quantiles),
-    par = par_fit[1:2] # Returns NA in second position if optim_method = "exp"
+    par = par_fit[1:2], # Returns NA in second position if optim_method = "exp"
     obj_value = optim_obj$value,
     converged = optim_obj$convergence == 0,
     family = family
