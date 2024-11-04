@@ -58,7 +58,7 @@ library(aedseo)
 
 # Create a aedseo_tsd object from your data
 tsd_data <- tsd(
-  observed = c(100, 120, 150, 180, 220, 270),
+  observation = c(100, 120, 150, 180, 220, 270),
   time = as.Date(c(
     "2023-01-01",
     "2023-01-02",
@@ -78,7 +78,7 @@ aedseo_results <- aedseo(tsd = tsd_data, k = 3, level = 0.95, family = "poisson"
 
 For a more detailed introduction to the workflow of this package, see the introductory vignette.
 
-``` r 
+``` r
 # After installing the package
 vignette("aedseo_introduction", package = "aedseo")
 ```

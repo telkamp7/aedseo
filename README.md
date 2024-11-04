@@ -59,7 +59,7 @@ library(aedseo)
 
 # Create a aedseo_tsd object from your data
 tsd_data <- tsd(
-  observed = c(100, 120, 150, 180, 220, 270),
+  observation = c(100, 120, 150, 180, 220, 270),
   time = as.Date(c(
     "2023-01-01",
     "2023-01-02",
