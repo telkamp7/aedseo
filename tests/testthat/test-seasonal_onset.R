@@ -9,12 +9,12 @@ test_that("The growth rate models converge", {
   n <- length(time)
 
   # Data
-  tsd_data_poisson <- tsd(
+  tsd_data_poisson <- to_time_series(
     observation = rpois(n = n, lambda = 1:n),
     time = time,
     time_interval = "day"
   )
-  tsd_data_nbinom <- tsd(
+  tsd_data_nbinom <- to_time_series(
     observation = rnbinom(n = n, mu = 1:n, size = 5),
     time = time,
     time_interval = "day"
@@ -66,7 +66,7 @@ test_that("Test if it works with weeks with NA values", {
   observation[na_indices] <- NA
 
   # Data
-  tsd_data_poisson_na <- tsd(
+  tsd_data_poisson_na <- to_time_series(
     observation = observation,
     time = time,
     time_interval = "day"
@@ -103,8 +103,7 @@ test_that("Test if it works with weeks with NA values", {
 
 test_that("Test that input argument checks work", {
 
-  # Expect no error
-  tsd_data <- tsd(
+  tsd_data <- to_time_series(
     observation = c(100, 120, 150, 180, 220, 270),
     time = as.Date(c(
       "2023-01-01",

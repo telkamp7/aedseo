@@ -1,4 +1,4 @@
-#' Create a S3 `tsd` (time-series data) object from observed data and corresponding dates.
+#' Create a tibble-like `tsd` (time-series data) object from observed data and corresponding dates.
 #'
 #' @description
 #'
@@ -18,7 +18,7 @@
 #'
 #' @examples
 #' # Create a `tsd` object from daily data
-#' daily_tsd <- tsd(
+#' daily_tsd <- to_time_series(
 #'   observation = c(10, 15, 20, 18),
 #'   time = as.Date(
 #'     c("2023-01-01", "2023-01-02", "2023-01-03", "2023-01-04")
@@ -27,7 +27,7 @@
 #' )
 #'
 #' # Create a `tsd` object from weekly data
-#' weekly_tsd <- tsd(
+#' weekly_tsd <- to_time_series(
 #'   observation = c(100, 120, 130),
 #'   time = as.Date(
 #'     c("2023-01-01", "2023-01-08", "2023-01-15")
@@ -35,8 +35,8 @@
 #'   time_interval = "week"
 #' )
 #'
-#' # Create a `aedseo` object from monthly data
-#' monthly_tsd <- tsd(
+#' # Create a `tsd` object from monthly data
+#' monthly_tsd <- to_time_series(
 #'   observation = c(500, 520, 540),
 #'   time = as.Date(
 #'     c("2023-01-01", "2023-02-01", "2023-03-01")
@@ -44,7 +44,7 @@
 #'   time_interval = "month"
 #' )
 #'
-tsd <- function(observation, time, time_interval = c("day", "week", "month")) {
+to_time_series <- function(observation, time, time_interval = c("day", "week", "month")) {
   # Check input arguments
   coll <- checkmate::makeAssertCollection()
   checkmate::assert_date(time, add = coll)
@@ -68,4 +68,17 @@ tsd <- function(observation, time, time_interval = c("day", "week", "month")) {
   )
 
   return(tsd)
+}
+
+#' Deprecated tsd function
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#' This function has been renamed to better reflect its purpose.
+#' Please use `to_time_series()` instead.
+#' @param ... Arguments passed to `to_time_series()`
+#' @keywords internal
+#' @export
+tsd <- function(...) {
+  lifecycle::deprecate_warn("0.1.2", "tsd()", "to_time_series()")
+  to_time_series(...)
 }

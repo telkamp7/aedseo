@@ -16,7 +16,7 @@ seasonal_burden_levels(
 )
 }
 \arguments{
-\item{tsd}{A \code{aedseo_tsd} object containing time series data with 'time' and 'observation'.}
+\item{tsd}{A \code{tsd} object containing time series data with 'time' and 'observation'.}
 
 \item{season_weeks}{A numeric vector of length 2, \code{c(start, end)}, with the start and end weeks of the seasons to
 stratify the observations by. Must span the new year; e.g.: \code{season_weeks = c(21, 20)}.

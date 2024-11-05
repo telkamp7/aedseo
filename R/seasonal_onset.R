@@ -161,7 +161,7 @@ seasonal_onset <- function(
   # Turn the results into an `seasonal_onset` class
   ans <- tibble::new_tibble(
     x = res,
-    class = "seasonal_onset",
+    class = "tsd_onset",
     k = k,
     level = level,
     disease_threshold = disease_threshold,
@@ -177,9 +177,12 @@ seasonal_onset <- function(
 #' Deprecated aedseo function
 #' @description
 #' `r lifecycle::badge("deprecated")`
+#' This function has been renamed to better reflect its purpose.
+#' Please use `seasonal_onset()` instead.
 #' @param ... Arguments passed to `seasonal_onset()`
+#' @keywords internal
 #' @export
 aedseo <- function(...) {
-  warning("`aedseo()` is deprecated. Please use `seasonal_onset()` instead.")
+  lifecycle::deprecate_warn("0.1.2", "aedseo()", "seasonal_onset()")
   seasonal_onset(...)
 }

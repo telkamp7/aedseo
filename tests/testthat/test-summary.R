@@ -10,7 +10,7 @@ test_that("Summary prints without errors", {
   n <- length(time)
 
   # Data
-  tsd_data_poisson <- tsd(
+  tsd_data_poisson <- to_time_series(
     observation = rpois(n = n, lambda = 1:n),
     time = time,
     time_interval = "day"

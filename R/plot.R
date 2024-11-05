@@ -5,7 +5,7 @@
 #' This function generates a complete 'ggplot' object suitable for visualizing time series data in an `tsd` object.
 #' It creates a line plot connecting the observations and adds points at each data point.
 #'
-#' @param x An `tsd` or `seasonal_onset` object
+#' @param x An `tsd` or `tsd_onset` object
 #' @param ... Additional arguments passed to specific methods.
 #'
 #' @return A 'ggplot' object for visualizing the time series data.
@@ -15,8 +15,8 @@
 #' @seealso [autoplot()]
 #'
 #' @examples
-#' # Create an example tsd object
-#' tsd_object <- tsd(
+#' # Create an example `tsd` object
+#' time_series <- to_time_series(
 #'   observation = c(100, 120, 150, 180, 220, 270),
 #'   time = as.Date(c(
 #'     "2023-01-01",
@@ -29,12 +29,12 @@
 #'   time_interval = "day"
 #' )
 #'
-#' # Create a ggplot visualization for the tsd object
-#' plot(tsd_object)
+#' # Create a ggplot visualization for the `tsd` object
+#' plot(time_series)
 #'
-#' # Create an seasonal_onset object
+#' # Create an `tsd_onset` object
 #' object <- seasonal_onset(
-#'   tsd = tsd_object,
+#'   tsd = time_series,
 #'   k = 3,
 #'   level = 0.95,
 #'   family = "quasipoisson"
@@ -50,8 +50,8 @@ plot.tsd <- function(x, ...) {
   print(autoplot(x, ...))
 }
 #' @rdname plot
-#' @method plot seasonal_onset
+#' @method plot tsd_onset
 #' @export
-plot.seasonal_onset <- function(x, ...) {
+plot.tsd_onset <- function(x, ...) {
   print(autoplot(object = x, ...))
 }

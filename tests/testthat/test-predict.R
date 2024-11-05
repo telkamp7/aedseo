@@ -1,6 +1,6 @@
 test_that("Returns the desired length", {
   # Generate some sample data
-  tsd_data <- tsd(
+  tsd_data <- to_time_series(
     observation = c(100, 120, 150, 180, 220, 270),
     time = as.Date(c(
       "2023-01-01",
@@ -33,7 +33,7 @@ test_that("Returns the desired length", {
 
 test_that("Can correctly make an 'tsd_predict' class object", {
   # Generate some sample data
-  tsd_data <- tsd(
+  tsd_data <- to_time_series(
     observation = c(100, 120, 150, 180, 220, 270),
     time = as.Date(c(
       "2023-01-01",

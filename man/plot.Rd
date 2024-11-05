@@ -3,15 +3,15 @@
 \name{plot.tsd}
 \alias{plot.tsd}
 \alias{plot}
-\alias{plot.seasonal_onset}
+\alias{plot.tsd_onset}
 \title{Create a complete 'ggplot' appropriate to a particular data type}
 \usage{
 \method{plot}{tsd}(x, ...)
 
-\method{plot}{seasonal_onset}(x, ...)
+\method{plot}{tsd_onset}(x, ...)
 }
 \arguments{
-\item{x}{An \code{tsd} or \code{seasonal_onset} object}
+\item{x}{An \code{tsd} or \code{tsd_onset} object}
 
 \item{...}{Additional arguments passed to specific methods.}
 }
@@ -23,8 +23,8 @@ This function generates a complete 'ggplot' object suitable for visualizing time
 It creates a line plot connecting the observations and adds points at each data point.
 }
 \examples{
-# Create an example tsd object
-tsd_object <- tsd(
+# Create an example `tsd` object
+time_series <- to_time_series(
   observation = c(100, 120, 150, 180, 220, 270),
   time = as.Date(c(
     "2023-01-01",
@@ -37,12 +37,12 @@ tsd_object <- tsd(
   time_interval = "day"
 )
 
-# Create a ggplot visualization for the tsd object
-plot(tsd_object)
+# Create a ggplot visualization for the `tsd` object
+plot(time_series)
 
-# Create an seasonal_onset object
+# Create an `tsd_onset` object
 object <- seasonal_onset(
-  tsd = tsd_object,
+  tsd = time_series,
   k = 3,
   level = 0.95,
   family = "quasipoisson"

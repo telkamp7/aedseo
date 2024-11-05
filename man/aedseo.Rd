@@ -11,4 +11,7 @@ aedseo(...)
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+This function has been renamed to better reflect its purpose.
+Please use \code{seasonal_onset()} instead.
 }
+\keyword{internal}

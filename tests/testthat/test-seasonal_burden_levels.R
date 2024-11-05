@@ -9,7 +9,7 @@ test_that("Test that input argument checks work", {
 
   obs <- stats::rpois(length(weekly_dates), 1000)
 
-  tsd_data <- tsd(
+  tsd_data <- to_time_series(
     observation = obs,
     time = as.Date(weekly_dates),
     time_interval = "week"
@@ -78,7 +78,7 @@ test_that("Test that we get correct season output for newest season", {
 
   obs <- stats::rpois(length(weekly_dates), 1000)
 
-  tsd_data <- tsd(
+  tsd_data <- to_time_series(
     observation = obs,
     time = as.Date(weekly_dates),
     time_interval = "week"
@@ -105,7 +105,7 @@ test_that("Test that we have same numbers of outputs for both methods", {
 
   obs <- stats::rpois(length(weekly_dates), 1000)
 
-  tsd_data <- tsd(
+  tsd_data <- to_time_series(
     observation = obs,
     time = as.Date(weekly_dates),
     time_interval = "week"
@@ -129,7 +129,7 @@ test_that("Test that function fail with less than two seasons", {
 
   obs <- stats::rpois(length(weekly_dates), 1000)
 
-  tsd_one_season <- tsd(
+  tsd_one_season <- to_time_series(
     observation = obs,
     time = as.Date(weekly_dates),
     time_interval = "week"
