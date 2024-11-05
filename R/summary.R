@@ -1,4 +1,4 @@
-#' Summary method for aedseo objects
+#' Summary method for seasonal_onset objects
 #'
 #' @description
 #'
@@ -27,15 +27,13 @@
 #'   time_interval = "day"
 #' )
 #'
-#' # Calculate aedseo with a 3-day window and a Poisson family model
-#' seasona_onset_results <- aedseo(
+#' # Calculate seasonal_onset with a 3-day window and a Poisson family model
+#' seasonal_onset(
 #'   tsd = tsd_data,
 #'   k = 3,
 #'   level = 0.95,
 #'   family = "poisson"
 #' )
-#' # Print the summary of the seasonal_onset_results to the console
-#' summary(seasonal_onset_results)
 summary.seasonal_onset <- function(object, ...) {
   # Extract the last observation
   last_observation <- dplyr::last(object)

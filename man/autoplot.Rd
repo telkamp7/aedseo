@@ -31,12 +31,11 @@ confidence interval of the growth rate estimate.}
 A 'ggplot' object for visualizing the time series data.
 }
 \description{
-This function generates a complete 'ggplot' object suitable for
-visualizing time series data in an \code{tsd} object. It creates a line
-plot connecting the observations and adds points at each data point.
+This function generates a complete 'ggplot' object suitable for visualizing time series data in an \code{tsd} object.
+It creates a line plot connecting the observations and adds points at each data point.
 }
 \examples{
-# Create an example aedseo_tsd object
+# Create an example tsd object
 tsd_object <- tsd(
   observation = c(100, 120, 150, 180, 220, 270),
   time = as.Date(c(

@@ -2,7 +2,7 @@
 % Please edit documentation in R/summary.R
 \name{summary.seasonal_onset}
 \alias{summary.seasonal_onset}
-\title{Summary method for aedseo objects}
+\title{Summary method for seasonal_onset objects}
 \usage{
 \method{summary}{seasonal_onset}(object, ...)
 }
@@ -33,13 +33,11 @@ tsd_data <- tsd(
   time_interval = "day"
 )
 
-# Calculate aedseo with a 3-day window and a Poisson family model
-seasona_onset_results <- aedseo(
+# Calculate seasonal_onset with a 3-day window and a Poisson family model
+seasonal_onset(
   tsd = tsd_data,
   k = 3,
   level = 0.95,
   family = "poisson"
 )
-# Print the summary of the seasonal_onset_results to the console
-summary(seasonal_onset_results)
 }
