@@ -2,9 +2,8 @@
 #'
 #' @description
 #'
-#'  This function generates a complete 'ggplot' object suitable for
-#'  visualizing time series data in an `tsd` object. It creates a line
-#'  plot connecting the observations and adds points at each data point.
+#'  This function generates a complete 'ggplot' object suitable for visualizing time series data in an `tsd` object.
+#' It creates a line plot connecting the observations and adds points at each data point.
 #'
 #' @param object An `tsd` or `seasonal_onset_tsd` object
 #' @param linewidth Numeric, the width of the line for the growth rate
@@ -20,7 +19,7 @@
 #' @aliases autoplot
 #'
 #' @examples
-#' # Create an example aedseo_tsd object
+#' # Create an example tsd object
 #' tsd_object <- tsd(
 #'   observation = c(100, 120, 150, 180, 220, 270),
 #'   time = as.Date(c(

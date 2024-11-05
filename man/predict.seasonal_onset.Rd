@@ -38,7 +38,7 @@ tsd_data <- tsd(
   time_interval = "day"
 )
 
-tsd_results <- season_onset(
+tsd_results <- seasonal_onset(
   tsd = tsd_data,
   k = 3,
   level = 0.95,
