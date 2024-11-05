@@ -13,7 +13,7 @@ test_that("Returns the desired length", {
     time_interval = "day"
   )
 
-  # Employ the aedseo function
+  # Employ the seasonal_onset function
   tsd_results <- seasonal_onset(
     tsd = tsd_data,
     k = 3,
@@ -31,7 +31,7 @@ test_that("Returns the desired length", {
   expect_length(prediction$estimate, n_step + 1)
 })
 
-test_that("Can correctly make an 'aedseo_predict' class object", {
+test_that("Can correctly make an 'tsd_predict' class object", {
   # Generate some sample data
   tsd_data <- tsd(
     observation = c(100, 120, 150, 180, 220, 270),
@@ -46,7 +46,7 @@ test_that("Can correctly make an 'aedseo_predict' class object", {
     time_interval = "day"
   )
 
-  # Employ the aedseo function
+  # Employ the seasonal_onset function
   tsd_results <- seasonal_onset(
     tsd = tsd_data,
     k = 3,
@@ -61,5 +61,5 @@ test_that("Can correctly make an 'aedseo_predict' class object", {
   prediction <- predict(object = tsd_results, n_step = n_step)
 
   # Return the number of prediction + the initial observation
-  expect_s3_class(object = prediction, class = "aedseo_predict")
+  expect_s3_class(object = prediction, class = "tsd_predict")
 })

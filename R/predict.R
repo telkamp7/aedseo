@@ -61,10 +61,10 @@ predict.seasonal_onset <- function(object, n_step = 3, ...) {
   level <- attributes_object$level
   family <- attributes_object$family
 
-  # Turn the results into an `aedseo` class
+  # Turn the results into a class
   ans <- tibble::new_tibble(
     x = res,
-    class = "aedseo_predict",
+    class = "tsd_predict",
     k = k,
     level = level,
     family = family
