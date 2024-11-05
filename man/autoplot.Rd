@@ -2,18 +2,18 @@
 % Please edit documentation in R/autoplot.R
 \name{autoplot}
 \alias{autoplot}
-\alias{autoplot.aedseo_tsd}
-\alias{autoplot.aedseo}
+\alias{autoplot.tsd}
+\alias{autoplot.seasonal_onset}
 \title{Create a complete 'ggplot' appropriate to a particular data type}
 \usage{
 autoplot(object, ...)
 
-\method{autoplot}{aedseo_tsd}(object, ...)
+\method{autoplot}{tsd}(object, ...)
 
-\method{autoplot}{aedseo}(object, linewidth = 0.7, size = 2, alpha = 0.3, width = 0.2, ...)
+\method{autoplot}{seasonal_onset}(object, linewidth = 0.7, size = 2, alpha = 0.3, width = 0.2, ...)
 }
 \arguments{
-\item{object}{An \code{aedseo_tsd} or \code{aedseo} object}
+\item{object}{An \code{tsd} or \code{seasonal_onset_tsd} object}
 
 \item{...}{Additional arguments (not used).}
 
@@ -32,12 +32,12 @@ A 'ggplot' object for visualizing the time series data.
 }
 \description{
 This function generates a complete 'ggplot' object suitable for
-visualizing time series data in an \code{aedseo_tsd} object. It creates a line
+visualizing time series data in an \code{tsd} object. It creates a line
 plot connecting the observations and adds points at each data point.
 }
 \examples{
 # Create an example aedseo_tsd object
-aedseo_tsd_object <- tsd(
+tsd_object <- tsd(
   observation = c(100, 120, 150, 180, 220, 270),
   time = as.Date(c(
     "2023-01-01",
@@ -50,17 +50,17 @@ aedseo_tsd_object <- tsd(
   time_interval = "day"
 )
 
-# Create a ggplot visualization for the aedseo_tsd object
-autoplot(aedseo_tsd_object)
+# Create a ggplot visualization for the tsd object
+autoplot(tsd_object)
 
-# Create an aedseo object
-aedseo_object <- aedseo(
-  tsd = aedseo_tsd_object,
+# Create an tsd object
+tsd_object <- seasonal_onset(
+  tsd = tsd_object,
   k = 3,
   level = 0.95,
   family = "quasipoisson"
 )
 
 # Create a ggplot visualization of growth rates with confidence intervals
-autoplot(aedseo_object, linewidth = 1, alpha = 0.2)
+autoplot(tsd_object, linewidth = 1, alpha = 0.2)
 }
