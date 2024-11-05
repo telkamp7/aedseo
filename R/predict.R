@@ -2,20 +2,17 @@
 #'
 #' @description
 #'
-#' This function is used to predict future growth rates based on a model object
-#' created using the 'aedseo' package. It takes the model object and the number
-#' of future time steps (`n_step`) for which you want to make predictions and
+#' This function is used to predict future growth rates based on a model object created using the 'aedseo' package.
+#' It takes the model object and the number of future time steps (`n_step`) for which you want to make predictions and
 #' returns a prediction tibble.
 #'
-#' @param object A model object created using the `aedseo` package, typically
-#' the result of the `aedseo()` function.
-#' @param n_step An integer specifying the number of future time steps for
-#' which you want to predict growth rates. Default is 3.
+#' @param object A `tsd_onset` object created using the `seasonal_onset()` function.
+#' @param n_step An integer specifying the number of future time steps for which you want to predict growth rates.
 #' @param ... Additional arguments (not used).
 #'
-#' @return  A tibble S3 object called `aedseo` containing the predicted growth
-#' rates, including time, estimated growth rate, lower confidence interval,
-#' and upper confidence interval for the specified number of future time steps.
+#' @return  A tibble-like object called `tsd_onset` containing the predicted growth rates, including time,
+#' estimated growth rate, lower confidence interval, and upper confidence interval for the specified number of
+#' future time steps.
 #'
 #' @export
 #'
@@ -23,7 +20,7 @@
 #'
 #' @examples
 #' # Analyze the data using the aedseo package
-#' tsd_data <- tsd(
+#' time_series <- to_time_series(
 #'   observation = c(100, 120, 150, 180, 220, 270),
 #'   time = as.Date(c(
 #'     "2023-01-01",
@@ -36,20 +33,16 @@
 #'   time_interval = "day"
 #' )
 #'
-#' aedseo_results <- aedseo(
-#'   tsd = tsd_data,
+#' time_series_with_onset <- seasonal_onset(
+#'   tsd = time_series,
 #'   k = 3,
 #'   level = 0.95,
 #'   family = "poisson"
 #' )
 #'
 #' # Predict growth rates for the next 5 time steps
-#' prediction <- predict(object = aedseo_results, n_step = 5)
-#'
-#' # Print the prediction
-#' print(prediction)
-#'
-predict.aedseo <- function(object, n_step = 3, ...) {
+#' predict(object = time_series_with_onset, n_step = 5)
+predict.tsd_onset <- function(object, n_step = 3, ...) {
   # Calculate the prediction
   res <- dplyr::last(object) %>%
     dplyr::reframe(
@@ -68,10 +61,10 @@ predict.aedseo <- function(object, n_step = 3, ...) {
   level <- attributes_object$level
   family <- attributes_object$family
 
-  # Turn the results into an `aedseo` class
+  # Turn the results into a class
   ans <- tibble::new_tibble(
     x = res,
-    class = "aedseo_predict",
+    class = "tsd_predict",
     k = k,
     level = level,
     family = family

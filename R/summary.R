@@ -1,22 +1,20 @@
-#' Summary method for aedseo objects
+#' Summary method for `tsd_onset` objects
 #'
 #' @description
 #'
-#' Summarize the results of an aedseo analysis, including the latest growth rate
-#' estimate, the confidence interval, and information about growth warnings.
+#' Summarize the results of an seasonal onset analysis, including the latest growth rate estimate,
+#' the confidence interval, and information about growth warnings.
 #'
-#' @param object An object of class 'aedseo' containing the results of an aedseo
-#' analysis.
+#' @param object An object of class 'tsd_onset' containing the results of a seasonal_onset analysis.
 #' @param ... Additional arguments (not used).
 #'
-#' @return This function is used for its side effect, which is printing a
-#' summary message to the console.
+#' @return This function is used for its side effect, which is printing a summary message to the console.
 #'
 #' @export
 #'
 #' @examples
-#' # Create a tsibble object from sample data
-#' tsd_data <- tsd(
+#' # Create a `tsd_onset` object from sample data
+#' tsd_data <- to_time_series(
 #'   observation = c(100, 120, 150, 180, 220, 270),
 #'   time = as.Date(c(
 #'     "2023-01-01",
@@ -29,16 +27,14 @@
 #'   time_interval = "day"
 #' )
 #'
-#' # Calculate aedseo with a 3-day window and a Poisson family model
-#' aedseo_results <- aedseo(
+#' # Calculate seasonal_onset results with a 3-day window and a Poisson family model
+#' seasonal_onset(
 #'   tsd = tsd_data,
 #'   k = 3,
 #'   level = 0.95,
 #'   family = "poisson"
 #' )
-#' # Print the summary of the aedseo_results to the console
-#' summary(aedseo_results)
-summary.aedseo <- function(object, ...) {
+summary.tsd_onset <- function(object, ...) {
   # Extract the last observation
   last_observation <- dplyr::last(object)
 
@@ -98,7 +94,7 @@ summary.aedseo <- function(object, ...) {
 
   # Generate the summary message
   summary_message <- sprintf(
-    "Summary of aedseo Object
+    "Summary of seasonal_onset Object
 
     Called using distributional family:
       %s

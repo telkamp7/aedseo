@@ -9,12 +9,13 @@ test_that("The growth rate models converge", {
   data_poisson <- stats::rpois(n = n, lambda = 5)
   data_nbinom <- stats::rnbinom(n = n, mu = 5, size = 1)
 
-  # Fit the models
+  # Fit with poisson family
   fit_poisson <- fit_growth_rate(
     observations = data_poisson,
     level = 0.95,
     family = "poisson"
   )
+  # Fit with quassipoisson family
   fit_quasipoisson <- fit_growth_rate(
     observations = data_nbinom,
     level = 0.95,

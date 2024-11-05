@@ -2,18 +2,18 @@
 % Please edit documentation in R/autoplot.R
 \name{autoplot}
 \alias{autoplot}
-\alias{autoplot.aedseo_tsd}
-\alias{autoplot.aedseo}
+\alias{autoplot.tsd}
+\alias{autoplot.tsd_onset}
 \title{Create a complete 'ggplot' appropriate to a particular data type}
 \usage{
 autoplot(object, ...)
 
-\method{autoplot}{aedseo_tsd}(object, ...)
+\method{autoplot}{tsd}(object, ...)
 
-\method{autoplot}{aedseo}(object, linewidth = 0.7, size = 2, alpha = 0.3, width = 0.2, ...)
+\method{autoplot}{tsd_onset}(object, linewidth = 0.7, size = 2, alpha = 0.3, width = 0.2, ...)
 }
 \arguments{
-\item{object}{An \code{aedseo_tsd} or \code{aedseo} object}
+\item{object}{An \code{tsd} or \code{tsd_onset} object}
 
 \item{...}{Additional arguments (not used).}
 
@@ -31,13 +31,12 @@ confidence interval of the growth rate estimate.}
 A 'ggplot' object for visualizing the time series data.
 }
 \description{
-This function generates a complete 'ggplot' object suitable for
-visualizing time series data in an \code{aedseo_tsd} object. It creates a line
-plot connecting the observations and adds points at each data point.
+This function generates a complete 'ggplot' object suitable for visualizing time series data in an \code{tsd} object.
+It creates a line plot connecting the observations and adds points at each data point.
 }
 \examples{
-# Create an example aedseo_tsd object
-aedseo_tsd_object <- tsd(
+# Create an example `tsd` object
+time_series <- tsd(
   observation = c(100, 120, 150, 180, 220, 270),
   time = as.Date(c(
     "2023-01-01",
@@ -50,17 +49,17 @@ aedseo_tsd_object <- tsd(
   time_interval = "day"
 )
 
-# Create a ggplot visualization for the aedseo_tsd object
-autoplot(aedseo_tsd_object)
+# Create a ggplot visualization for the `tsd` object
+autoplot(time_series)
 
-# Create an aedseo object
-aedseo_object <- aedseo(
-  tsd = aedseo_tsd_object,
+# Create an `tsd_onset` object
+time_series_with_onset <- seasonal_onset(
+  tsd = time_series,
   k = 3,
   level = 0.95,
   family = "quasipoisson"
 )
 
 # Create a ggplot visualization of growth rates with confidence intervals
-autoplot(aedseo_object, linewidth = 1, alpha = 0.2)
+autoplot(time_series_with_onset, linewidth = 1, alpha = 0.2)
 }

@@ -5,7 +5,7 @@
 #' This function calculates the burden levels of time series of observations that are stratified by season.
 #' It uses the previous seasons to calculate the levels of the newest season.
 #'
-#' @param tsd A `aedseo_tsd` object containing time series data with 'time' and 'observation'.
+#' @param tsd A `tsd` object containing time series data with 'time' and 'observation'.
 #' @param season_weeks A numeric vector of length 2, `c(start, end)`, with the start and end weeks of the seasons to
 #' stratify the observations by. Must span the new year; e.g.: `season_weeks = c(21, 20)`.
 #' NOTE: The data must include data for a complete previous season to make predictions for the newest season.
@@ -104,7 +104,7 @@ seasonal_burden_levels <- function(
   method <- rlang::arg_match(method)
   coll <- checkmate::makeAssertCollection()
   checkmate::assert_data_frame(tsd, add = coll)
-  checkmate::assert_class(tsd, "aedseo_tsd", add = coll)
+  checkmate::assert_class(tsd, "tsd", add = coll)
   checkmate::assert_names(colnames(tsd), identical.to = c("time", "observation"), add = coll)
   checkmate::assert_integerish(season_weeks, len = 2, lower = 1, upper = 53,
                                null.ok = FALSE, add = coll)

@@ -2,11 +2,10 @@
 #'
 #' @description
 #'
-#'  This function generates a complete 'ggplot' object suitable for
-#'  visualizing time series data in an `aedseo_tsd` object. It creates a line
-#'  plot connecting the observations and adds points at each data point.
+#' This function generates a complete 'ggplot' object suitable for visualizing time series data in an `tsd` object.
+#' It creates a line plot connecting the observations and adds points at each data point.
 #'
-#' @param x An `aedseo_tsd` or `aedseo` object
+#' @param x An `tsd` or `tsd_onset` object
 #' @param ... Additional arguments passed to specific methods.
 #'
 #' @return A 'ggplot' object for visualizing the time series data.
@@ -16,8 +15,8 @@
 #' @seealso [autoplot()]
 #'
 #' @examples
-#' # Create an example aedseo_tsd object
-#' aedseo_tsd_object <- tsd(
+#' # Create an example `tsd` object
+#' time_series <- to_time_series(
 #'   observation = c(100, 120, 150, 180, 220, 270),
 #'   time = as.Date(c(
 #'     "2023-01-01",
@@ -30,29 +29,29 @@
 #'   time_interval = "day"
 #' )
 #'
-#' # Create a ggplot visualization for the aedseo_tsd object
-#' plot(aedseo_tsd_object)
+#' # Create a ggplot visualization for the `tsd` object
+#' plot(time_series)
 #'
-#' # Create an aedseo object
-#' aedseo_object <- aedseo(
-#'   tsd = aedseo_tsd_object,
+#' # Create an `tsd_onset` object
+#' object <- seasonal_onset(
+#'   tsd = time_series,
 #'   k = 3,
 #'   level = 0.95,
 #'   family = "quasipoisson"
 #' )
 #'
 #' # Create a ggplot visualization of growth rates with confidence intervals
-#' plot(aedseo_object, linewidth = 1, alpha = 0.2)
+#' plot(object, linewidth = 1, alpha = 0.2)
 #' @importFrom graphics plot
 #' @rdname plot
-#' @method plot aedseo_tsd
+#' @method plot tsd
 #' @export
-plot.aedseo_tsd <- function(x, ...) {
+plot.tsd <- function(x, ...) {
   print(autoplot(x, ...))
 }
 #' @rdname plot
-#' @method plot aedseo
+#' @method plot tsd_onset
 #' @export
-plot.aedseo <- function(x, ...) {
+plot.tsd_onset <- function(x, ...) {
   print(autoplot(object = x, ...))
 }

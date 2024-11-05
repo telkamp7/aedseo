@@ -9,8 +9,7 @@ epi_calendar(date, start = 21, end = 20)
 \arguments{
 \item{date}{A date object representing the date to check.}
 
-\item{start}{An integer specifying the start week of the epidemiological
-season.}
+\item{start}{An integer specifying the start week of the epidemiological season.}
 
 \item{end}{An integer specifying the end week of the epidemiological season.}
 }
@@ -23,10 +22,9 @@ the epidemiological season.
 }
 }
 \description{
-This function identifies the epidemiological season, (must span new year)
-to which a given date belongs.
-The epidemiological season is defined by a start and end week, where weeks
-are numbered according to the ISO week date system.
+This function identifies the epidemiological season, (must span new year) to which a given date belongs.
+The epidemiological season is defined by a start and end week, where weeks are numbered according to the
+ISO week date system.
 }
 \examples{
 # Check if a date is within the epidemiological season

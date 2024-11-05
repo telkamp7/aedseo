@@ -10,13 +10,13 @@ test_that("Summary prints without errors", {
   n <- length(time)
 
   # Data
-  tsd_data_poisson <- tsd(
+  tsd_data_poisson <- to_time_series(
     observation = rpois(n = n, lambda = 1:n),
     time = time,
     time_interval = "day"
   )
-  # Calculate AEDSEO with a 3-day window
-  aedseo_poisson <- aedseo(
+  # Calculate seasonal_onset with a 3-day window
+  tsd_poisson <- seasonal_onset(
     tsd = tsd_data_poisson,
     k = 3,
     level = 0.95,
@@ -24,8 +24,8 @@ test_that("Summary prints without errors", {
   )
 
   # Capture the output of the summary function
-  tmp <- capture_output(summary(aedseo_poisson))
+  tmp <- capture_output(summary(tsd_poisson))
 
   # Verify that the summary printed without errors
-  expect_true(grepl(pattern = "Summary of aedseo Object", x = tmp))
+  expect_true(grepl(pattern = "Summary of seasonal_onset Object", x = tmp))
 })

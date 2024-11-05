@@ -2,15 +2,12 @@
 #'
 #' @description
 #'
-#' This function fits a growth rate model to time series observations and
-#' provides parameter estimates along with confidence intervals.
+#' This function fits a growth rate model to time series observations and provides parameter estimates along with
+#' confidence intervals.
 #'
-#' @param observations A numeric vector containing the time series
-#' observations.
-#' @param level The confidence level for parameter estimates, a numeric
-#' value between 0 and 1.
-#' @param family A character string specifying the family for modeling.
-#' Choose between "poisson," or "quasipoisson".
+#' @param observations A numeric vector containing the time series observations.
+#' @param level The confidence level for parameter estimates, a numeric value between 0 and 1.
+#' @param family A character string specifying the family for modeling. Choose between "poisson," or "quasipoisson".
 #'
 #' @return A list containing:
 #'   - 'fit': The fitted growth rate model.
@@ -24,15 +21,11 @@
 #' # Fit a growth rate model to a time series of counts
 #' # (e.g., population growth)
 #' data <- c(100, 120, 150, 180, 220, 270)
-#' growth_rate_model <- fit_growth_rate(
+#' fit_growth_rate(
 #'   observations = data,
 #'   level = 0.95,
 #'   family = "poisson"
 #' )
-#'
-#' # Print the estimated growth rate and confidence interval
-#' print(growth_rate_model$estimate)
-#'
 fit_growth_rate <- function(
     observations,
     level = 0.95,

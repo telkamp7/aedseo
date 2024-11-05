@@ -1,6 +1,16 @@
 # aedseo (development version)
 
+## Deprecations
+
+* `aedseo()` is now deprecated. Please use `seasonal_onset()` instead. A warning is shown when using `aedseo()` (#41).
+
+* `tsd()` is now deprecated. Please use `to_time_series()` instead. A warning is shown when using `tsd()` (#41).
+
 ## Features
+
+* Added `seasonal_onset()` as a replacement for the deprecated `aedseo()` function (#41).
+
+* Added `to_time_series()` as a replacement for the deprecated `tsd()` function (#41).
 
 * Added the `seasonal_burden_levels()` function, which calculates burden levels based on data from previous seasons with two different methods; "peak_levels" or "intensity_levels" (#37).
 
