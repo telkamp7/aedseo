@@ -8,6 +8,8 @@
 
 ## Features
 
+* Added `combined_seasonal_output()` as the main function to run both `seasonal_onset()` and `seasonal_burden_levels()` to get a combined result for the newest season (#44).
+
 * Added `seasonal_onset()` as a replacement for the deprecated `aedseo()` function (#41).
 
 * Added `to_time_series()` as a replacement for the deprecated `tsd()` function (#41).
