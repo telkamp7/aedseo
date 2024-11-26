@@ -20,4 +20,3 @@ test_that("output only includes one season", {
   expect_equal(length(unique(combined_df$onset_output$season)), 1)
   expect_equal(length(combined_df$burden_output$season), 1)
 })
-
