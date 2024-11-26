@@ -24,15 +24,11 @@
 #'   - 'observation': The observation in the reference time point.
 #'   - 'season': The stratification of observables in corresponding seasons.
 #'   - 'growth_rate': The estimated growth rate.
-#'   - 'lower_growth_rate': The lower bound of the growth rate's confidence
-#'   interval.
-#'   - 'upper_growth_rate': The upper bound of the growth rate's confidence
-#'   interval.
-#'   - 'growth_warning': Logical. Is the growth rate significantly higher than
-#'   zero?
+#'   - 'lower_growth_rate': The lower bound of the growth rate's confidence interval.
+#'   - 'upper_growth_rate': The upper bound of the growth rate's confidence interval.
+#'   - 'growth_warning': Logical. Is the growth rate significantly higher than zero?
 #'   - 'sum_of_cases': The sum of cases within the time window.
-#'   - 'sum_of_cases_warning': Logical. Does the Sum of Cases exceed the
-#'   disease threshold?
+#'   - 'sum_of_cases_warning': Logical. Does the Sum of Cases exceed the disease threshold?
 #'   - 'seasonal_onset_alarm': Logical. Is there a seasonal onset alarm?
 #'   - 'skipped_window': Logical. Was the window skipped due to missing?
 #'   - 'converged': Logical. Was the IWLS judged to have converged?

@@ -62,9 +62,9 @@ test_that("Test that input argument checks work", {
   )
 
   #Finally check that dots arguments work
-  model_output <- seasonal_burden_levels(tsd_data, family = "exp", optim_method = "Brent",
+  model_output <- seasonal_burden_levels(tsd_data, family_quant = "exp", optim_method = "Brent",
                                          lower_optim = 1, upper_optim = 1000)
-  expect_equal(model_output$family, "exp")
+  expect_equal(model_output$family_quant, "exp")
 })
 
 test_that("Test that we get correct season output for newest season", {

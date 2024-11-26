@@ -10,7 +10,8 @@
 #' observation has more influence on the model outcome, while lower weights reduce its impact.
 #' @param conf_levels A numeric vector specifying the confidence levels for parameter estimates. The values have
 #' to be unique and in ascending order, that is the lowest level is first and highest level is last.
-#' @param family A character string specifying the family for modeling. Choose between "weibull", "lnorm" or "exp".
+#' @param family_quant A character string specifying the family for modeling.
+#' Choose between "weibull", "lnorm" or "exp".
 #' @param optim_method A character string specifying the method to be used in the optimisation. Lookup `?optim::stats`
 #' for details about methods.
 #' If using the exp family it is recommended to use Brent as it is a one-dimensional optimisation.
@@ -32,7 +33,7 @@
 #'   - 'obj_value': The value of the objective function - (negative log-likelihood), which represent the minimized
 #'                  objective function value from the optimisation. Smaller value equals better optimisation.
 #'   - 'converged': Logical. TRUE if the optimisation converged.
-#'   - 'family': The distribution family used for the optimization.
+#'   - 'family_quant': The distribution family used for the optimization.
 #'      - 'weibull': Uses the Weibull distribution for fitting.
 #'      - 'lnorm': Uses the Log-normal distribution for fitting.
 #'      - 'exp': Uses the Exponential distribution for fitting.
@@ -55,13 +56,13 @@
 #' # Use the model
 #' fit_quantiles(weighted_observations = data_input,
 #'               conf_levels = c(0.50, 0.90, 0.95),
-#'               family = "weibull")
+#'               family_quant = "weibull")
 fit_quantiles <- function(
   weighted_observations,
   conf_levels = c(0.50, 0.90, 0.95),
-  family = c("weibull",
-             "lnorm",
-             "exp"),
+  family_quant = c("weibull",
+                   "lnorm",
+                   "exp"),
   optim_method = c("Nelder-Mead",
                    "BFGS",
                    "CG",
@@ -82,12 +83,12 @@ fit_quantiles <- function(
   checkmate::assert_numeric(upper_optim, add = coll)
   checkmate::reportAssertions(coll)
   # Match the arguments.
-  family <- rlang::arg_match(family)
+  family_quant <- rlang::arg_match(family_quant)
   optim_method <- rlang::arg_match(optim_method)
 
   # Initialising parameters based on family
-  init_par_fun <- function(family, observations) {
-    init_params <- switch(family,
+  init_par_fun <- function(family_quant, observations) {
+    init_params <- switch(family_quant,
       weibull = log(c(1.5, mean(observations))),
       lnorm = c(mean(log(observations)), stats::sd(log(observations))),
       exp = log(1.5)
@@ -96,8 +97,8 @@ fit_quantiles <- function(
   }
 
   # The weighted negative loglikelihood function
-  nll <- function(par, weighted_observations, family = family) {
-    log_probability <- switch(family,
+  nll <- function(par, weighted_observations, family_quant = family_quant) {
+    log_probability <- switch(family_quant,
       weibull = stats::dweibull(weighted_observations$observation, shape = exp(par[1]), scale = exp(par[2]),
                                 log = TRUE),
       lnorm = stats::dlnorm(weighted_observations$observation, meanlog =  par[1], sdlog = par[2], log = TRUE),
@@ -107,10 +108,11 @@ fit_quantiles <- function(
   }
 
   # Run optimisation for weighted observations
-  optim_obj <- stats::optim(par = init_par_fun(family = family, observations = weighted_observations$observation),
+  optim_obj <- stats::optim(par = init_par_fun(family_quant = family_quant,
+                                               observations = weighted_observations$observation),
                             fn = nll,
                             weighted_observations = weighted_observations,
-                            family = family,
+                            family_quant = family_quant,
                             method = optim_method,
                             lower = lower_optim,
                             upper = upper_optim)
@@ -118,14 +120,14 @@ fit_quantiles <- function(
   # Back-transform optimized parameters to their original scale if needed.
   # This is done by exponentiating the parameters, as they were
   # log-transformed during the optimisation process
-  par_fit <- switch(family,
+  par_fit <- switch(family_quant,
     weibull = exp(optim_obj$par),
     lnorm = optim_obj$par,
     exp = c(exp(optim_obj$par), NA)
   )
 
   # Calculate the low, medium, high intensity levels based on input `conf_levels`
-  quantiles <- switch(family,
+  quantiles <- switch(family_quant,
     weibull = stats::qweibull(p = conf_levels, shape = par_fit[1], scale = par_fit[2]),
     lnorm = stats::qlnorm(p = conf_levels, meanlog = par_fit[1], sdlog = par_fit[2]),
     exp = stats::qexp(p = conf_levels, rate = par_fit[1])
@@ -138,6 +140,6 @@ fit_quantiles <- function(
     par = par_fit[1:2], # Returns NA in second position if optim_method = "exp"
     obj_value = optim_obj$value,
     converged = optim_obj$convergence == 0,
-    family = family
+    family_quant = family_quant
   ))
 }

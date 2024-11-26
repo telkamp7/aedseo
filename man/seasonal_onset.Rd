@@ -42,15 +42,11 @@ A \code{seasonal_onset} object containing:
 \item 'observation': The observation in the reference time point.
 \item 'season': The stratification of observables in corresponding seasons.
 \item 'growth_rate': The estimated growth rate.
-\item 'lower_growth_rate': The lower bound of the growth rate's confidence
-interval.
-\item 'upper_growth_rate': The upper bound of the growth rate's confidence
-interval.
-\item 'growth_warning': Logical. Is the growth rate significantly higher than
-zero?
+\item 'lower_growth_rate': The lower bound of the growth rate's confidence interval.
+\item 'upper_growth_rate': The upper bound of the growth rate's confidence interval.
+\item 'growth_warning': Logical. Is the growth rate significantly higher than zero?
 \item 'sum_of_cases': The sum of cases within the time window.
-\item 'sum_of_cases_warning': Logical. Does the Sum of Cases exceed the
-disease threshold?
+\item 'sum_of_cases_warning': Logical. Does the Sum of Cases exceed the disease threshold?
 \item 'seasonal_onset_alarm': Logical. Is there a seasonal onset alarm?
 \item 'skipped_window': Logical. Was the window skipped due to missing?
 \item 'converged': Logical. Was the IWLS judged to have converged?

@@ -1,9 +1,10 @@
-#' Compute burden levels from seasonal time series observations.
+#' Compute burden levels from seasonal time series observations of newest season.
 #'
 #' @description
 #'
-#' This function calculates the burden levels of time series of observations that are stratified by season.
+#' This function calculates the burden levels of time series observations that are stratified by season.
 #' It uses the previous seasons to calculate the levels of the newest season.
+#' The output is results regarding the newest season in the time series observations.
 #'
 #' @param tsd A `tsd` object containing time series data with 'time' and 'observation'.
 #' @param season_weeks A numeric vector of length 2, `c(start, end)`, with the start and end weeks of the seasons to
@@ -48,7 +49,7 @@
 #'   - 'obj_value': The value of the objective function - (negative log-likelihood), which represent the minimized
 #'                  objective function value from the optimisation. Smaller value equals better optimisation.
 #'   - 'converged': Logical. TRUE if the optimisation converged.
-#'   - 'family': The distribution family used for the optimization.
+#'   - 'family_quant': The distribution family used for the optimization.
 #'      - 'weibull': Uses the Weibull distribution for fitting.
 #'      - 'lnorm': Uses the Log-normal distribution for fitting.
 #'      - 'exp': Uses the Exponential distribution for fitting.
@@ -165,7 +166,7 @@ seasonal_burden_levels <- function(
         par = quantiles_fit$par,
         obj_value = quantiles_fit$conf_levels,
         converged = quantiles_fit$converged,
-        family = quantiles_fit$family,
+        family_quant = quantiles_fit$family,
         disease_threshold = disease_threshold
       )
     }
