@@ -7,7 +7,7 @@
 fit_quantiles(
   weighted_observations,
   conf_levels = c(0.5, 0.9, 0.95),
-  family_quant = c("weibull", "lnorm", "exp"),
+  family = c("weibull", "lnorm", "exp"),
   optim_method = c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent"),
   lower_optim = -Inf,
   upper_optim = Inf
@@ -21,8 +21,7 @@ observation has more influence on the model outcome, while lower weights reduce 
 \item{conf_levels}{A numeric vector specifying the confidence levels for parameter estimates. The values have
 to be unique and in ascending order, that is the lowest level is first and highest level is last.}
 
-\item{family_quant}{A character string specifying the family for modeling.
-Choose between "weibull", "lnorm" or "exp".}
+\item{family}{A character string specifying the family for modeling}
 
 \item{optim_method}{A character string specifying the method to be used in the optimisation. Lookup \code{?optim::stats}
 for details about methods.
@@ -55,7 +54,7 @@ A list containing:
 \item 'obj_value': The value of the objective function - (negative log-likelihood), which represent the minimized
 objective function value from the optimisation. Smaller value equals better optimisation.
 \item 'converged': Logical. TRUE if the optimisation converged.
-\item 'family_quant': The distribution family used for the optimization.
+\item 'family': The distribution family used for the optimization.
 \itemize{
 \item 'weibull': Uses the Weibull distribution for fitting.
 \item 'lnorm': Uses the Log-normal distribution for fitting.
@@ -83,5 +82,5 @@ data_input <- tibble::tibble(
 # Use the model
 fit_quantiles(weighted_observations = data_input,
               conf_levels = c(0.50, 0.90, 0.95),
-              family_quant = "weibull")
+              family= "weibull")
 }

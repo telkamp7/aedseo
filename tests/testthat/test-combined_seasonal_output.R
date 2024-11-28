@@ -1,4 +1,4 @@
-test_that("output only includes one season", {
+test_that("Output only includes one season", {
 
   start_date <- as.Date("2021-01-04")
   end_date <- as.Date("2023-12-31")

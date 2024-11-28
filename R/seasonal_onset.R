@@ -5,19 +5,14 @@
 #' This function performs automated and early detection of seasonal epidemic onsets on a time series dataset.
 #' It estimates growth rates for consecutive time intervals and calculates the sum of cases (sum_of_cases).
 #'
-#' @param tsd An object containing time series data with 'time' and 'observation.'
-#' @param k An integer specifying the window size for modeling growth rates.
-#' @param level The confidence level for parameter estimates, a numeric value between 0 and 1.
-#' @param disease_threshold An integer specifying the threshold for considering a disease outbreak. It defines
-#' the per time-step disease threshold that has to be surpassed to possibly trigger a seasonal onset alarm.
-#' If the total number of cases in a window of size k exceeds `disease_threshold * k`, a seasonal onset alarm
-#' can be triggered.
-#' @param family A character string specifying the family for modeling. Choose between "poisson," or "quasipoisson".
+#' @param tsd `r rd_tsd()`
+#' @param k An integer specifying the window size for modeling growth rates for the onset.
+#' @param level The confidence level for onset parameter estimates, a numeric value between 0 and 1.
+#' @param disease_threshold `r rd_disease_threshold(usage = "onset")`
+#' @param family `r rd_family()`
 #' @param na_fraction_allowed Numeric value between 0 and 1 specifying the fraction of observables in the window
-#' of size k that are allowed to be NA.
-#' @param season_weeks A numeric vector of length 2, `c(start,end)`, with the start and end weeks of the seasons to
-#' stratify the observations by. Must span the new year; ex: `season_weeks = c(21, 20)`. Default, `NULL`, is no
-#' stratification by season.
+#' of size k that are allowed to be NA in onset calculations.
+#' @param season_weeks `r rd_season_weeks(usage = "onset")`
 #'
 #' @return A `seasonal_onset` object containing:
 #'   - 'reference_time': The time point for which the growth rate is estimated.

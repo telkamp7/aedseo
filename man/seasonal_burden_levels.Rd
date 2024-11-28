@@ -2,7 +2,7 @@
 % Please edit documentation in R/seasonal_burden_levels.R
 \name{seasonal_burden_levels}
 \alias{seasonal_burden_levels}
-\title{Compute burden levels from seasonal time series observations of newest season.}
+\title{Compute burden levels from seasonal time series observations of current season.}
 \usage{
 seasonal_burden_levels(
   tsd,
@@ -16,14 +16,13 @@ seasonal_burden_levels(
 )
 }
 \arguments{
-\item{tsd}{A \code{tsd} object containing time series data with 'time' and 'observation'.}
+\item{tsd}{An object containing time series data with 'time' and 'observation.'}
 
-\item{season_weeks}{A numeric vector of length 2, \code{c(start, end)}, with the start and end weeks of the seasons to
-stratify the observations by. Must span the new year; e.g.: \code{season_weeks = c(21, 20)}.
-NOTE: The data must include data for a complete previous season to make predictions for the newest season.}
+\item{season_weeks}{A numeric vector of length 2, \code{c(start,end)}, with the start and end weeks of the seasons to
+stratify the observations by. Must span the new year; ex: \code{season_weeks = c(21, 20)}.}
 
 \item{method}{A character string specifying the model to be used in the level calculations.
-Choose between "intensity_levels" or "peak_levels". Both model predict the levels of the newest series of
+Both model predict the levels of the current series of
 observations.
 \itemize{
 \item \code{intensity_levels}: models the risk compared to what has been observed in previous seasons.
@@ -40,13 +39,13 @@ that has been observed in previous seasons.
 levels low, medium and high that reflect the peak severity relative to those observed in previous seasons.
 }}
 
-\item{decay_factor}{A numeric value between 0 and 1, that specifies the weight applied to previous seasons in
+\item{decay_factor}{A numeric value between 0 and 1, that specifies the weight applied to previous seasons in level
 calculations. It is used as \code{decay_factor}^(number of seasons back), whereby the weight for the most recent season
 will be \code{decay_factor}^0 = 1. This parameter allows for a decreasing weight assigned to prior seasons, such that
 the influence of older seasons diminishes exponentially.}
 
-\item{disease_threshold}{An integer specifying the threshold for considering a disease outbreak. It defines the per
-time-step disease threshold that has to be surpassed for the observation to be included in the calculations.}
+\item{disease_threshold}{An integer specifying the threshold for considering a disease outbreak. It defines the per time-step disease threshold that has to be surpassed for the observation to be
+included in the level calculations.}
 
 \item{n_peak}{A numeric value specifying the number of peak observations to be selected from each season in the
 level calculations. The \code{n_peak} observations have to surpass the \code{disease_threshold} to be included.}
@@ -78,7 +77,7 @@ A list containing:
 \item 'obj_value': The value of the objective function - (negative log-likelihood), which represent the minimized
 objective function value from the optimisation. Smaller value equals better optimisation.
 \item 'converged': Logical. TRUE if the optimisation converged.
-\item 'family_quant': The distribution family used for the optimization.
+\item 'family': The distribution family used for the optimization.
 \itemize{
 \item 'weibull': Uses the Weibull distribution for fitting.
 \item 'lnorm': Uses the Log-normal distribution for fitting.
@@ -89,8 +88,9 @@ objective function value from the optimisation. Smaller value equals better opti
 }
 \description{
 This function calculates the burden levels of time series observations that are stratified by season.
-It uses the previous seasons to calculate the levels of the newest season.
-The output is results regarding the newest season in the time series observations.
+It uses the previous seasons to calculate the levels of the current season.
+The output is results regarding the current season in the time series observations.
+NOTE: The data must include data for a complete previous season to make predictions for the current season.
 }
 \examples{
 # Generate random flu season

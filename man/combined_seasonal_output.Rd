@@ -10,6 +10,7 @@ combined_seasonal_output(
   level = 0.95,
   disease_threshold = 20,
   family = c("poisson", "quasipoisson"),
+  family_quant = c("weibull", "lnorm", "exp"),
   na_fraction_allowed = 0.4,
   season_weeks = c(21, 20),
   method = c("intensity_levels", "peak_levels"),
@@ -22,26 +23,28 @@ combined_seasonal_output(
 \arguments{
 \item{tsd}{An object containing time series data with 'time' and 'observation.'}
 
-\item{k}{An integer specifying the window size for modeling growth rates.}
+\item{k}{An integer specifying the window size for modeling growth rates for the onset.}
 
-\item{level}{The confidence level for parameter estimates, a numeric value between 0 and 1.}
+\item{level}{The confidence level for onset parameter estimates, a numeric value between 0 and 1.}
 
-\item{disease_threshold}{An integer specifying the threshold for considering a disease outbreak. It defines
-the per time-step disease threshold that has to be surpassed to possibly trigger a seasonal onset alarm.
-If the total number of cases in a window of size k exceeds \code{disease_threshold * k}, a seasonal onset alarm
-can be triggered. The burden levels are only considered if the surpass the disease_threshold.}
+\item{disease_threshold}{An integer specifying the threshold for considering a disease outbreak. For seasonal onset it defines the per time-step disease threshold that has to be surpassed to possibly
+trigger a seasonal onset alarm. If the total number of cases in a window of size k exceeds
+\code{disease_threshold * k}, a seasonal onset alarm can be triggered. For burden levels it defines the per
+time-step disease threshold that has to be surpassed for the observation to be included in the level
+calculations.}
 
-\item{family}{A character string specifying the family for modeling seasonal onset.
-Choose between "poisson," or "quasipoisson".}
+\item{family}{A character string specifying the family for modeling  seasonal onset.}
+
+\item{family_quant}{A character string specifying the family for modeling burden levels.}
 
 \item{na_fraction_allowed}{Numeric value between 0 and 1 specifying the fraction of observables in the window
-of size k that are allowed to be NA.}
+of size k that are allowed to be NA in onset calculations.}
 
-\item{season_weeks}{A numeric vector of length 2, \code{c(start, end)}, with the start and end weeks of the seasons to
-stratify the observations by. Must span the new year; e.g.: \code{season_weeks = c(21, 20)}.}
+\item{season_weeks}{A numeric vector of length 2, \code{c(start,end)}, with the start and end weeks of the seasons to
+stratify the observations by. Must span the new year; ex: \code{season_weeks = c(21, 20)}.}
 
-\item{method}{A character string specifying the model to be used in the burden level calculations.
-Choose between "intensity_levels" or "peak_levels". Both model predict the levels of the newest series of
+\item{method}{A character string specifying the model to be used in the level calculations.
+Both model predict the levels of the current series of
 observations.
 \itemize{
 \item \code{intensity_levels}: models the risk compared to what has been observed in previous seasons.
@@ -50,7 +53,7 @@ observations.
 
 \item{conf_levels}{A numeric vector specifying the confidence levels for parameter estimates. The values have
 to be unique and in ascending order, (i.e. the lowest level is first and highest level is last).
-The \code{conf_levels} are specific for each method in the burden level calculations:
+The \code{conf_levels} are specific for each method:
 \itemize{
 \item for \code{intensity_levels} only specify the highest confidence level e.g.: \code{0.95}, which is the highest intensity
 that has been observed in previous seasons.
@@ -58,7 +61,7 @@ that has been observed in previous seasons.
 levels low, medium and high that reflect the peak severity relative to those observed in previous seasons.
 }}
 
-\item{decay_factor}{A numeric value between 0 and 1, that specifies the weight applied to previous seasons in
+\item{decay_factor}{A numeric value between 0 and 1, that specifies the weight applied to previous seasons in level
 calculations. It is used as \code{decay_factor}^(number of seasons back), whereby the weight for the most recent season
 will be \code{decay_factor}^0 = 1. This parameter allows for a decreasing weight assigned to prior seasons, such that
 the influence of older seasons diminishes exponentially.}
@@ -122,9 +125,9 @@ objective function value from the optimisation. Smaller value equals better opti
 }
 \description{
 This function performs automated and early detection of seasonal epidemic onsets and calculates the burden
-levels of time series dataset stratified by season. The seasonal onset estimates growth rates for consecutive
-time intervals and calculates the sum of cases (sum_of_cases). The burden levels use the previous seasons to
-calculate the levels of the newest season.
+levels from time series dataset stratified by season. The seasonal onset estimates growth rates for consecutive
+time intervals and calculates the sum of cases. The burden levels use the previous seasons to calculate the levels
+of the current season.
 }
 \examples{
 # Generate random flu season

@@ -3,41 +3,16 @@
 #' @description
 #'
 #' This function performs automated and early detection of seasonal epidemic onsets and calculates the burden
-#' levels of time series dataset stratified by season. The seasonal onset estimates growth rates for consecutive
-#' time intervals and calculates the sum of cases (sum_of_cases). The burden levels use the previous seasons to
-#' calculate the levels of the newest season.
-#'
-#' @param tsd An object containing time series data with 'time' and 'observation.'
-#' @param k An integer specifying the window size for modeling growth rates.
-#' @param level The confidence level for parameter estimates, a numeric value between 0 and 1.
-#' @param disease_threshold An integer specifying the threshold for considering a disease outbreak. It defines
-#' the per time-step disease threshold that has to be surpassed to possibly trigger a seasonal onset alarm.
-#' If the total number of cases in a window of size k exceeds `disease_threshold * k`, a seasonal onset alarm
-#' can be triggered. The burden levels are only considered if the surpass the disease_threshold.
-#' @param family A character string specifying the family for modeling seasonal onset.
-#' Choose between "poisson," or "quasipoisson".
-#' @param na_fraction_allowed Numeric value between 0 and 1 specifying the fraction of observables in the window
-#' of size k that are allowed to be NA.
-#' @param season_weeks A numeric vector of length 2, `c(start, end)`, with the start and end weeks of the seasons to
-#' stratify the observations by. Must span the new year; e.g.: `season_weeks = c(21, 20)`.
-#' @param method A character string specifying the model to be used in the burden level calculations.
-#' Choose between "intensity_levels" or "peak_levels". Both model predict the levels of the newest series of
-#' observations.
-#'  - `intensity_levels`: models the risk compared to what has been observed in previous seasons.
-#'  - `peak_levels`: models the risk compared to what has been observed in the `n_peak` observations each season.
-#' @param conf_levels A numeric vector specifying the confidence levels for parameter estimates. The values have
-#' to be unique and in ascending order, (i.e. the lowest level is first and highest level is last).
-#' The `conf_levels` are specific for each method in the burden level calculations:
-#'   - for `intensity_levels` only specify the highest confidence level e.g.: `0.95`, which is the highest intensity
-#'     that has been observed in previous seasons.
-#'   - for `peak_levels` specify three confidence levels e.g.: `c(0.5, 0.9, 0.95)`, which are the three confidence
-#'     levels low, medium and high that reflect the peak severity relative to those observed in previous seasons.
-#' @param decay_factor A numeric value between 0 and 1, that specifies the weight applied to previous seasons in
-#' calculations. It is used as `decay_factor`^(number of seasons back), whereby the weight for the most recent season
-#' will be `decay_factor`^0 = 1. This parameter allows for a decreasing weight assigned to prior seasons, such that
-#' the influence of older seasons diminishes exponentially.
-#' @param n_peak A numeric value specifying the number of peak observations to be selected from each season in the
-#' level calculations. The `n_peak` observations have to surpass the `disease_threshold` to be included.
+#' levels from time series dataset stratified by season. The seasonal onset estimates growth rates for consecutive
+#' time intervals and calculates the sum of cases. The burden levels use the previous seasons to calculate the levels
+#' of the current season.
+#' @inheritParams seasonal_burden_levels
+#' @inheritParams seasonal_onset
+#' @param tsd `r rd_tsd()`
+#' @param disease_threshold `r rd_disease_threshold(usage = "combined")`
+#' @param family `r rd_family(usage = "combined")`
+#' @param family_quant A character string specifying the family for modeling burden levels.
+#' @param season_weeks `r rd_season_weeks()`
 #' @param ... arguments that can be passed to the `fit_quantiles()` function in the burden level calculations.
 #'
 #' @return An object containing two lists: onset_output and burden_output:
@@ -128,6 +103,11 @@ combined_seasonal_output <- function(
     "poisson",
     "quasipoisson"
   ),
+  family_quant = c(
+    "weibull",
+    "lnorm",
+    "exp"
+  ),
   na_fraction_allowed = 0.4,
   season_weeks = c(21, 20),
   method = c("intensity_levels", "peak_levels"),
@@ -139,13 +119,14 @@ combined_seasonal_output <- function(
   # Run the models
   burden_output <- seasonal_burden_levels(tsd = tsd, season_weeks = season_weeks, method = method,
                                           conf_levels = conf_levels, decay_factor = decay_factor,
-                                          disease_threshold = disease_threshold, n_peak = n_peak, ...)
+                                          disease_threshold = disease_threshold, n_peak = n_peak,
+                                          family = family_quant, ...)
 
   onset_output <- seasonal_onset(tsd = tsd, k = k, level = level, disease_threshold = disease_threshold,
                                  family = family, na_fraction_allowed = na_fraction_allowed,
                                  season_weeks = season_weeks)
 
-  # Extract newest season from onset_output and create seasonal_onset
+  # Extract current season from onset_output and create seasonal_onset
   onset_output <- onset_output |>
     dplyr::filter(.data$season == max(.data$season)) |>
     dplyr::mutate(onset_flag = cumsum(.data$seasonal_onset_alarm),

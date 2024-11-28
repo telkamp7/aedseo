@@ -17,23 +17,21 @@ seasonal_onset(
 \arguments{
 \item{tsd}{An object containing time series data with 'time' and 'observation.'}
 
-\item{k}{An integer specifying the window size for modeling growth rates.}
+\item{k}{An integer specifying the window size for modeling growth rates for the onset.}
 
-\item{level}{The confidence level for parameter estimates, a numeric value between 0 and 1.}
+\item{level}{The confidence level for onset parameter estimates, a numeric value between 0 and 1.}
 
-\item{disease_threshold}{An integer specifying the threshold for considering a disease outbreak. It defines
-the per time-step disease threshold that has to be surpassed to possibly trigger a seasonal onset alarm.
-If the total number of cases in a window of size k exceeds \code{disease_threshold * k}, a seasonal onset alarm
-can be triggered.}
+\item{disease_threshold}{An integer specifying the threshold for considering a disease outbreak. It defines the per time-step disease threshold that has to be surpassed to possibly trigger a seasonal
+onset alarm. If the total number of cases in a window of size k exceeds \code{disease_threshold * k}, a seasonal
+onset alarm can be triggered.}
 
-\item{family}{A character string specifying the family for modeling. Choose between "poisson," or "quasipoisson".}
+\item{family}{A character string specifying the family for modeling}
 
 \item{na_fraction_allowed}{Numeric value between 0 and 1 specifying the fraction of observables in the window
-of size k that are allowed to be NA.}
+of size k that are allowed to be NA in onset calculations.}
 
 \item{season_weeks}{A numeric vector of length 2, \code{c(start,end)}, with the start and end weeks of the seasons to
-stratify the observations by. Must span the new year; ex: \code{season_weeks = c(21, 20)}. Default, \code{NULL}, is no
-stratification by season.}
+stratify the observations by. Must span the new year; ex: \code{season_weeks = c(21, 20)}. If set to \code{NULL}, is  means no stratification by season.}
 }
 \value{
 A \code{seasonal_onset} object containing:
