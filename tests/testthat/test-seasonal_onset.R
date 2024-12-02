@@ -148,3 +148,23 @@ test_that("Test that input argument checks work", {
   expect_error(seasonal_onset(tsd_data))
 
 })
+
+
+start_date <- as.Date("2021-01-04")
+end_date <- as.Date("2023-12-31")
+
+weekly_dates <- seq.Date(from = start_date,
+                         to = end_date,
+                         by = "week")
+
+obs <- stats::rpois(length(weekly_dates), 1000)
+
+tsd_data <- to_time_series(
+  observation = obs,
+  time = as.Date(weekly_dates),
+  time_interval = "week"
+)
+
+test <- seasonal_onset(tsd_data, season_weeks = c(20,21), only_current_season = TRUE)
+
+

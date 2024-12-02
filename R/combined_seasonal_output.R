@@ -114,24 +114,30 @@ combined_seasonal_output <- function(
   conf_levels = 0.95,
   decay_factor = 0.8,
   n_peak = 6,
+  only_current_season = TRUE,
   ...
 ) {
   # Run the models
   burden_output <- seasonal_burden_levels(tsd = tsd, season_weeks = season_weeks, method = method,
                                           conf_levels = conf_levels, decay_factor = decay_factor,
                                           disease_threshold = disease_threshold, n_peak = n_peak,
-                                          family = family_quant, ...)
+                                          family = family_quant, only_current_season, ...)
 
   onset_output <- seasonal_onset(tsd = tsd, k = k, level = level, disease_threshold = disease_threshold,
                                  family = family, na_fraction_allowed = na_fraction_allowed,
-                                 season_weeks = season_weeks)
+                                 season_weeks = season_weeks, only_current_season)
 
   # Extract current season from onset_output and create seasonal_onset
   onset_output <- onset_output |>
-    dplyr::filter(.data$season == max(.data$season)) |>
+    dplyr::group_by(.data$season) |>
     dplyr::mutate(onset_flag = cumsum(.data$seasonal_onset_alarm),
                   seasonal_onset = .data$onset_flag == 1 & !duplicated(.data$onset_flag)) |>
     dplyr::select(-(.data$onset_flag))
+
+  if (only_current_season == TRUE) {
+    onset_output <- onset_output |>
+      dplyr::filter(.data$season == max(.data$season))
+  }
 
   return(list(onset_output = onset_output, burden_output = burden_output))
 }
