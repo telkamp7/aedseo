@@ -96,13 +96,14 @@ combined_seasonal_output <- function(
                                  family = family, na_fraction_allowed = na_fraction_allowed,
                                  season_weeks = season_weeks, only_current_season)
 
-  # Extract current season from onset_output and create seasonal_onset
+  # Extract seasons from onset_output and create seasonal_onset
   onset_output <- onset_output |>
     dplyr::group_by(.data$season) |>
     dplyr::mutate(onset_flag = cumsum(.data$seasonal_onset_alarm),
                   seasonal_onset = .data$onset_flag == 1 & !duplicated(.data$onset_flag)) |>
     dplyr::select(-(.data$onset_flag))
 
+  # Extract only current season if assigned
   if (only_current_season == TRUE) {
     onset_output <- onset_output |>
       dplyr::filter(.data$season == max(.data$season))

@@ -17,6 +17,7 @@ combined_seasonal_output(
   conf_levels = 0.95,
   decay_factor = 0.8,
   n_peak = 6,
+  only_current_season = TRUE,
   ...
 )
 }

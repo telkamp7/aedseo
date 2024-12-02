@@ -12,6 +12,7 @@ seasonal_burden_levels(
   decay_factor = 0.8,
   disease_threshold = 20,
   n_peak = 6,
+  only_current_season = TRUE,
   ...
 )
 }

@@ -149,22 +149,25 @@ test_that("Test that input argument checks work", {
 
 })
 
+test_that("Test that selection of current season work as expected", {
+  start_date <- as.Date("2021-01-04")
+  end_date <- as.Date("2023-12-31")
 
-start_date <- as.Date("2021-01-04")
-end_date <- as.Date("2023-12-31")
+  weekly_dates <- seq.Date(from = start_date,
+                           to = end_date,
+                           by = "week")
 
-weekly_dates <- seq.Date(from = start_date,
-                         to = end_date,
-                         by = "week")
+  obs <- stats::rpois(length(weekly_dates), 1000)
 
-obs <- stats::rpois(length(weekly_dates), 1000)
+  tsd_data <- to_time_series(
+    observation = obs,
+    time = as.Date(weekly_dates),
+    time_interval = "week"
+  )
 
-tsd_data <- to_time_series(
-  observation = obs,
-  time = as.Date(weekly_dates),
-  time_interval = "week"
-)
+  current_season <- epi_calendar(end_date)
 
-test <- seasonal_onset(tsd_data, season_weeks = c(20,21), only_current_season = TRUE)
+  current_onset <- seasonal_onset(tsd_data, season_weeks = c(20, 21), only_current_season = TRUE)
 
-
+  expect_equal(current_season, unique(current_onset$season))
+})
