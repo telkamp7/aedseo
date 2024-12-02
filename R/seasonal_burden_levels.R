@@ -76,6 +76,7 @@ seasonal_burden_levels <- function(
   decay_factor = 0.8,
   disease_threshold = 20,
   n_peak = 6,
+  only_current_season = TRUE,
   ...
 ) {
   # Check input arguments
@@ -89,6 +90,7 @@ seasonal_burden_levels <- function(
   checkmate::assert_numeric(decay_factor, lower = 0, upper = 1, len = 1, add = coll)
   checkmate::assert_numeric(n_peak, lower = 1, len = 1, add = coll)
   checkmate::assert_integerish(disease_threshold, len = 1, add = coll)
+  checkmate::assert_logical(only_current_season, add = coll)
   # Assert conf_levels based on the method chosen
   if (method == "intensity_levels") {
     checkmate::assert_numeric(conf_levels, lower = 0, upper = 1, len = 1,
@@ -106,47 +108,64 @@ seasonal_burden_levels <- function(
   if (length(unique(seasonal_tsd$season)) <= 1) coll$push("There must be at least two unique seasons in the data.")
   checkmate::reportAssertions(coll)
 
-  # Add weights and remove current season to get predictions for this season
-  weighted_seasonal_tsd <- seasonal_tsd |>
-    dplyr::filter(.data$season != max(.data$season)) |>
-    dplyr::mutate(year = purrr::map_chr(.data$season, ~ stringr::str_extract(.x, "[0-9]+")) |>
-                    as.numeric()) |>
-    dplyr::mutate(weight = decay_factor^(max(.data$year) - .data$year))
-
   # Select n_peak highest observations and filter observations >= disease_threshold
-  season_observations_and_weights <- weighted_seasonal_tsd |>
-    dplyr::select(-c("year", "time")) |>
+  peak_seasonal_tsd <- seasonal_tsd |>
     dplyr::filter(.data$observation >= disease_threshold) |>
     dplyr::slice_max(.data$observation, n = n_peak, with_ties = FALSE, by = "season")
 
-  # Run quantiles_fit function
-  quantiles_fit <- season_observations_and_weights |>
-    dplyr::select("observation", "weight") |>
-    fit_quantiles(weighted_observations = _, conf_levels = conf_levels, ...)
+  # main level function
+  main_level_fun <- function(seasonal_tsd) {
+    # Add weights and remove current season to get predictions for this season
+    weighted_seasonal_tsd <- seasonal_tsd |>
+      dplyr::filter(.data$season != max(.data$season)) |>
+      dplyr::mutate(year = purrr::map_chr(.data$season, ~ stringr::str_extract(.x, "[0-9]+")) |>
+                      as.numeric()) |>
+      dplyr::mutate(weight = decay_factor^(max(.data$year) - .data$year)) |>
+      dplyr::select(-c("year", "time"))
 
-  # If method intensity_levels was chosen; use the high level from the `fit_quantiles` function as the high
-  # level and the disease_threshold as the very low level. The low and medium levels are defined as the relative
-  # increase between the very low level and high level.
-  results <- switch(method,
-    peak_levels = {
-      model_output <- append(quantiles_fit, list(season = max(seasonal_tsd$season)), after = 0)
-      model_output$values <- stats::setNames(c(disease_threshold, model_output$values),
-                                             c("very low", "low", "medium", "high"))
-      model_output <- append(model_output, list(disease_threshold = disease_threshold))
-    },
-    intensity_levels = {
-      level_step_log <- pracma::logseq(disease_threshold, quantiles_fit$values, n = 4)
-      model_output <- list(
-        season = max(seasonal_tsd$season),
-        high_conf_level = quantiles_fit$conf_levels,
-        values = stats::setNames(level_step_log, c("very low", "low", "medium", "high")),
-        par = quantiles_fit$par,
-        obj_value = quantiles_fit$conf_levels,
-        converged = quantiles_fit$converged,
-        family = quantiles_fit$family,
-        disease_threshold = disease_threshold
-      )
-    }
-  )
-  return(results)
+    # Run quantiles_fit function
+    quantiles_fit <- weighted_seasonal_tsd |>
+      dplyr::select("observation", "weight") |>
+      fit_quantiles(weighted_observations = _, conf_levels = conf_levels, ...)
+
+    # If method intensity_levels was chosen; use the high level from the `fit_quantiles` function as the high
+    # level and the disease_threshold as the very low level. The low and medium levels are defined as the relative
+    # increase between the very low level and high level.
+    results <- switch(method,
+      peak_levels = {
+        model_output <- append(quantiles_fit, list(season = max(seasonal_tsd$season)), after = 0)
+        model_output$values <- stats::setNames(c(disease_threshold, model_output$values),
+                                              c("very low", "low", "medium", "high"))
+        model_output <- append(model_output, list(disease_threshold = disease_threshold))
+      },
+      intensity_levels = {
+        level_step_log <- pracma::logseq(disease_threshold, quantiles_fit$values, n = 4)
+        model_output <- list(
+          season = max(seasonal_tsd$season),
+          high_conf_level = quantiles_fit$conf_levels,
+          values = stats::setNames(level_step_log, c("very low", "low", "medium", "high")),
+          par = quantiles_fit$par,
+          obj_value = quantiles_fit$conf_levels,
+          converged = quantiles_fit$converged,
+          family = quantiles_fit$family,
+          disease_threshold = disease_threshold
+        )
+      }
+    )
+    return(results)
+  }
+  # Select seasons for output based on only_current_season input argument
+  if (only_current_season == FALSE) {
+    # Group seasons to get results for all seasons available
+    unique_seasons <- unique(rev(peak_seasonal_tsd$season))
+    season_groups <- purrr::map(seq_along(unique_seasons), ~ unique_seasons[1:.x]) |>
+      purrr::accumulate(union)
+    season_groups_data <- purrr::map(season_groups[-1], ~ peak_seasonal_tsd |> dplyr::filter(.data$season %in% .x))
+
+    level_results <- purrr::map(season_groups_data, ~ main_level_fun(.x))
+
+  } else {
+    level_results <- main_level_fun(peak_seasonal_tsd)
+  }
+  return(level_results)
 }

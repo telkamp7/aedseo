@@ -11,7 +11,8 @@ seasonal_onset(
   disease_threshold = NA_integer_,
   family = c("poisson", "quasipoisson"),
   na_fraction_allowed = 0.4,
-  season_weeks = NULL
+  season_weeks = NULL,
+  only_current_season = NULL
 )
 }
 \arguments{
@@ -32,6 +33,8 @@ of size k that are allowed to be NA in onset calculations.}
 
 \item{season_weeks}{A numeric vector of length 2, \code{c(start,end)}, with the start and end weeks of the seasons to
 stratify the observations by. Must span the new year; ex: \code{season_weeks = c(21, 20)}. If set to \code{NULL}, is  means no stratification by season.}
+
+\item{only_current_season}{blabla}
 }
 \value{
 A \code{seasonal_onset} object containing:

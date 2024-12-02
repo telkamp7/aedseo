@@ -13,6 +13,7 @@
 #' @param na_fraction_allowed Numeric value between 0 and 1 specifying the fraction of observables in the window
 #' of size k that are allowed to be NA in onset calculations.
 #' @param season_weeks `r rd_season_weeks(usage = "onset")`
+#' @param only_current_season blabla
 #'
 #' @return `r rd_seasonal_onset_return`
 #'
@@ -54,7 +55,8 @@ seasonal_onset <- function(
       # TODO: #10 Include negative.binomial regressions. @telkamp7
     ),
     na_fraction_allowed = 0.4,
-    season_weeks = NULL) {
+    season_weeks = NULL,
+    only_current_season = NULL) {
   # Check input arguments
   coll <- checkmate::makeAssertCollection()
   checkmate::assert_data_frame(tsd, add = coll)
@@ -67,17 +69,14 @@ seasonal_onset <- function(
   checkmate::assert_integerish(disease_threshold, add = coll)
   checkmate::assert_integerish(season_weeks, len = 2, lower = 1, upper = 53,
                                null.ok = TRUE, add = coll)
+  checkmate::assert_logical(only_current_season, null.ok = TRUE, add = coll)
+  if (is.null(season_weeks) && !is.null(only_current_season)) {
+    coll$push("If season_weeks is NULL only_current_season must also be NULL")
+  }
   checkmate::reportAssertions(coll)
 
   # Throw an error if any of the inputs are not supported
   family <- rlang::arg_match(family)
-
-  # Extract the length of the series
-  n <- base::nrow(tsd)
-
-  # Allocate space for growth rate estimates
-  res <- tibble::tibble()
-  skipped_window <- base::rep(FALSE, base::nrow(tsd))
 
   # Add the seasons to tsd if available
   if (!is.null(season_weeks)) {
@@ -85,6 +84,17 @@ seasonal_onset <- function(
   } else {
     tsd <- tsd |> dplyr::mutate(season = "not_defined")
   }
+
+  if (!is.null(season_weeks) && only_current_season == TRUE) {
+    tsd <- tsd |> dplyr::filter(.data$season == max(.data$season))
+  }
+
+  # Extract the length of the series
+  n <- base::nrow(tsd)
+
+  # Allocate space for growth rate estimates
+  res <- tibble::tibble()
+  skipped_window <- base::rep(FALSE, base::nrow(tsd))
 
   for (i in k:n) {
     # Index observations for this iteration
