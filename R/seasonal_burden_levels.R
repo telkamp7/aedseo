@@ -28,6 +28,7 @@
 #' @param disease_threshold `r rd_disease_threshold(usage = "levels")`
 #' @param n_peak A numeric value specifying the number of peak observations to be selected from each season in the
 #' level calculations. The `n_peak` observations have to surpass the `disease_threshold` to be included.
+#' @param only_current_season `r rd_only_current_season()`
 #' @param ... arguments that can be passed to the `fit_quantiles()` function.
 #'
 #' @return A list containing:
@@ -156,7 +157,7 @@ seasonal_burden_levels <- function(
       peak_levels = {
         model_output <- append(quantiles_fit, list(season = max(seasonal_tsd$season)), after = 0)
         model_output$values <- stats::setNames(c(disease_threshold, model_output$values),
-                                              c("very low", "low", "medium", "high"))
+                                               c("very low", "low", "medium", "high"))
         model_output <- append(model_output, list(disease_threshold = disease_threshold))
       },
       intensity_levels = {

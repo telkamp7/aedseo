@@ -13,7 +13,7 @@
 #' @param na_fraction_allowed Numeric value between 0 and 1 specifying the fraction of observables in the window
 #' of size k that are allowed to be NA in onset calculations.
 #' @param season_weeks `r rd_season_weeks(usage = "onset")`
-#' @param only_current_season blabla
+#' @param only_current_season `r rd_only_current_season()`
 #'
 #' @return A `seasonal_onset` object containing:
 #'   - 'reference_time': The time point for which the growth rate is estimated.
@@ -85,6 +85,9 @@ seasonal_onset <- function(
   if (is.null(season_weeks) && !is.null(only_current_season)) {
     coll$push("If season_weeks is NULL only_current_season must also be NULL")
   }
+  if (!is.null(season_weeks) && is.null(only_current_season)) {
+    coll$push("If season_weeks is assigned only_current_season must also be assigned")
+  }
   checkmate::reportAssertions(coll)
 
   # Throw an error if any of the inputs are not supported
@@ -95,10 +98,6 @@ seasonal_onset <- function(
     tsd <- tsd |> dplyr::mutate(season = epi_calendar(.data$time))
   } else {
     tsd <- tsd |> dplyr::mutate(season = "not_defined")
-  }
-
-  if (!is.null(season_weeks) && only_current_season == TRUE) {
-    tsd <- tsd |> dplyr::filter(.data$season == max(.data$season))
   }
 
   # Extract the length of the series
@@ -168,6 +167,11 @@ seasonal_onset <- function(
     disease_threshold = disease_threshold,
     family = family
   )
+
+  # Extract only current season if assigned
+  if (!is.null(season_weeks) && only_current_season == TRUE) {
+    ans <- ans |> dplyr::filter(.data$season == max(.data$season))
+  }
 
   # Keep attributes from the `tsd` class
   attr(ans, "time_interval") <- attr(tsd, "time_interval")

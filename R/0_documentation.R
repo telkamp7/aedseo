@@ -21,6 +21,11 @@ rd_family <- function(type = "param", usage = NULL) {
   paste("A character string specifying the family for modeling",
         ifelse(usage == "combined", paste(" seasonal onset.")))
 }
+rd_only_current_season <- function(type = "param") {
+  checkmate::assert_choice(type, "param")
+  paste("A logical determining if the output should only include results for current season (TRUE) or if the output
+  should include results for all previous seasons")
+}
 rd_season_weeks <- function(type = "param", usage = NULL) {
   checkmate::assert_choice(type, "param")
   paste("A numeric vector of length 2, `c(start,end)`, with the start and end weeks of the seasons to
