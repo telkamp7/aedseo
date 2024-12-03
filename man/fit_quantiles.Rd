@@ -21,7 +21,7 @@ observation has more influence on the model outcome, while lower weights reduce 
 \item{conf_levels}{A numeric vector specifying the confidence levels for parameter estimates. The values have
 to be unique and in ascending order, that is the lowest level is first and highest level is last.}
 
-\item{family}{A character string specifying the family for modeling. Choose between "weibull", "lnorm" or "exp".}
+\item{family}{A character string specifying the family for modeling}
 
 \item{optim_method}{A character string specifying the method to be used in the optimisation. Lookup \code{?optim::stats}
 for details about methods.
@@ -82,5 +82,5 @@ data_input <- tibble::tibble(
 # Use the model
 fit_quantiles(weighted_observations = data_input,
               conf_levels = c(0.50, 0.90, 0.95),
-              family = "weibull")
+              family= "weibull")
 }

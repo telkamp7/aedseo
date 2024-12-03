@@ -1,0 +1,68 @@
+rd_disease_threshold <- function(usage = NULL) {
+  paste("An integer specifying the threshold for considering a disease outbreak.",
+        if (usage == "onset") {
+          paste("It defines the per time-step disease threshold that has to be surpassed to possibly trigger a seasonal
+          onset alarm. If the total number of cases in a window of size k exceeds `disease_threshold * k`, a seasonal
+          onset alarm can be triggered.")
+        } else if (usage == "levels") {
+          paste("It defines the per time-step disease threshold that has to be surpassed for the observation to be
+          included in the level calculations.")
+        } else if (usage == "combined") {
+          paste("For seasonal onset it defines the per time-step disease threshold that has to be surpassed to possibly
+          trigger a seasonal onset alarm. If the total number of cases in a window of size k exceeds
+          `disease_threshold * k`, a seasonal onset alarm can be triggered. For burden levels it defines the per
+          time-step disease threshold that has to be surpassed for the observation to be included in the level
+          calculations.")
+        })
+}
+rd_family <- function(usage = NULL) {
+  paste("A character string specifying the family for modeling",
+        ifelse(usage == "combined", paste(" seasonal onset.")))
+}
+rd_season_weeks <- function(usage = NULL) {
+  paste("A numeric vector of length 2, `c(start,end)`, with the start and end weeks of the seasons to
+  stratify the observations by. Must span the new year; ex: `season_weeks = c(21, 20)`.",
+        ifelse(usage == "onset", paste("If set to `NULL`, is  means no stratification by season.")))
+}
+rd_tsd <- "An object containing time series data with 'time' and 'observation.'"
+
+rd_seasonal_onset_return <- paste(
+  "\nA `seasonal_onset` object containing:\n",
+  "- 'reference_time': The time point for which the growth rate is estimated.\n",
+  "- 'observation': The observation in the reference time point.\n",
+  "- 'season': The stratification of observables in corresponding seasons.\n",
+  "- 'growth_rate': The estimated growth rate.\n",
+  "- 'lower_growth_rate': The lower bound of the growth rate's confidence interval.\n",
+  "- 'upper_growth_rate': The upper bound of the growth rate's confidence interval.\n",
+  "- 'growth_warning': Logical. Is the growth rate significantly higher than zero?\n",
+  "- 'sum_of_cases': The sum of cases within the time window.\n",
+  "- 'sum_of_cases_warning': Logical. Does the Sum of Cases exceed the disease threshold?\n",
+  "- 'seasonal_onset_alarm': Logical. Is there a seasonal onset alarm?\n",
+  "- 'skipped_window': Logical. Was the window skipped due to missing?\n",
+  "- 'converged': Logical. Was the IWLS judged to have converged?"
+)
+
+rd_seasonal_burden_levels_return <- paste(
+  "\nA list containing:\n",
+  "- 'season': The season that burden levels are calculated for.\n",
+  "- 'high_conf_level': (only for intensity_level method) The conf_level chosen for the high level.\n",
+  "- 'conf_levels': (only for peak_level method) The conf_levels chosen to fit the 'low', 'medium', 'high' levels.\n",
+  "- 'values': A named vector with values for 'very low', 'low', 'medium', 'high' levels.\n",
+  "- 'par': The fit parameters for the chosen family.\n",
+  "    - par_1:\n",
+  "       - For 'weibull': Shape parameter.\n",
+  "       - For 'lnorm': Mean of the log-transformed observations.\n",
+  "       - For 'exp': Rate parameter.\n",
+  "    - 'par_2':\n",
+  "       - For 'weibull': Scale parameter.\n",
+  "       - For 'lnorm': Standard deviation of the log-transformed observations.\n",
+  "       - For 'exp': Not applicable (set to NA).\n",
+  "- 'obj_value': The value of the objective function - (negative log-likelihood), which represent the minimized\n",
+  "objective function value from the optimisation. Smaller value equals better optimisation.\n",
+  "- 'converged': Logical. TRUE if the optimisation converged.\n",
+  "- 'family': The distribution family used for the optimization.\n",
+  "   - 'weibull': Uses the Weibull distribution for fitting.\n",
+  "   - 'lnorm': Uses the Log-normal distribution for fitting.\n",
+  "   - 'exp': Uses the Exponential distribution for fitting.\n",
+  "   - 'disease_threshold': The input disease threshold, which is also the very low level."
+)
