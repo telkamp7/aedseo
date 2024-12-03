@@ -52,7 +52,7 @@ included in the level calculations.}
 level calculations. The \code{n_peak} observations have to surpass the \code{disease_threshold} to be included.}
 
 \item{only_current_season}{A logical determining if the output should only include results for current season (TRUE) or
-if the output should include results for all previous seasons}
+if the output should include results for all previous seasons (FALSE)}
 
 \item{...}{Arguments passed to the \code{fit_quantiles()} function.}
 }
