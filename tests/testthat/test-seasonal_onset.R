@@ -149,7 +149,7 @@ test_that("Test that input argument checks work", {
 
 })
 
-test_that("Test that selection of current season work as expected", {
+test_that("Test that selection of current and all seasons work as expected", {
   start_date <- as.Date("2021-01-04")
   end_date <- as.Date("2023-12-31")
 
@@ -168,6 +168,8 @@ test_that("Test that selection of current season work as expected", {
   current_season <- epi_calendar(end_date)
 
   current_onset <- seasonal_onset(tsd_data, season_weeks = c(20, 21), only_current_season = TRUE)
+  all_onsets <- seasonal_onset(tsd_data, season_weeks = c(20, 21), only_current_season = FALSE)
 
   expect_equal(current_season, unique(current_onset$season))
+  expect_gt(length(unique(all_onsets$season)), length(current_season))
 })

@@ -24,7 +24,7 @@ rd_family <- function(type = "param", usage = NULL) {
 rd_only_current_season <- function(type = "param") {
   checkmate::assert_choice(type, "param")
   paste("A logical determining if the output should only include results for current season (TRUE) or if the output
-  should include results for all previous seasons")
+  should include results for all previous seasons (FALSE)")
 }
 rd_season_weeks <- function(type = "param", usage = NULL) {
   checkmate::assert_choice(type, "param")

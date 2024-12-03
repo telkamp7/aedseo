@@ -141,3 +141,28 @@ test_that("Test that function fail with less than two seasons", {
     )
   )
 })
+
+test_that("Test that selection of current and all seasons work as expected", {
+  start_date <- as.Date("2021-01-04")
+  end_date <- as.Date("2023-12-31")
+
+  weekly_dates <- seq.Date(from = start_date,
+                           to = end_date,
+                           by = "week")
+
+  obs <- stats::rpois(length(weekly_dates), 1000)
+
+  tsd_data <- to_time_series(
+    observation = obs,
+    time = as.Date(weekly_dates),
+    time_interval = "week"
+  )
+
+  current_season <- epi_calendar(end_date)
+
+  current_level <- seasonal_burden_levels(tsd_data, only_current_season = TRUE)
+  all_levels <- seasonal_burden_levels(tsd_data, only_current_season = FALSE)
+
+  expect_equal(current_season, unique(current_level$season))
+  expect_gt(length(all_levels), length(current_season))
+})
