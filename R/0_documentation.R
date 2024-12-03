@@ -20,7 +20,7 @@ rd_family <- function(usage = NULL) {
         ifelse(usage == "combined", paste(" seasonal onset.")))
 }
 rd_only_current_season <- "A logical determining if the output should only include results for current season (TRUE) or
-if the output should include results for all previous seasons"
+if the output should include results for all previous seasons (FALSE)"
 rd_season_weeks <- function(usage = NULL) {
   paste("A numeric vector of length 2, `c(start,end)`, with the start and end weeks of the seasons to
   stratify the observations by. Must span the new year; ex: `season_weeks = c(21, 20)`.",
