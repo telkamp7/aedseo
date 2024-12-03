@@ -69,12 +69,14 @@ the influence of older seasons diminishes exponentially.}
 \item{n_peak}{A numeric value specifying the number of peak observations to be selected from each season in the
 level calculations. The \code{n_peak} observations have to surpass the \code{disease_threshold} to be included.}
 
-\item{...}{arguments that can be passed to the \code{fit_quantiles()} function in the burden level calculations.}
+\item{...}{Arguments passed to the \code{fit_quantiles()} function in the burden level calculations.}
 }
 \value{
 An object containing two lists: onset_output and burden_output:
 
 onset_output:
+
+A \code{seasonal_onset} object containing:
 \itemize{
 \item 'reference_time': The time point for which the growth rate is estimated.
 \item 'observation': The observation in the reference time point.
@@ -91,22 +93,24 @@ onset_output:
 }
 
 burden_output:
+
+A list containing:
 \itemize{
 \item 'season': The season that burden levels are calculated for.
 \item 'high_conf_level': (only for intensity_level method) The conf_level chosen for the high level.
-\item 'conf_levels': (only for peak_level method) The conf_levels chosen to fit the "low", "medium", "high" levels.
-\item 'values': A named vector with values for "very low", "low", "medium", "high" levels.
+\item 'conf_levels': (only for peak_level method) The conf_levels chosen to fit the 'low', 'medium', 'high' levels.
+\item 'values': A named vector with values for 'very low', 'low', 'medium', 'high' levels.
 \item 'par': The fit parameters for the chosen family.
 \itemize{
 \item par_1:
 \itemize{
-\item For 'weibull': Shape parameter (k).
+\item For 'weibull': Shape parameter.
 \item For 'lnorm': Mean of the log-transformed observations.
-\item For 'exp': Rate parameter (λ).
+\item For 'exp': Rate parameter.
 }
 \item 'par_2':
 \itemize{
-\item For 'weibull': Scale parameter (λ).
+\item For 'weibull': Scale parameter.
 \item For 'lnorm': Standard deviation of the log-transformed observations.
 \item For 'exp': Not applicable (set to NA).
 }
@@ -114,7 +118,7 @@ burden_output:
 \item 'obj_value': The value of the objective function - (negative log-likelihood), which represent the minimized
 objective function value from the optimisation. Smaller value equals better optimisation.
 \item 'converged': Logical. TRUE if the optimisation converged.
-\item 'family_quant': The distribution family used for the optimization.
+\item 'family': The distribution family used for the optimization.
 \itemize{
 \item 'weibull': Uses the Weibull distribution for fitting.
 \item 'lnorm': Uses the Log-normal distribution for fitting.

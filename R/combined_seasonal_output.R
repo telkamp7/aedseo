@@ -8,51 +8,20 @@
 #' of the current season.
 #' @inheritParams seasonal_burden_levels
 #' @inheritParams seasonal_onset
-#' @param tsd `r rd_tsd()`
+#' @param tsd `r rd_tsd`
 #' @param disease_threshold `r rd_disease_threshold(usage = "combined")`
 #' @param family `r rd_family(usage = "combined")`
 #' @param family_quant A character string specifying the family for modeling burden levels.
 #' @param season_weeks `r rd_season_weeks()`
-#' @param ... arguments that can be passed to the `fit_quantiles()` function in the burden level calculations.
+#' @param ... Arguments passed to the `fit_quantiles()` function in the burden level calculations.
 #'
 #' @return An object containing two lists: onset_output and burden_output:
 #'
 #' onset_output:
-#'   - 'reference_time': The time point for which the growth rate is estimated.
-#'   - 'observation': The observation in the reference time point.
-#'   - 'season': The stratification of observables in corresponding seasons.
-#'   - 'growth_rate': The estimated growth rate.
-#'   - 'lower_growth_rate': The lower bound of the growth rate's confidence interval.
-#'   - 'upper_growth_rate': The upper bound of the growth rate's confidence interval.
-#'   - 'growth_warning': Logical. Is the growth rate significantly higher than zero?
-#'   - 'sum_of_cases': The sum of cases within the time window.
-#'   - 'sum_of_cases_warning': Logical. Does the Sum of Cases exceed the disease threshold?
-#'   - 'seasonal_onset_alarm': Logical. Is there a seasonal onset alarm?
-#'   - 'skipped_window': Logical. Was the window skipped due to missing?
-#'   - 'converged': Logical. Was the IWLS judged to have converged?
+#' `r rd_seasonal_onset_return`
 #'
 #' burden_output:
-#'   - 'season': The season that burden levels are calculated for.
-#'   - 'high_conf_level': (only for intensity_level method) The conf_level chosen for the high level.
-#'   - 'conf_levels': (only for peak_level method) The conf_levels chosen to fit the "low", "medium", "high" levels.
-#'   - 'values': A named vector with values for "very low", "low", "medium", "high" levels.
-#'   - 'par': The fit parameters for the chosen family.
-#'       - par_1:
-#'          - For 'weibull': Shape parameter (k).
-#'          - For 'lnorm': Mean of the log-transformed observations.
-#'          - For 'exp': Rate parameter (λ).
-#'       - 'par_2':
-#'          - For 'weibull': Scale parameter (λ).
-#'          - For 'lnorm': Standard deviation of the log-transformed observations.
-#'          - For 'exp': Not applicable (set to NA).
-#'   - 'obj_value': The value of the objective function - (negative log-likelihood), which represent the minimized
-#'                  objective function value from the optimisation. Smaller value equals better optimisation.
-#'   - 'converged': Logical. TRUE if the optimisation converged.
-#'   - 'family_quant': The distribution family used for the optimization.
-#'      - 'weibull': Uses the Weibull distribution for fitting.
-#'      - 'lnorm': Uses the Log-normal distribution for fitting.
-#'      - 'exp': Uses the Exponential distribution for fitting.
-#'      - 'disease_threshold': The input disease threshold, which is also the very low level.
+#' `r rd_seasonal_burden_levels_return`
 #'
 #' @export
 #'

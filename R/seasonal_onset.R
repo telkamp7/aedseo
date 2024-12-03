@@ -5,7 +5,7 @@
 #' This function performs automated and early detection of seasonal epidemic onsets on a time series dataset.
 #' It estimates growth rates for consecutive time intervals and calculates the sum of cases (sum_of_cases).
 #'
-#' @param tsd `r rd_tsd()`
+#' @param tsd `r rd_tsd`
 #' @param k An integer specifying the window size for modeling growth rates for the onset.
 #' @param level The confidence level for onset parameter estimates, a numeric value between 0 and 1.
 #' @param disease_threshold `r rd_disease_threshold(usage = "onset")`
@@ -14,19 +14,7 @@
 #' of size k that are allowed to be NA in onset calculations.
 #' @param season_weeks `r rd_season_weeks(usage = "onset")`
 #'
-#' @return A `seasonal_onset` object containing:
-#'   - 'reference_time': The time point for which the growth rate is estimated.
-#'   - 'observation': The observation in the reference time point.
-#'   - 'season': The stratification of observables in corresponding seasons.
-#'   - 'growth_rate': The estimated growth rate.
-#'   - 'lower_growth_rate': The lower bound of the growth rate's confidence interval.
-#'   - 'upper_growth_rate': The upper bound of the growth rate's confidence interval.
-#'   - 'growth_warning': Logical. Is the growth rate significantly higher than zero?
-#'   - 'sum_of_cases': The sum of cases within the time window.
-#'   - 'sum_of_cases_warning': Logical. Does the Sum of Cases exceed the disease threshold?
-#'   - 'seasonal_onset_alarm': Logical. Is there a seasonal onset alarm?
-#'   - 'skipped_window': Logical. Was the window skipped due to missing?
-#'   - 'converged': Logical. Was the IWLS judged to have converged?
+#' @return `r rd_seasonal_onset_return`
 #'
 #' @export
 #'

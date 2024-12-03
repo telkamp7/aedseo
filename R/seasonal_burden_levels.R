@@ -7,7 +7,7 @@
 #' The output is results regarding the current season in the time series observations.
 #' NOTE: The data must include data for a complete previous season to make predictions for the current season.
 #'
-#' @param tsd `r rd_tsd()`
+#' @param tsd `r rd_tsd`
 #' @param season_weeks `r rd_season_weeks()`
 #' @param method A character string specifying the model to be used in the level calculations.
 #' Both model predict the levels of the current series of
@@ -28,30 +28,9 @@
 #' @param disease_threshold `r rd_disease_threshold(usage = "levels")`
 #' @param n_peak A numeric value specifying the number of peak observations to be selected from each season in the
 #' level calculations. The `n_peak` observations have to surpass the `disease_threshold` to be included.
-#' @param ... arguments that can be passed to the `fit_quantiles()` function.
+#' @param ... Arguments passed to the `fit_quantiles()` function.
 #'
-#' @return A list containing:
-#'   - 'season': The season that burden levels are calculated for.
-#'   - 'high_conf_level': (only for intensity_level method) The conf_level chosen for the high level.
-#'   - 'conf_levels': (only for peak_level method) The conf_levels chosen to fit the "low", "medium", "high" levels.
-#'   - 'values': A named vector with values for "very low", "low", "medium", "high" levels.
-#'   - 'par': The fit parameters for the chosen family.
-#'       - par_1:
-#'          - For 'weibull': Shape parameter (k).
-#'          - For 'lnorm': Mean of the log-transformed observations.
-#'          - For 'exp': Rate parameter (λ).
-#'       - 'par_2':
-#'          - For 'weibull': Scale parameter (λ).
-#'          - For 'lnorm': Standard deviation of the log-transformed observations.
-#'          - For 'exp': Not applicable (set to NA).
-#'   - 'obj_value': The value of the objective function - (negative log-likelihood), which represent the minimized
-#'                  objective function value from the optimisation. Smaller value equals better optimisation.
-#'   - 'converged': Logical. TRUE if the optimisation converged.
-#'   - 'family': The distribution family used for the optimization.
-#'      - 'weibull': Uses the Weibull distribution for fitting.
-#'      - 'lnorm': Uses the Log-normal distribution for fitting.
-#'      - 'exp': Uses the Exponential distribution for fitting.
-#'      - 'disease_threshold': The input disease threshold, which is also the very low level.
+#' @return `r rd_seasonal_burden_levels_return`
 #'
 #' @export
 #'
