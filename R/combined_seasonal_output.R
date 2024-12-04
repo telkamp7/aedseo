@@ -90,11 +90,11 @@ combined_seasonal_output <- function(
   burden_output <- seasonal_burden_levels(tsd = tsd, season_weeks = season_weeks, method = method,
                                           conf_levels = conf_levels, decay_factor = decay_factor,
                                           disease_threshold = disease_threshold, n_peak = n_peak,
-                                          family = family_quant, only_current_season, ...)
+                                          family = family_quant, only_current_season = only_current_season, ...)
 
   onset_output <- seasonal_onset(tsd = tsd, k = k, level = level, disease_threshold = disease_threshold,
                                  family = family, na_fraction_allowed = na_fraction_allowed,
-                                 season_weeks = season_weeks, only_current_season)
+                                 season_weeks = season_weeks, only_current_season = only_current_season)
 
   # Extract seasons from onset_output and create seasonal_onset
   onset_output <- onset_output |>

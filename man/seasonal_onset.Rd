@@ -34,8 +34,7 @@ of size k that are allowed to be NA in onset calculations.}
 \item{season_weeks}{A numeric vector of length 2, \code{c(start,end)}, with the start and end weeks of the seasons to
 stratify the observations by. Must span the new year; ex: \code{season_weeks = c(21, 20)}. If set to \code{NULL}, is  means no stratification by season.}
 
-\item{only_current_season}{A logical determining if the output should only include results for current season (TRUE) or
-if the output should include results for all previous seasons (FALSE)}
+\item{only_current_season}{Should the output only include results for the current season?}
 }
 \value{
 A \code{seasonal_onset} object containing:

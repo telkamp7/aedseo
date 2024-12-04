@@ -70,8 +70,7 @@ the influence of older seasons diminishes exponentially.}
 \item{n_peak}{A numeric value specifying the number of peak observations to be selected from each season in the
 level calculations. The \code{n_peak} observations have to surpass the \code{disease_threshold} to be included.}
 
-\item{only_current_season}{A logical determining if the output should only include results for current season (TRUE) or
-if the output should include results for all previous seasons (FALSE)}
+\item{only_current_season}{Should the output only include results for the current season?}
 
 \item{...}{Arguments passed to the \code{fit_quantiles()} function in the burden level calculations.}
 }
