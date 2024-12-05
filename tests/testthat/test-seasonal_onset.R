@@ -171,5 +171,5 @@ test_that("Test that selection of current and all seasons work as expected", {
   all_onsets <- seasonal_onset(tsd_data, season_weeks = c(20, 21), only_current_season = FALSE)
 
   expect_equal(current_season, unique(current_onset$season))
-  expect_gt(length(unique(all_onsets$season)), length(current_season))
+  expect_gt(length(unique(all_onsets$season)), 1)
 })

@@ -164,5 +164,5 @@ test_that("Test that selection of current and all seasons work as expected", {
   all_levels <- seasonal_burden_levels(tsd_data, only_current_season = FALSE)
 
   expect_equal(current_season, unique(current_level$season))
-  expect_gt(length(all_levels), length(current_season))
+  expect_gt(length(all_levels), 1)
 })

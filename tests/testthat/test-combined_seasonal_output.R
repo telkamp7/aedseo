@@ -22,8 +22,8 @@ test_that("Test that selection of current and all seasons work as expected", {
   expect_equal(unique(current_season_output$onset_output$season), current_season)
   expect_equal(unique(current_season_output$burden_output$season), current_season)
 
-  expect_gt(length(unique(all_seasons_output$onset_output$season)), length(current_season))
-  expect_gt(length(all_seasons_output$burden_output), length(current_season))
+  expect_gt(length(unique(all_seasons_output$onset_output$season)), 1)
+  expect_gt(length(all_seasons_output$burden_output), 1)
 })
 
 test_that("Test that onset_output has one more season than burden_output", {
@@ -44,6 +44,6 @@ test_that("Test that onset_output has one more season than burden_output", {
 
   all_seasons_output <- combined_seasonal_output(tsd_data, only_current_season = FALSE)
 
-  expect_equal(length(unique(all_seasons_output$onset_output$season)), 4)
-  expect_equal(length(all_seasons_output$burden_output), 3)
+  expect_length(unique(all_seasons_output$onset_output$season), 4)
+  expect_length(all_seasons_output$burden_output, 3)
 })
