@@ -19,13 +19,12 @@ rd_family <- function(usage = NULL) {
   paste("A character string specifying the family for modeling",
         ifelse(usage == "combined", paste(" seasonal onset.")))
 }
+rd_only_current_season <- "Should the output only include results for the current season?"
 rd_season_weeks <- function(usage = NULL) {
   paste("A numeric vector of length 2, `c(start,end)`, with the start and end weeks of the seasons to
   stratify the observations by. Must span the new year; ex: `season_weeks = c(21, 20)`.",
         ifelse(usage == "onset", paste("If set to `NULL`, is  means no stratification by season.")))
 }
-rd_tsd <- "An object containing time series data with 'time' and 'observation.'"
-
 rd_seasonal_onset_return <- paste(
   "\nA `seasonal_onset` object containing:\n",
   "- 'reference_time': The time point for which the growth rate is estimated.\n",
@@ -41,7 +40,6 @@ rd_seasonal_onset_return <- paste(
   "- 'skipped_window': Logical. Was the window skipped due to missing?\n",
   "- 'converged': Logical. Was the IWLS judged to have converged?"
 )
-
 rd_seasonal_burden_levels_return <- paste(
   "\nA list containing:\n",
   "- 'season': The season that burden levels are calculated for.\n",
@@ -66,3 +64,4 @@ rd_seasonal_burden_levels_return <- paste(
   "   - 'exp': Uses the Exponential distribution for fitting.\n",
   "   - 'disease_threshold': The input disease threshold, which is also the very low level."
 )
+rd_tsd <- "An object containing time series data with 'time' and 'observation.'"

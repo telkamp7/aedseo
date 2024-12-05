@@ -12,6 +12,7 @@ seasonal_burden_levels(
   decay_factor = 0.8,
   disease_threshold = 20,
   n_peak = 6,
+  only_current_season = TRUE,
   ...
 )
 }
@@ -49,6 +50,8 @@ included in the level calculations.}
 
 \item{n_peak}{A numeric value specifying the number of peak observations to be selected from each season in the
 level calculations. The \code{n_peak} observations have to surpass the \code{disease_threshold} to be included.}
+
+\item{only_current_season}{Should the output only include results for the current season?}
 
 \item{...}{Arguments passed to the \code{fit_quantiles()} function.}
 }
