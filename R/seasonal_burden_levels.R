@@ -146,7 +146,7 @@ seasonal_burden_levels <- function(
           high_conf_level = quantiles_fit$conf_levels,
           values = stats::setNames(level_step_log, c("very low", "low", "medium", "high")),
           par = quantiles_fit$par,
-          obj_value = quantiles_fit$conf_levels,
+          obj_value = quantiles_fit$obj_value,
           converged = quantiles_fit$converged,
           family = quantiles_fit$family,
           disease_threshold = disease_threshold
