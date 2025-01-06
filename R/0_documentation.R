@@ -20,13 +20,8 @@ rd_family <- function(usage = NULL) {
         ifelse(usage == "combined", paste(" seasonal onset.")))
 }
 rd_only_current_season <- "Should the output only include results for the current season?"
-rd_season_start <- function(usage = NULL) {
-  paste("An integer giving the start week of the seasons to
-  stratify the observations by.",
-        ifelse(usage == "onset", paste("If set to `NULL`, it means no stratification by season.")))
-}
-rd_season_end <- function(usage = NULL) {
-  paste("An integer giving the end week of the seasons to
+rd_season_start_end <- function(usage = NULL) {
+  paste("Integers giving the start and end weeks of the seasons to
   stratify the observations by.",
         ifelse(usage == "onset", paste("If set to `NULL`, it means no stratification by season.")))
 }

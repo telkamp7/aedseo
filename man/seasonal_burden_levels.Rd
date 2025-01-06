@@ -23,10 +23,7 @@ seasonal_burden_levels(
 
 \item{family}{A character string specifying the family for modeling}
 
-\item{season_start}{An integer giving the start week of the seasons to
-stratify the observations by.}
-
-\item{season_end}{An integer giving the end week of the seasons to
+\item{season_start, season_end}{Integers giving the start and end weeks of the seasons to
 stratify the observations by.}
 
 \item{method}{A character string specifying the model to be used in the level calculations.

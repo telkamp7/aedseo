@@ -12,8 +12,7 @@
 #' @param disease_threshold `r rd_disease_threshold(usage = "combined")`
 #' @param family `r rd_family(usage = "combined")`
 #' @param family_quant A character string specifying the family for modeling burden levels.
-#' @param season_start `r rd_season_start()`
-#' @param season_end `r rd_season_end()`
+#' @param season_start,season_end `r rd_season_start_end()`
 #' @param ... Arguments passed to the `fit_quantiles()` function in the burden level calculations.
 #'
 #' @return An object containing two lists: onset_output and burden_output:

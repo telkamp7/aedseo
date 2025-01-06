@@ -42,10 +42,7 @@ calculations.}
 \item{na_fraction_allowed}{Numeric value between 0 and 1 specifying the fraction of observables in the window
 of size k that are allowed to be NA in onset calculations.}
 
-\item{season_start}{An integer giving the start week of the seasons to
-stratify the observations by.}
-
-\item{season_end}{An integer giving the end week of the seasons to
+\item{season_start, season_end}{Integers giving the start and end weeks of the seasons to
 stratify the observations by.}
 
 \item{method}{A character string specifying the model to be used in the level calculations.

@@ -12,8 +12,7 @@
 #' @param family `r rd_family()`
 #' @param na_fraction_allowed Numeric value between 0 and 1 specifying the fraction of observables in the window
 #' of size k that are allowed to be NA in onset calculations.
-#' @param season_start `r rd_season_start(usage = "onset")`
-#' @param season_end `r rd_season_end(usage = "onset")`
+#' @param season_start,season_end `r rd_season_start_end(usage = "onset")`
 #' @param only_current_season `r rd_only_current_season`
 #'
 #' @return `r rd_seasonal_onset_return`

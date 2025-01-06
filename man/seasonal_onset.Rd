@@ -32,10 +32,7 @@ onset alarm can be triggered.}
 \item{na_fraction_allowed}{Numeric value between 0 and 1 specifying the fraction of observables in the window
 of size k that are allowed to be NA in onset calculations.}
 
-\item{season_start}{An integer giving the start week of the seasons to
-stratify the observations by. If set to \code{NULL}, it means no stratification by season.}
-
-\item{season_end}{An integer giving the end week of the seasons to
+\item{season_start, season_end}{Integers giving the start and end weeks of the seasons to
 stratify the observations by. If set to \code{NULL}, it means no stratification by season.}
 
 \item{only_current_season}{Should the output only include results for the current season?}
