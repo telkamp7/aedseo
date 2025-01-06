@@ -9,6 +9,7 @@ test_that("The growth rate models converge", {
   n <- length(time)
 
   # Data
+  set.seed(123)
   tsd_data_poisson <- to_time_series(
     observation = rpois(n = n, lambda = 1:n),
     time = time,
@@ -57,6 +58,7 @@ test_that("Test if it works with weeks with NA values", {
   na_count <- 15
 
   # Randomly select indices to replace with NA
+  set.seed(123)
   na_indices <- sample(1:n, na_count, replace = FALSE)
 
   # Create observable

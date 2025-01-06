@@ -6,6 +6,7 @@ test_that("Test that selection of current and all seasons work as expected", {
                            to = end_date,
                            by = "week")
 
+  set.seed(123)
   obs <- stats::rpois(length(weekly_dates), 1000)
 
   tsd_data <- to_time_series(
@@ -34,6 +35,7 @@ test_that("Test that onset_output has one more season than burden_output", {
                            to = end_date,
                            by = "week")
 
+  set.seed(123)
   obs <- stats::rpois(length(weekly_dates), 1000)
 
   tsd_data <- to_time_series(
