@@ -101,10 +101,10 @@ combined_seasonal_output <- function(
 
   # Extract seasons from onset_output and create seasonal_onset
   onset_output <- onset_output |>
-    dplyr::group_by(.data$season) |>
+    dplyr::group_by("season") |>
     dplyr::mutate(onset_flag = cumsum(.data$seasonal_onset_alarm),
                   seasonal_onset = .data$onset_flag == 1 & !duplicated(.data$onset_flag)) |>
-    dplyr::select(-(.data$onset_flag))
+    dplyr::select(!"onset_flag")
 
   # Extract only current season if assigned
   if (only_current_season == TRUE) {

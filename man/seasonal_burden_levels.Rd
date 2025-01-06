@@ -6,7 +6,9 @@
 \usage{
 seasonal_burden_levels(
   tsd,
-  season_weeks = c(21, 20),
+  family,
+  season_start = 21,
+  season_end = season_start - 1,
   method = c("intensity_levels", "peak_levels"),
   conf_levels = 0.95,
   decay_factor = 0.8,
@@ -19,8 +21,11 @@ seasonal_burden_levels(
 \arguments{
 \item{tsd}{An object containing time series data with 'time' and 'observation.'}
 
-\item{season_weeks}{A numeric vector of length 2, \code{c(start,end)}, with the start and end weeks of the seasons to
-stratify the observations by. Must span the new year; ex: \code{season_weeks = c(21, 20)}.}
+\item{season_start}{An integer giving the start week of the seasons to
+stratify the observations by.}
+
+\item{season_end}{An integer giving the end week of the seasons to
+stratify the observations by.}
 
 \item{method}{A character string specifying the model to be used in the level calculations.
 Both model predict the levels of the current series of
@@ -128,5 +133,5 @@ tsd_data <- tsd(
 )
 
 # Print seasonal burden results
-seasonal_burden_levels(tsd_data)
+seasonal_burden_levels(tsd_data, family = "lnorm")
 }

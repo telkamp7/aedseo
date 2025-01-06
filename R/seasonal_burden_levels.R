@@ -8,6 +8,7 @@
 #' NOTE: The data must include data for a complete previous season to make predictions for the current season.
 #'
 #' @param tsd `r rd_tsd`
+#' @param family `r rd_family()`
 #' @param season_start `r rd_season_start()`
 #' @param season_end `r rd_season_end()`
 #' @param method A character string specifying the model to be used in the level calculations.
@@ -69,9 +70,11 @@
 #' )
 #'
 #' # Print seasonal burden results
-#' seasonal_burden_levels(tsd_data)
+#' seasonal_burden_levels(tsd_data, family = "lnorm")
+#' @importFrom rlang .data
 seasonal_burden_levels <- function(
   tsd,
+  family,
   season_start = 21,
   season_end = season_start - 1,
   method = c("intensity_levels", "peak_levels"),
@@ -80,7 +83,6 @@ seasonal_burden_levels <- function(
   disease_threshold = 20,
   n_peak = 6,
   only_current_season = TRUE,
-  family = NULL,
   ...
 ) {
   # Check input arguments
@@ -107,7 +109,7 @@ seasonal_burden_levels <- function(
   }
   # Add the seasons to data
   seasonal_tsd <- tsd |>
-    dplyr::mutate(season = epi_calendar(.data$time, start = season_start, end = season_end)) |>
+    dplyr::mutate(season = epi_calendar(.data$time, start = !!season_start, end = !!season_end)) |>
     dplyr::arrange(dplyr::desc(.data$season))
 
   # Check that there is at least two seasons of data
