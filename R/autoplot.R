@@ -56,7 +56,7 @@ autoplot <- function(object, ...) {
 #' @method autoplot tsd
 #' @export
 autoplot.tsd <- function(object, ...) {
-  object %>%
+  object |>
     ggplot2::ggplot(
       mapping = ggplot2::aes(
         x = .data$time,
@@ -81,7 +81,7 @@ autoplot.tsd_onset <- function(
   # NOTE: We use print to show plots sequentially
   suppressWarnings(
     print(
-      object %>%
+      object |>
         ggplot2::ggplot(
           mapping = ggplot2::aes(
             x = .data$reference_time,
@@ -101,7 +101,7 @@ autoplot.tsd_onset <- function(
   on.exit(devAskNewPage(oask))
   # ... and the growth rate plots
   print(
-    object %>%
+    object |>
       ggplot2::ggplot(
         mapping = ggplot2::aes(
           x = .data$reference_time,
