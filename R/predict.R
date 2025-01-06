@@ -44,7 +44,7 @@
 #' predict(object = time_series_with_onset, n_step = 5)
 predict.tsd_onset <- function(object, n_step = 3, ...) {
   # Calculate the prediction
-  res <- dplyr::last(object) %>%
+  res <- dplyr::last(object) |>
     dplyr::reframe(
       t = 0:n_step,
       time = .data$reference_time + t,

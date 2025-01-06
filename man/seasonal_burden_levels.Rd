@@ -21,6 +21,8 @@ seasonal_burden_levels(
 \arguments{
 \item{tsd}{An object containing time series data with 'time' and 'observation.'}
 
+\item{family}{A character string specifying the family for modeling}
+
 \item{season_start}{An integer giving the start week of the seasons to
 stratify the observations by.}
 
