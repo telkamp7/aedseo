@@ -35,7 +35,7 @@ test_that("Test that input argument checks work", {
   )
 
   expect_error(
-    checkmate_err_msg(seasonal_burden_levels(tsd_data, season_weeks = c(2, 10)),
+    checkmate_err_msg(seasonal_burden_levels(tsd_data, season_start = 2, season_end = 10),
       "`start` must be greater than `end`!"
     )
   )

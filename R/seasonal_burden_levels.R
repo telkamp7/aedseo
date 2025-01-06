@@ -8,7 +8,8 @@
 #' NOTE: The data must include data for a complete previous season to make predictions for the current season.
 #'
 #' @param tsd `r rd_tsd`
-#' @param season_weeks `r rd_season_weeks()`
+#' @param season_start `r rd_season_start()`
+#' @param season_end `r rd_season_end()`
 #' @param method A character string specifying the model to be used in the level calculations.
 #' Both model predict the levels of the current series of
 #' observations.
@@ -71,7 +72,8 @@
 #' seasonal_burden_levels(tsd_data)
 seasonal_burden_levels <- function(
   tsd,
-  season_weeks = c(21, 20),
+  season_start = 21,
+  season_end = season_start - 1,
   method = c("intensity_levels", "peak_levels"),
   conf_levels = 0.95,
   decay_factor = 0.8,
@@ -87,7 +89,9 @@ seasonal_burden_levels <- function(
   checkmate::assert_data_frame(tsd, add = coll)
   checkmate::assert_class(tsd, "tsd", add = coll)
   checkmate::assert_names(colnames(tsd), identical.to = c("time", "observation"), add = coll)
-  checkmate::assert_integerish(season_weeks, len = 2, lower = 1, upper = 53,
+  checkmate::assert_integerish(season_start, lower = 1, upper = 53,
+                               null.ok = FALSE, add = coll)
+  checkmate::assert_integerish(season_end, lower = 1, upper = 53,
                                null.ok = FALSE, add = coll)
   checkmate::assert_numeric(decay_factor, lower = 0, upper = 1, len = 1, add = coll)
   checkmate::assert_numeric(n_peak, lower = 1, len = 1, add = coll)
@@ -103,7 +107,7 @@ seasonal_burden_levels <- function(
   }
   # Add the seasons to data
   seasonal_tsd <- tsd |>
-    dplyr::mutate(season = epi_calendar(.data$time, start = season_weeks[1], end = season_weeks[2])) |>
+    dplyr::mutate(season = epi_calendar(.data$time, start = season_start, end = season_end)) |>
     dplyr::arrange(dplyr::desc(.data$season))
 
   # Check that there is at least two seasons of data
