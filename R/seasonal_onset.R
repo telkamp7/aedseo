@@ -44,7 +44,7 @@
 #'   na_fraction_allowed = 0.4,
 #'   season_start = NULL
 #' )
-seasonal_onset <- function(
+seasonal_onset <- function(                                     # nolint: cyclocomp_linter.
     tsd,
     k = 5,
     level = 0.95,

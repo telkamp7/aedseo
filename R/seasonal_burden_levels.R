@@ -108,7 +108,7 @@ seasonal_burden_levels <- function(
   }
   # Add the seasons to data
   seasonal_tsd <- tsd |>
-    dplyr::mutate(season = epi_calendar(.data$time, start = !!season_start, end = !!season_end)) |>
+    dplyr::mutate(season = epi_calendar(.data$time, start = season_start, end = season_end)) |>
     dplyr::arrange(dplyr::desc(.data$season))
 
   # Check that there is at least two seasons of data
