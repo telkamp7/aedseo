@@ -115,10 +115,16 @@ seasonal_burden_levels <- function(
     dplyr::slice_max(.data$observation, n = n_peak, with_ties = FALSE, by = "season")
 
   # main level function
-  main_level_fun <- function(seasonal_tsd) {
+  main_level_fun <- function(seasonal_tsd, current_season) {
+
     # Add weights and remove current season to get predictions for this season
-    weighted_seasonal_tsd <- seasonal_tsd |>
-      dplyr::filter(.data$season != max(.data$season)) |>
+    if (current_season %in% unique(seasonal_tsd$season)) {
+      previous_tsd <- seasonal_tsd |>
+        dplyr::filter(.data$season != max(.data$season))
+    } else {
+      previous_tsd <- seasonal_tsd
+    }
+    weighted_seasonal_tsd <- previous_tsd |>
       dplyr::mutate(year = purrr::map_chr(.data$season, ~ stringr::str_extract(.x, "[0-9]+")) |>
                       as.numeric()) |>
       dplyr::mutate(weight = decay_factor^(max(.data$year) - .data$year)) |>
@@ -142,7 +148,7 @@ seasonal_burden_levels <- function(
       intensity_levels = {
         level_step_log <- pracma::logseq(disease_threshold, quantiles_fit$values, n = 4)
         model_output <- list(
-          season = max(seasonal_tsd$season),
+          season = current_season,
           high_conf_level = quantiles_fit$conf_levels,
           values = stats::setNames(level_step_log, c("very low", "low", "medium", "high")),
           par = quantiles_fit$par,
@@ -156,16 +162,18 @@ seasonal_burden_levels <- function(
     return(results)
   }
   # Select seasons for output based on only_current_season input argument
+  current_season <- unique(seasonal_tsd$season)[1]
+
   if (only_current_season == FALSE) {
     # Group seasons to get results for all seasons available
     unique_seasons <- unique(rev(peak_seasonal_tsd$season))
     season_groups <- purrr::accumulate(unique_seasons, `c`)
     season_groups_data <- purrr::map(season_groups[-1], ~ peak_seasonal_tsd |> dplyr::filter(.data$season %in% .x))
 
-    level_results <- purrr::map(season_groups_data, main_level_fun)
+    level_results <- purrr::map(season_groups_data, ~ main_level_fun(.x, current_season))
 
   } else {
-    level_results <- main_level_fun(peak_seasonal_tsd)
+    level_results <- main_level_fun(peak_seasonal_tsd, current_season)
   }
   return(level_results)
 }

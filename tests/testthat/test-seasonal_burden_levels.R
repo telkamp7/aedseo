@@ -166,3 +166,34 @@ test_that("Test that selection of current and all seasons work as expected", {
   expect_equal(current_season, unique(current_level$season))
   expect_gt(length(all_levels), 1)
 })
+
+
+test_that("Test that function does not fail if there are no observations surpassing the disease specific threshold
+          in the current season.", {
+            start_date <- as.Date("2022-05-23")
+            end_date <- as.Date("2023-05-15")
+
+            start_date_2 <- as.Date("2023-05-22")
+            end_date_2 <- as.Date("2024-05-13")
+
+            weekly_dates <- seq.Date(from = start_date,
+                                     to = end_date,
+                                     by = "week")
+
+            weekly_dates_2 <- seq.Date(from = start_date_2,
+                                       to = end_date_2,
+                                       by = "week")
+
+            obs <- stats::rpois(length(weekly_dates), 1000)
+            obs_2 <- stats::rpois(length(weekly_dates), 10)
+
+            tsd_data <- to_time_series(
+              observation = c(obs, obs_2),
+              time = c(as.Date(weekly_dates), as.Date(weekly_dates_2)),
+              time_interval = "week"
+            )
+
+            burden_list <- seasonal_burden_levels(tsd_data, disease_threshold = 100)
+
+            expect_equal(burden_list$season, "2023/2024")
+          })
