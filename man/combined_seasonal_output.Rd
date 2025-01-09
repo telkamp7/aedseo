@@ -10,7 +10,7 @@ combined_seasonal_output(
   level = 0.95,
   disease_threshold = 20,
   family = c("poisson", "quasipoisson"),
-  family_quant = c("weibull", "lnorm", "exp"),
+  family_quant = c("lnorm", "weibull", "exp"),
   na_fraction_allowed = 0.4,
   season_start = 21,
   season_end = season_start - 1,

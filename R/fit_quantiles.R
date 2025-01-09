@@ -59,8 +59,8 @@
 fit_quantiles <- function(
   weighted_observations,
   conf_levels = c(0.50, 0.90, 0.95),
-  family = c("weibull",
-             "lnorm",
+  family = c("lnorm",
+             "weibull",
              "exp"),
   optim_method = c("Nelder-Mead",
                    "BFGS",

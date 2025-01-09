@@ -6,7 +6,7 @@
 \usage{
 seasonal_burden_levels(
   tsd,
-  family,
+  family = c("lnorm", "weibull", "exp"),
   season_start = 21,
   season_end = season_start - 1,
   method = c("intensity_levels", "peak_levels"),

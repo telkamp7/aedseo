@@ -73,8 +73,8 @@ combined_seasonal_output <- function(
     "quasipoisson"
   ),
   family_quant = c(
-    "weibull",
     "lnorm",
+    "weibull",
     "exp"
   ),
   na_fraction_allowed = 0.4,
