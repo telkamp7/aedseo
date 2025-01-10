@@ -93,7 +93,7 @@ combined_seasonal_output <- function(
                                           disease_threshold = disease_threshold, n_peak = n_peak,
                                           family = family_quant, only_current_season = only_current_season, ...)
 
-  onset_output <- seasonal_onset(tsd = tsd, k = k, level = level, disease_threshold = disease_threshold,       # nolint: lintrobject_usage_linter
+  onset_output <- seasonal_onset(tsd = tsd, k = k, level = level, disease_threshold = disease_threshold,       # nolint: object_usage_linter.
                                  family = family, na_fraction_allowed = na_fraction_allowed,
                                  season_start = season_start, season_end = season_end,
                                  only_current_season = only_current_season)
