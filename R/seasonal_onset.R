@@ -42,7 +42,9 @@
 #'   disease_threshold = 20,
 #'   family = "poisson",
 #'   na_fraction_allowed = 0.4,
-#'   season_start = NULL
+#'   season_start = NULL,
+#'   season_end = NULL,
+#'   only_current_season = NULL
 #' )
 seasonal_onset <- function(                                     # nolint: cyclocomp_linter.
     tsd,

@@ -124,7 +124,6 @@ seasonal_burden_levels <- function(
 
   # main level function
   main_level_fun <- function(seasonal_tsd, current_season) {
-
     # Add weights and remove current season to get predictions for this season
     weighted_seasonal_tsd <- seasonal_tsd |>
       dplyr::filter(.data$season != current_season) |>
@@ -165,18 +164,16 @@ seasonal_burden_levels <- function(
     return(results)
   }
   # Select seasons for output based on only_current_season input argument
-  current_season <- max(seasonal_tsd$season)
-
   if (only_current_season == FALSE) {
     # Group seasons to get results for all seasons available
     unique_seasons <- unique(rev(peak_seasonal_tsd$season))
     season_groups <- purrr::accumulate(unique_seasons, `c`)
     season_groups_data <- purrr::map(season_groups[-1], ~ peak_seasonal_tsd |> dplyr::filter(.data$season %in% .x))
 
-    level_results <- purrr::map(season_groups_data, ~ main_level_fun(.x, current_season))
+    level_results <- purrr::map(season_groups_data, ~ main_level_fun(.x, current_season = max(.x$season)))
 
   } else {
-    level_results <- main_level_fun(peak_seasonal_tsd, current_season)
+    level_results <- main_level_fun(peak_seasonal_tsd, current_season = max(seasonal_tsd$season))
   }
   return(level_results)
 }
