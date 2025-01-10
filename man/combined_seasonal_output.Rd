@@ -10,9 +10,10 @@ combined_seasonal_output(
   level = 0.95,
   disease_threshold = 20,
   family = c("poisson", "quasipoisson"),
-  family_quant = c("weibull", "lnorm", "exp"),
+  family_quant = c("lnorm", "weibull", "exp"),
   na_fraction_allowed = 0.4,
-  season_weeks = c(21, 20),
+  season_start = 21,
+  season_end = season_start - 1,
   method = c("intensity_levels", "peak_levels"),
   conf_levels = 0.95,
   decay_factor = 0.8,
@@ -41,8 +42,8 @@ calculations.}
 \item{na_fraction_allowed}{Numeric value between 0 and 1 specifying the fraction of observables in the window
 of size k that are allowed to be NA in onset calculations.}
 
-\item{season_weeks}{A numeric vector of length 2, \code{c(start,end)}, with the start and end weeks of the seasons to
-stratify the observations by. Must span the new year; ex: \code{season_weeks = c(21, 20)}.}
+\item{season_start, season_end}{Integers giving the start and end weeks of the seasons to
+stratify the observations by.}
 
 \item{method}{A character string specifying the model to be used in the level calculations.
 Both model predict the levels of the current series of

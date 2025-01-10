@@ -48,35 +48,35 @@ summary.tsd_onset <- function(object, ...) {
   seasons <- toString(unique(object$season))
 
   # Latest sum of cases
-  latest_sum_of_cases <- object %>%
-    dplyr::filter(dplyr::row_number() == dplyr::n()) %>%
+  latest_sum_of_cases <- object |>
+    dplyr::filter(dplyr::row_number() == dplyr::n()) |>
     dplyr::pull(.data$sum_of_cases)
 
   # Latest sum of cases warning
-  latest_sum_of_cases_warning <- object %>%
-    dplyr::filter(.data$sum_of_cases_warning == TRUE) %>%
+  latest_sum_of_cases_warning <- object |>
+    dplyr::filter(.data$sum_of_cases_warning == TRUE) |>
     dplyr::summarise(
       latest_sum_of_cases_warning = dplyr::last(reference_time)
-    ) %>%
+    ) |>
     dplyr::pull(latest_sum_of_cases_warning)
 
   # Latest growth warning
-  latest_growth_warning <- object %>%
-    dplyr::filter(.data$growth_warning == TRUE) %>%
-    dplyr::summarise(latest_growth_warning = dplyr::last(reference_time)) %>%
+  latest_growth_warning <- object |>
+    dplyr::filter(.data$growth_warning == TRUE) |>
+    dplyr::summarise(latest_growth_warning = dplyr::last(reference_time)) |>
     dplyr::pull(latest_growth_warning)
 
   # Latest growth warning
-  latest_seasonal_onset_alarm <- object %>%
-    dplyr::filter(.data$seasonal_onset_alarm == TRUE) %>%
+  latest_seasonal_onset_alarm <- object |>
+    dplyr::filter(.data$seasonal_onset_alarm == TRUE) |>
     dplyr::summarise(
       latest_seasonal_onset_alarm = dplyr::last(reference_time)
-    ) %>%
+    ) |>
     dplyr::pull(latest_seasonal_onset_alarm)
 
   # Calculate the total number of growth warnings
-  sum_of_growth_warnings <- object %>%
-    dplyr::summarise(sum_of_growth_warnings = sum(.data$growth_warning)) %>%
+  sum_of_growth_warnings <- object |>
+    dplyr::summarise(sum_of_growth_warnings = sum(.data$growth_warning)) |>
     dplyr::pull(sum_of_growth_warnings)
 
   # Extract the attributes from the object

@@ -1,6 +1,7 @@
 test_that("Test if checkmate checks work", {
 
   # Create data
+  set.seed(123)
   obs <- 10
   season <- c("2018/2019", "2019/2020", "2020/2021")
   season_num_rev <- rev(seq(from = 1, to = length(season)))

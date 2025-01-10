@@ -11,7 +11,8 @@ seasonal_onset(
   disease_threshold = NA_integer_,
   family = c("poisson", "quasipoisson"),
   na_fraction_allowed = 0.4,
-  season_weeks = NULL,
+  season_start = NULL,
+  season_end = season_start - 1,
   only_current_season = NULL
 )
 }
@@ -31,8 +32,8 @@ onset alarm can be triggered.}
 \item{na_fraction_allowed}{Numeric value between 0 and 1 specifying the fraction of observables in the window
 of size k that are allowed to be NA in onset calculations.}
 
-\item{season_weeks}{A numeric vector of length 2, \code{c(start,end)}, with the start and end weeks of the seasons to
-stratify the observations by. Must span the new year; ex: \code{season_weeks = c(21, 20)}. If set to \code{NULL}, is  means no stratification by season.}
+\item{season_start, season_end}{Integers giving the start and end weeks of the seasons to
+stratify the observations by. If set to \code{NULL}, it means no stratification by season.}
 
 \item{only_current_season}{Should the output only include results for the current season?}
 }
@@ -80,6 +81,6 @@ seasonal_onset(
   disease_threshold = 20,
   family = "poisson",
   na_fraction_allowed = 0.4,
-  season_weeks = NULL
+  season_start = NULL
 )
 }

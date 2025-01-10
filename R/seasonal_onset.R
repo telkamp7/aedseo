@@ -12,7 +12,7 @@
 #' @param family `r rd_family()`
 #' @param na_fraction_allowed Numeric value between 0 and 1 specifying the fraction of observables in the window
 #' of size k that are allowed to be NA in onset calculations.
-#' @param season_weeks `r rd_season_weeks(usage = "onset")`
+#' @param season_start,season_end `r rd_season_start_end(usage = "onset")`
 #' @param only_current_season `r rd_only_current_season`
 #'
 #' @return `r rd_seasonal_onset_return`
@@ -42,9 +42,9 @@
 #'   disease_threshold = 20,
 #'   family = "poisson",
 #'   na_fraction_allowed = 0.4,
-#'   season_weeks = NULL
+#'   season_start = NULL
 #' )
-seasonal_onset <- function(
+seasonal_onset <- function(                                     # nolint: cyclocomp_linter.
     tsd,
     k = 5,
     level = 0.95,
@@ -55,7 +55,8 @@ seasonal_onset <- function(
       # TODO: #10 Include negative.binomial regressions. @telkamp7
     ),
     na_fraction_allowed = 0.4,
-    season_weeks = NULL,
+    season_start = NULL,
+    season_end = season_start - 1,
     only_current_season = NULL) {
   # Check input arguments
   coll <- checkmate::makeAssertCollection()
@@ -67,14 +68,19 @@ seasonal_onset <- function(
                             add = coll)
   checkmate::assert_integerish(k, add = coll)
   checkmate::assert_integerish(disease_threshold, add = coll)
-  checkmate::assert_integerish(season_weeks, len = 2, lower = 1, upper = 53,
+  checkmate::assert_integerish(season_start, lower = 1, upper = 53,
+                               null.ok = TRUE, add = coll)
+  checkmate::assert_integerish(season_end, lower = 1, upper = 53,
                                null.ok = TRUE, add = coll)
   checkmate::assert_logical(only_current_season, null.ok = TRUE, add = coll)
-  if (is.null(season_weeks) && !is.null(only_current_season)) {
-    coll$push("If season_weeks is NULL only_current_season must also be NULL")
+  if (!is.null(season_start) && is.null(season_end)) {
+    coll$push("If season_start is assigned season_end must also be assigned.")
   }
-  if (!is.null(season_weeks) && is.null(only_current_season)) {
-    coll$push("If season_weeks is assigned only_current_season must also be assigned")
+  if (is.null(season_start) && !is.null(only_current_season)) {
+    coll$push("If season_start is NULL only_current_season must also be NULL")
+  }
+  if (!is.null(season_start) && is.null(only_current_season)) {
+    coll$push("If season_start is assigned only_current_season must also be assigned")
   }
   checkmate::reportAssertions(coll)
 
@@ -82,8 +88,8 @@ seasonal_onset <- function(
   family <- rlang::arg_match(family)
 
   # Add the seasons to tsd if available
-  if (!is.null(season_weeks)) {
-    tsd <- tsd |> dplyr::mutate(season = epi_calendar(.data$time))
+  if (!is.null(season_start)) {
+    tsd <- tsd |> dplyr::mutate(season = epi_calendar(.data$time, start = season_start, end = season_end))
   } else {
     tsd <- tsd |> dplyr::mutate(season = "not_defined")
   }
@@ -157,7 +163,7 @@ seasonal_onset <- function(
   )
 
   # Extract only current season if assigned
-  if (!is.null(season_weeks) && only_current_season == TRUE) {
+  if (!is.null(season_start) && only_current_season == TRUE) {
     ans <- ans |> dplyr::filter(.data$season == max(.data$season))
   }
 

@@ -7,7 +7,7 @@
 fit_quantiles(
   weighted_observations,
   conf_levels = c(0.5, 0.9, 0.95),
-  family = c("weibull", "lnorm", "exp"),
+  family = c("lnorm", "weibull", "exp"),
   optim_method = c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent"),
   lower_optim = -Inf,
   upper_optim = Inf

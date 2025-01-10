@@ -7,6 +7,7 @@ test_that("Test that input argument checks work", {
                            to = end_date,
                            by = "week")
 
+  set.seed(123)
   obs <- stats::rpois(length(weekly_dates), 1000)
 
   tsd_data <- to_time_series(
@@ -16,37 +17,37 @@ test_that("Test that input argument checks work", {
   )
 
   expect_error(
-    checkmate_err_msg(seasonal_burden_levels(tsd_data, decay_factor = 3),
+    checkmate_err_msg(seasonal_burden_levels(tsd_data, family = "lnorm", decay_factor = 3),
       "Variable 'decay_factor': Element 1 is not <= 1."
     )
   )
 
   expect_error(
-    checkmate_err_msg(seasonal_burden_levels(tsd_data, n_peak = c(1, 2)),
+    checkmate_err_msg(seasonal_burden_levels(tsd_data, family = "lnorm", n_peak = c(1, 2)),
       "Variable 'n_peak': Must have length 1, but has length 2."
     )
   )
 
   expect_error(
-    checkmate_err_msg(seasonal_burden_levels(tsd_data, disease_threshold = "hey"),
+    checkmate_err_msg(seasonal_burden_levels(tsd_data, family = "lnorm", disease_threshold = "hey"),
       "'disease_threshold': Must be of type 'integerish', not 'character'."
     )
   )
 
   expect_error(
-    checkmate_err_msg(seasonal_burden_levels(tsd_data, season_weeks = c(2, 10)),
+    checkmate_err_msg(seasonal_burden_levels(tsd_data, family = "lnorm", season_start = 2, season_end = 10),
       "`start` must be greater than `end`!"
     )
   )
 
   expect_error(
-    checkmate_err_msg(seasonal_burden_levels(tsd_data, method = "peak_levels"),
+    checkmate_err_msg(seasonal_burden_levels(tsd_data, family = "lnorm", method = "peak_levels"),
       "Variable 'conf_levels': Must have length 3, but has length 1."
     )
   )
 
   expect_error(
-    checkmate_err_msg(seasonal_burden_levels(tsd_data, conf_levels = c(0.2, 0.5)),
+    checkmate_err_msg(seasonal_burden_levels(tsd_data, family = "lnorm", conf_levels = c(0.2, 0.5)),
       "Variable 'conf_levels': Must have length 1, but has length 2."
     )
   )
@@ -76,6 +77,7 @@ test_that("Test that we get correct season output for newest season", {
                            to = end_date,
                            by = "week")
 
+  set.seed(123)
   obs <- stats::rpois(length(weekly_dates), 1000)
 
   tsd_data <- to_time_series(
@@ -89,7 +91,7 @@ test_that("Test that we get correct season output for newest season", {
 
   newest_season <- max(seasonal_tsd$season)
 
-  intensity_levels <- seasonal_burden_levels(tsd_data, method = "intensity_levels")
+  intensity_levels <- seasonal_burden_levels(tsd_data, family = "lnorm", method = "intensity_levels")
 
   expect_equal(newest_season, intensity_levels$season)
 })
@@ -103,6 +105,7 @@ test_that("Test that we have same numbers of outputs for both methods", {
                            to = end_date,
                            by = "week")
 
+  set.seed(123)
   obs <- stats::rpois(length(weekly_dates), 1000)
 
   tsd_data <- to_time_series(
@@ -111,9 +114,14 @@ test_that("Test that we have same numbers of outputs for both methods", {
     time_interval = "week"
   )
 
-  intensity_levels <- seasonal_burden_levels(tsd_data, method = "intensity_levels")
+  intensity_levels <- seasonal_burden_levels(tsd_data, family = "lnorm", method = "intensity_levels")
 
-  peak_levels <- seasonal_burden_levels(tsd_data, method = "peak_levels", conf_levels = c(0.4, 0.9, 0.99))
+  peak_levels <- seasonal_burden_levels(
+    tsd_data,
+    family = "lnorm",
+    method = "peak_levels",
+    conf_levels = c(0.4, 0.9, 0.99)
+  )
 
   expect_equal(length(intensity_levels), length(peak_levels))
 })
@@ -127,6 +135,7 @@ test_that("Test that function fail with less than two seasons", {
                            to = end_date,
                            by = "week")
 
+  set.seed(123)
   obs <- stats::rpois(length(weekly_dates), 1000)
 
   tsd_one_season <- to_time_series(
@@ -136,7 +145,7 @@ test_that("Test that function fail with less than two seasons", {
   )
 
   expect_error(
-    checkmate_err_msg(seasonal_burden_levels(tsd_one_season),
+    checkmate_err_msg(seasonal_burden_levels(tsd_one_season, family = "lnorm"),
       "There must be at least two unique seasons in the data."
     )
   )
@@ -150,6 +159,7 @@ test_that("Test that selection of current and all seasons work as expected", {
                            to = end_date,
                            by = "week")
 
+  set.seed(123)
   obs <- stats::rpois(length(weekly_dates), 1000)
 
   tsd_data <- to_time_series(
@@ -160,8 +170,8 @@ test_that("Test that selection of current and all seasons work as expected", {
 
   current_season <- epi_calendar(end_date)
 
-  current_level <- seasonal_burden_levels(tsd_data, only_current_season = TRUE)
-  all_levels <- seasonal_burden_levels(tsd_data, only_current_season = FALSE)
+  current_level <- seasonal_burden_levels(tsd_data, family = "lnorm", only_current_season = TRUE)
+  all_levels <- seasonal_burden_levels(tsd_data, family = "lnorm", only_current_season = FALSE)
 
   expect_equal(current_season, unique(current_level$season))
   expect_gt(length(all_levels), 1)

@@ -12,7 +12,7 @@
 #' @param disease_threshold `r rd_disease_threshold(usage = "combined")`
 #' @param family `r rd_family(usage = "combined")`
 #' @param family_quant A character string specifying the family for modeling burden levels.
-#' @param season_weeks `r rd_season_weeks()`
+#' @param season_start,season_end `r rd_season_start_end()`
 #' @param ... Arguments passed to the `fit_quantiles()` function in the burden level calculations.
 #'
 #' @return An object containing two lists: onset_output and burden_output:
@@ -73,12 +73,13 @@ combined_seasonal_output <- function(
     "quasipoisson"
   ),
   family_quant = c(
-    "weibull",
     "lnorm",
+    "weibull",
     "exp"
   ),
   na_fraction_allowed = 0.4,
-  season_weeks = c(21, 20),
+  season_start = 21,
+  season_end = season_start - 1,
   method = c("intensity_levels", "peak_levels"),
   conf_levels = 0.95,
   decay_factor = 0.8,
@@ -87,21 +88,22 @@ combined_seasonal_output <- function(
   ...
 ) {
   # Run the models
-  burden_output <- seasonal_burden_levels(tsd = tsd, season_weeks = season_weeks, method = method,
-                                          conf_levels = conf_levels, decay_factor = decay_factor,
+  burden_output <- seasonal_burden_levels(tsd = tsd, season_start = season_start, season_end = season_end,
+                                          method = method, conf_levels = conf_levels, decay_factor = decay_factor,
                                           disease_threshold = disease_threshold, n_peak = n_peak,
                                           family = family_quant, only_current_season = only_current_season, ...)
 
   onset_output <- seasonal_onset(tsd = tsd, k = k, level = level, disease_threshold = disease_threshold,
                                  family = family, na_fraction_allowed = na_fraction_allowed,
-                                 season_weeks = season_weeks, only_current_season = only_current_season)
+                                 season_start = season_start, season_end = season_end,
+                                 only_current_season = only_current_season)
 
   # Extract seasons from onset_output and create seasonal_onset
   onset_output <- onset_output |>
     dplyr::group_by(.data$season) |>
     dplyr::mutate(onset_flag = cumsum(.data$seasonal_onset_alarm),
                   seasonal_onset = .data$onset_flag == 1 & !duplicated(.data$onset_flag)) |>
-    dplyr::select(-(.data$onset_flag))
+    dplyr::select(!"onset_flag")
 
   # Extract only current season if assigned
   if (only_current_season == TRUE) {

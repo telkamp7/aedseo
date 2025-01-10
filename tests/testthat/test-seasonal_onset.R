@@ -9,6 +9,7 @@ test_that("The growth rate models converge", {
   n <- length(time)
 
   # Data
+  set.seed(123)
   tsd_data_poisson <- to_time_series(
     observation = rpois(n = n, lambda = 1:n),
     time = time,
@@ -57,6 +58,7 @@ test_that("Test if it works with weeks with NA values", {
   na_count <- 15
 
   # Randomly select indices to replace with NA
+  set.seed(123)
   na_indices <- sample(1:n, na_count, replace = FALSE)
 
   # Create observable
@@ -167,8 +169,8 @@ test_that("Test that selection of current and all seasons work as expected", {
 
   current_season <- epi_calendar(end_date)
 
-  current_onset <- seasonal_onset(tsd_data, season_weeks = c(20, 21), only_current_season = TRUE)
-  all_onsets <- seasonal_onset(tsd_data, season_weeks = c(20, 21), only_current_season = FALSE)
+  current_onset <- seasonal_onset(tsd_data, season_start = 21, only_current_season = TRUE)
+  all_onsets <- seasonal_onset(tsd_data, season_start = 21, only_current_season = FALSE)
 
   expect_equal(current_season, unique(current_onset$season))
   expect_gt(length(unique(all_onsets$season)), 1)
