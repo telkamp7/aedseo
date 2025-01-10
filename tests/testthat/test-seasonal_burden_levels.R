@@ -207,3 +207,33 @@ test_that("Test that function does not fail if there are no observations surpass
 
             expect_equal(burden_list$season, "2023/2024")
           })
+
+test_that("Test that seasons are correctly increasing when only_current_season = FALSE", {
+  start_date <- as.Date("2021-01-04")
+  end_date <- as.Date("2023-12-31")
+
+  weekly_dates <- seq.Date(from = start_date,
+                           to = end_date,
+                           by = "week")
+
+  set.seed(123)
+  obs <- stats::rpois(length(weekly_dates), 1000)
+
+  tsd_data <- to_time_series(
+    observation = obs,
+    time = as.Date(weekly_dates),
+    time_interval = "week"
+  )
+
+  seasons <- seasonal_onset(tsd = tsd_data,
+                            season_start = 21,
+                            season_end = 20,
+                            only_current_season = FALSE)
+  unique_seasons <- unique(seasons$season)
+
+  all_levels <- seasonal_burden_levels(tsd_data, family = "lnorm", only_current_season = FALSE)
+
+  level_seasons <- sapply(all_levels, function(x) x$season)
+
+  expect_equal(unique(seasons$season)[2:4], level_seasons)
+})
