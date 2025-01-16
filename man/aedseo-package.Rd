@@ -24,10 +24,12 @@ Useful links:
 Authors:
 \itemize{
   \item Kasper Schou Telkamp \email{kasper.telkamp@gmail.com} (\href{https://orcid.org/0009-0001-5126-0190}{ORCID})
+  \item Sofia Myrup Otero \email{smot@ssi.dk}
 }
 
 Other contributors:
 \itemize{
+  \item Rasmus Skytte Randløv \email{rske@ssi.dk} (\href{https://orcid.org/0000-0002-5860-3838}{ORCID}) [reviewer]
   \item Statens Serum Institut, SSI [copyright holder, funder]
 }
 
