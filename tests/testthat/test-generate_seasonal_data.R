@@ -49,61 +49,70 @@ test_that("generate_seasonal_data() - output structure and defaults", {
 })
 
 test_that("generate_seasonal_data() - noise works as expected", {
-  set.seed(123)
-  noisy_result <- generate_seasonal_data(
-    years         = 1,
-    start_date    = as.Date("2021-05-26"),
-    amplitude     = 1000,
-    phase         = 0,
-    trend_rate    = 1.001,
-    noise_sd      = 10,
-    time_interval = "week"
-  )
+  skip_if_not_installed("withr")
+  withr::with_seed(
+    seed = 123,
+    code = {
+      noisy_result <- generate_seasonal_data(
+        years         = 1,
+        start_date    = as.Date("2021-05-26"),
+        amplitude     = 1000,
+        phase         = 0,
+        trend_rate    = 1.001,
+        noise_sd      = 10,
+        time_interval = "week"
+      )
 
-  # Compare to a non-noisy version
-  set.seed(123)
-  no_noise_result <- generate_seasonal_data(
-    years         = 1,
-    start_date    = as.Date("2021-05-26"),
-    amplitude     = 1000,
-    phase         = 0,
-    trend_rate    = 1.001,
-    noise_sd      = NULL,
-    time_interval = "week"
-  )
+      # Compare to a non-noisy version
+      no_noise_result <- generate_seasonal_data(
+        years         = 1,
+        start_date    = as.Date("2021-05-26"),
+        amplitude     = 1000,
+        phase         = 0,
+        trend_rate    = 1.001,
+        noise_sd      = NULL,
+        time_interval = "week"
+      )
 
-  # The two should differ (in most or all rows) due to random noise
-  expect_false(isTRUE(all.equal(no_noise_result$observation,
-                                noisy_result$observation)))
+      # The two should differ (in most or all rows) due to random noise
+      expect_false(isTRUE(all.equal(no_noise_result$observation,
+                                    noisy_result$observation)))
+    }
+  )
 })
 
 test_that("generate_seasonal_data() - trend_rate = NULL implies no trend", {
-  set.seed(123)
-  no_trend <- generate_seasonal_data(
-    years         = 1,
-    start_date    = as.Date("2021-05-26"),
-    amplitude     = 1000,
-    phase         = 0,
-    trend_rate    = NULL,     # No trend
-    noise_sd      = NULL,
-    time_interval = "week"
+  skip_if_not_installed("withr")
+  withr::with_seed(
+    seed = 123,
+    code = {
+      no_trend <- generate_seasonal_data(
+        years         = 1,
+        start_date    = as.Date("2021-05-26"),
+        amplitude     = 1000,
+        phase         = 0,
+        trend_rate    = NULL,     # No trend
+        noise_sd      = NULL,
+        time_interval = "week"
+      )
+
+      # With a non-zero trend
+      with_trend <- generate_seasonal_data(
+        years         = 1,
+        start_date    = as.Date("2021-05-26"),
+        amplitude     = 1000,
+        phase         = 0,
+        trend_rate    = 1.01,
+        noise_sd      = NULL,
+        time_interval = "week"
+      )
+
+      # Check difference in last vs. first observation for each
+      no_trend_diff   <- no_trend$observation[length(no_trend$observation)] - no_trend$observation[1]
+      with_trend_diff <- with_trend$observation[length(with_trend$observation)] - with_trend$observation[1]
+
+      # With trend should have larger difference than no trend scenario
+      expect_true(with_trend_diff > no_trend_diff)
+    }
   )
-
-  # With a non-zero trend
-  with_trend <- generate_seasonal_data(
-    years         = 1,
-    start_date    = as.Date("2021-05-26"),
-    amplitude     = 1000,
-    phase         = 0,
-    trend_rate    = 1.01,
-    noise_sd      = NULL,
-    time_interval = "week"
-  )
-
-  # Check difference in last vs. first observation for each
-  no_trend_diff   <- no_trend$observation[length(no_trend$observation)] - no_trend$observation[1]
-  with_trend_diff <- with_trend$observation[length(with_trend$observation)] - with_trend$observation[1]
-
-  # With trend should have larger difference than no trend scenario
-  expect_true(with_trend_diff > no_trend_diff)
 })

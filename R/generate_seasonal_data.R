@@ -68,6 +68,9 @@ generate_seasonal_data <- function(
   # Create arbitrary dates
   dates <- seq.Date(from = start_date, by = time_interval, length.out = length(t))
 
+  # Ensure no negative values
+  seasonal_component[seasonal_component < 0] <- NA
+
   # Construct a 'tsd' object with the time series data
   sim_tsd_data <- to_time_series(
     observation = seasonal_component,

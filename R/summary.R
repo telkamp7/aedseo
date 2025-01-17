@@ -76,6 +76,7 @@ summary.tsd_onset <- function(object, ...) {
 
   # Calculate the total number of growth warnings
   sum_of_growth_warnings <- object |>
+    dplyr::filter(.data$growth_warning == TRUE) |>
     dplyr::summarise(sum_of_growth_warnings = sum(.data$growth_warning)) |>
     dplyr::pull(sum_of_growth_warnings)
 
@@ -136,7 +137,7 @@ summary.tsd_onset <- function(object, ...) {
     time_interval,
     disease_threshold,
     as.character(reference_time),
-    latest_sum_of_cases,
+    as.integer(latest_sum_of_cases),
     as.character(latest_sum_of_cases_warning),
     lower_confidence_interval * 100,
     upper_confidence_interval * 100,

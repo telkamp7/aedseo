@@ -10,7 +10,15 @@ autoplot(object, ...)
 
 \method{autoplot}{tsd}(object, time_interval = "5 weeks", ...)
 
-\method{autoplot}{tsd_onset}(object, linewidth = 0.7, size = 2, alpha = 0.3, width = 0.2, ...)
+\method{autoplot}{tsd_onset}(
+  object,
+  linewidth = 0.7,
+  size = 2,
+  alpha = 0.3,
+  width = 0.2,
+  time_interval = "5 weeks",
+  ...
+)
 }
 \arguments{
 \item{object}{An \code{tsd} or \code{tsd_onset} object}

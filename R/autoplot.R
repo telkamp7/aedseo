@@ -84,7 +84,11 @@ autoplot.tsd_onset <- function(
     size = 2,
     alpha = 0.3,
     width = 0.2,
+    time_interval = "5 weeks",
     ...) {
+
+  start_date <- min(object$reference_time)
+  end_date <- max(object$reference_time)
   # Construct the observed cases plot
   # NOTE: We use print to show plots sequentially
   suppressWarnings(
@@ -100,7 +104,10 @@ autoplot.tsd_onset <- function(
           mapping = ggplot2::aes(alpha = .data$seasonal_onset_alarm),
           size = size
         ) +
-        ggplot2::geom_line(linewidth = linewidth)
+        ggplot2::geom_line(linewidth = linewidth) +
+        time_interval_x_axis(start_date = start_date,
+                             end_date = end_date,
+                             time_interval = time_interval)
     )
   )
   # Set 'ask' for plotting device to TRUE
