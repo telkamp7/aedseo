@@ -1,51 +1,35 @@
 test_that("Test that selection of current and all seasons work as expected", {
-  start_date <- as.Date("2021-01-04")
-  end_date <- as.Date("2023-12-31")
+  skip_if_not_installed("withr")
+  withr::with_seed(
+    seed = 123,
+    code = {
+      tsd_data <- generate_seasonal_data(years = 3, start_date = as.Date("2021-01-04"))
 
-  weekly_dates <- seq.Date(from = start_date,
-                           to = end_date,
-                           by = "week")
+      current_season <- epi_calendar(dplyr::last(tsd_data$time))
 
-  set.seed(123)
-  obs <- stats::rpois(length(weekly_dates), 1000)
+      current_season_output <- combined_seasonal_output(tsd_data, only_current_season = TRUE)
+      all_seasons_output <- combined_seasonal_output(tsd_data, only_current_season = FALSE)
 
-  tsd_data <- to_time_series(
-    observation = obs,
-    time = as.Date(weekly_dates),
-    time_interval = "week"
+      expect_equal(unique(current_season_output$onset_output$season), current_season)
+      expect_equal(unique(current_season_output$burden_output$season), current_season)
+
+      expect_gt(length(unique(all_seasons_output$onset_output$season)), 1)
+      expect_gt(length(all_seasons_output$burden_output), 1)
+    }
   )
-
-  current_season <- epi_calendar(end_date)
-
-  current_season_output <- combined_seasonal_output(tsd_data, only_current_season = TRUE)
-  all_seasons_output <- combined_seasonal_output(tsd_data, only_current_season = FALSE)
-
-  expect_equal(unique(current_season_output$onset_output$season), current_season)
-  expect_equal(unique(current_season_output$burden_output$season), current_season)
-
-  expect_gt(length(unique(all_seasons_output$onset_output$season)), 1)
-  expect_gt(length(all_seasons_output$burden_output), 1)
 })
 
 test_that("Test that onset_output has one more season than burden_output", {
-  start_date <- as.Date("2021-01-04")
-  end_date <- as.Date("2023-12-31")
+  skip_if_not_installed("withr")
+  withr::with_seed(
+    seed = 123,
+    code = {
+      tsd_data <- generate_seasonal_data(years = 3, start_date = as.Date("2021-01-04"))
 
-  weekly_dates <- seq.Date(from = start_date,
-                           to = end_date,
-                           by = "week")
+      all_seasons_output <- combined_seasonal_output(tsd_data, only_current_season = FALSE)
 
-  set.seed(123)
-  obs <- stats::rpois(length(weekly_dates), 1000)
-
-  tsd_data <- to_time_series(
-    observation = obs,
-    time = as.Date(weekly_dates),
-    time_interval = "week"
+      expect_length(unique(all_seasons_output$onset_output$season), 4)
+      expect_length(all_seasons_output$burden_output, 3)
+    }
   )
-
-  all_seasons_output <- combined_seasonal_output(tsd_data, only_current_season = FALSE)
-
-  expect_length(unique(all_seasons_output$onset_output$season), 4)
-  expect_length(all_seasons_output$burden_output, 3)
 })

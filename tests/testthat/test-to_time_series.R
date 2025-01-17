@@ -64,5 +64,4 @@ test_that("Test that input argument checks work", {
     )),
     time_interval = "year"
   ))
-
 })

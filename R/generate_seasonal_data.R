@@ -73,7 +73,7 @@ generate_seasonal_data <- function(
 
   # Construct a 'tsd' object with the time series data
   sim_tsd_data <- to_time_series(
-    observation = seasonal_component,
+    observation = round(seasonal_component),
     time = dates,
     time_interval = time_interval
   )
