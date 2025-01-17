@@ -1,0 +1,89 @@
+---
+title: "Simulate seasonal epidemic waves"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Simulate seasonal epidemic waves}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, warning=FALSE, message=FALSE}
+library(aedseo)
+```
+
+## Simulation
+
+To demonstrate seasonal variation in a time series while accounting for trends and variability, we use the
+`generate_seasonal_wave()` function. This function generates a sinusoidal wave to represent periodic fluctuations,
+such as dayly, weekly or monthly cycles, while also incorporating optional exponential trend and random noise.
+This makes it suitable for modeling more realistic phenomena like infection rates.
+The wave is defined by the following equation:
+
+\begin{equation}
+  SeasonalWave(t) = [\text{amplitude} * (1 + \sin(\frac{2\pi t}{\text{period}} + \text{phase}))] * e^{\text{log(trend\_rate)} * t} + \epsilon
+\end{equation}
+
+Where:
+- $t$: The time variable (e.g., weeks or months, represented on the x-axis).
+- $\text{amplitude}$: Controls the height of the wave; the output oscillates between $0 to 2 * \text{amplitude}$.
+- $\text{period}$: Defines the cycle length (e.g., 52 weeks for yearly seasonality).
+- $\text{phase}$: Adjusts the horizontal position of the wave on the x-axis.
+- $\text{trend\_rate}$: Controls the exponential growth or decay of the trend over time.
+- $\epsilon$: Optional random noise, which can be included as a specified standard deviation.
+
+The first step is to create and transform simulated data into a `tsd` object using the `generate_seasonal_data()` function.
+
+```{r}
+seasonal_wave_sim_weekly <- generate_seasonal_data(years = 3,
+                                                   start_date = as.Date("2021-05-26"),
+                                                   amplitude = 1000,
+                                                   phase = 0,
+                                                   trend_rate = 1.001,
+                                                   noise_sd = 100,
+                                                   time_interval = "week")
+```
+
+## Plot seasonal waves
+
+The aedseo package has an implemented S3 method to plot the `tsd` object.
+The following figure shows the simulated data (solid circles) as individual observations.
+The solid line connects these points, representing the underlying mean trend over three years of weekly data.
+The x-axis shows the weeks and years, while the y-axis represents the simulated observations.
+
+```{r}
+plot(seasonal_wave_sim_weekly, time_interval = "5 weeks")
+```
+
+
+Example of monthly observations
+```{r}
+seasonal_wave_sim_monthly <- generate_seasonal_data(years = 3,
+                                                    start_date = as.Date("2021-05-26"),
+                                                    amplitude = 1000,
+                                                    phase = 0,
+                                                    trend_rate = 1.001,
+                                                    noise_sd = 100,
+                                                    time_interval = "month")
+
+plot(seasonal_wave_sim_monthly, time_interval = "2 months")
+```
+
+Example of daily observations
+```{r}
+seasonal_wave_sim_daily <- generate_seasonal_data(years = 1,
+                                                  start_date = as.Date("2021-05-26"),
+                                                  amplitude = 1000,
+                                                  phase = 0,
+                                                  trend_rate = 1.001,
+                                                  noise_sd = 100,
+                                                  time_interval = "day")
+
+plot(seasonal_wave_sim_daily, time_interval = "15 days")
+```

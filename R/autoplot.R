@@ -12,6 +12,8 @@
 #' confidence interval of the growth rate estimate.
 #' @param alpha Numeric, the alpha (transparency) for the observations with a
 #' significantly positive growth rate.
+#' @param time_interval A character vector specifying the time interval and how
+#' many time steps desired on the x-axis, e.g. "10 days," "4 weeks," or "3 months."
 #' @param ... Additional arguments (not used).
 #'
 #' @return A 'ggplot' object for visualizing the time series data.
@@ -55,7 +57,10 @@ autoplot <- function(object, ...) {
 #' @rdname autoplot
 #' @method autoplot tsd
 #' @export
-autoplot.tsd <- function(object, ...) {
+autoplot.tsd <- function(object, time_interval = "5 weeks", ...) {
+  start_date <- min(object$time)
+  end_date <- max(object$time)
+
   object |>
     ggplot2::ggplot(
       mapping = ggplot2::aes(
@@ -64,7 +69,10 @@ autoplot.tsd <- function(object, ...) {
       )
     ) +
     ggplot2::geom_point() +
-    ggplot2::geom_line()
+    ggplot2::geom_line() +
+    time_interval_x_axis(start_date = start_date,
+                         end_date = end_date,
+                         time_interval = time_interval)
 }
 #' @importFrom grDevices devAskNewPage
 #' @rdname autoplot

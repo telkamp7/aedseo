@@ -8,7 +8,7 @@
 \usage{
 autoplot(object, ...)
 
-\method{autoplot}{tsd}(object, ...)
+\method{autoplot}{tsd}(object, time_interval = "5 weeks", ...)
 
 \method{autoplot}{tsd_onset}(object, linewidth = 0.7, size = 2, alpha = 0.3, width = 0.2, ...)
 }
@@ -16,6 +16,9 @@ autoplot(object, ...)
 \item{object}{An \code{tsd} or \code{tsd_onset} object}
 
 \item{...}{Additional arguments (not used).}
+
+\item{time_interval}{A character vector specifying the time interval and how
+many time steps desired on the x-axis, e.g. "10 days," "4 weeks," or "3 months."}
 
 \item{linewidth}{Numeric, the width of the line for the growth rate}
 
