@@ -1,0 +1,23 @@
+---
+title: "Automated Detection of Seasonal Epidemic Onset"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Automated Detection of Seasonal Epidemic Onset}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, warning=FALSE, message=FALSE}
+library(aedseo)
+library(tibble)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+```

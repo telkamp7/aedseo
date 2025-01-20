@@ -1,8 +1,8 @@
 ---
-title: "Automated Detection of Seasonal Epidemic Onset in R"
+title: "Automated Detection of Seasonal Epidemic Onset and Burden Levels in R"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Automated Detection of Seasonal Epidemic Onset in R}
+  %\VignetteIndexEntry{Automated Detection of Seasonal Epidemic Onset and Burden Levels in R}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -29,17 +29,21 @@ The methodology used to detect the onset of seasonal respiratory epidemics can b
 - The local estimate of the exponential growth rate, $r$, is significantly greater than zero.
 - The sum of cases (SoC) over the past $k$ units of time exceeds a disease-specific threshold.
 
-Here, $k$ denotes the window size employed to obtain the local estimate of the exponential growth rate and the SoC. When both of these criteria are met, an alarm is triggered and the onset of the seasonal epidemic is detected.
+Here, $k$ denotes the window size employed to obtain the local estimate of the exponential growth rate and the SoC.
+When both of these criteria are met, an alarm is triggered and the onset of the seasonal epidemic is detected.
 
 ### Exponential growth rate
 
-The exponential growth rate, denoted as $r$, represents the per capita change in the number of new cases per unit of time. Given that incidence data are integer-valued, the proposed method relies on generalized linear models (GLM). For count data, the Poisson distribution is a suitable choice as a model. Hence, the count observations denoted as $Y$ are assumed to follow a Poisson distribution
+The exponential growth rate, denoted as $r$, represents the per capita change in the number of new cases per unit of time.
+Given that incidence data are integer-valued, the proposed method relies on generalized linear models (GLM). For count data,
+the Poisson distribution is a suitable choice as a model. Hence, the count observations denoted as $Y$ are assumed to follow a Poisson distribution
 
 \begin{equation}
  Y \sim \mathrm{Pois}(\lambda)
 \end{equation}
 
-Here, the link function, $\log()$, connects the linear predictor to the expected value of the data point, expressed as $\log(\lambda)=\mu$. Given a single continuous covariate $t$, the mean $\mu$ can be expressed as
+Here, the link function, $\log()$, connects the linear predictor to the expected value of the data point, expressed as $\log(\lambda)=\mu$.
+Given a single continuous covariate $t$, the mean $\mu$ can be expressed as
 
 \begin{equation}
   \mu = \alpha + r t
@@ -53,7 +57,10 @@ This is equivalent to a multiplicative model for $\lambda$, i.e.
 
 Intuitively, negative values of $r$ result in a decline in the number of observed cases, while $r=0$ represents stability, and positive values of $r$ indicate an increase.
 
-It is important to note that the Poisson distribution assumes that the mean and variance are equal. In reality, real data often deviate from this assumption, with the variance ($v$) being significantly larger than the mean. This biological phenomenon, known as overdispersion, can be addressed within a model in various ways. One approach is to employ quasi-Poisson regression, which assumes $v=\sigma\lambda$, or to use negative binomial regression (not implemented yet), which assumes $v=\lambda+\lambda^2/\theta$, where both $\sigma$ and $\theta$ are overdispersion parameters.
+It is important to note that the Poisson distribution assumes that the mean and variance are equal. In reality, real data often deviate from this assumption,
+with the variance ($v$) being significantly larger than the mean. This biological phenomenon, known as overdispersion, can be addressed within a model in various ways.
+One approach is to employ quasi-Poisson regression, which assumes $v=\sigma\lambda$,
+or to use negative binomial regression (not implemented yet), which assumes $v=\lambda+\lambda^2/\theta$, where both $\sigma$ and $\theta$ are overdispersion parameters.
 
 ## Applying the algorithm
 
@@ -84,7 +91,10 @@ In the following figure, the simulated data (solid circles) is visualized alongs
 plot(tsd_data)
 ```
 
-Next, the ``tsd` object is passed to the `seasonal_onset()` function. Here, a window size of `k=5` is specified, meaning that a total of 5 weeks is used in the local estimate of the exponential growth rate. `na_fraction_allowed = 0.4` defines how large a fraction of observables in the k window that are allowed to be NA, here $0.4*5 = 2$ observables. Additionally, a 95\% confidence interval is specified. Finally, the exponential growth rate is estimated using quasi-Poisson regression to account for overdispersion in the data.
+Next, the ``tsd` object is passed to the `seasonal_onset()` function. Here, a window size of `k=5` is specified,
+meaning that a total of 5 weeks is used in the local estimate of the exponential growth rate.
+`na_fraction_allowed = 0.4` defines how large a fraction of observables in the k window that are allowed to be NA, here $0.4*5 = 2$ observables.
+Additionally, a 95\% confidence interval is specified. Finally, the exponential growth rate is estimated using quasi-Poisson regression to account for overdispersion in the data.
 
 ```{r}
 # Apply the 'seasonal_onset' algorithm to create a `tsd_onset` object
@@ -103,11 +113,13 @@ seasonal_onset_results <- seasonal_onset(
 
 ## The aedseo package implements S3 methods
 
-In this section, we will explore how to use the `plot()`, `predict()` and `summary()` S3 methods provided by the `aedseo` package. These methods enhance the functionality of your `tsd_onset` objects, allowing you to make predictions and obtain concise summaries of your analysis results.
+In this section, we will explore how to use the `plot()`, `predict()` and `summary()` S3 methods provided by the `aedseo` package.
+These methods enhance the functionality of your `tsd_onset` objects, allowing you to make predictions and obtain concise summaries of your analysis results.
 
 ### Visualizing Growth Rates
 
-In the figure below, we present the local estimate of the growth rate along with its corresponding 95% confidence interval. This visualization can be generated by utilizing the `plot()` S3 method specifically designed for objects of the `tsd_onset` class.
+In the figure below, we present the local estimate of the growth rate along with its corresponding 95% confidence interval.
+This visualization can be generated by utilizing the `plot()` S3 method specifically designed for objects of the `tsd_onset` class.
 
 ```{r}
 # Employing the S3 `plot()` method
@@ -123,15 +135,19 @@ The `predict` method for `tsd_onset` objects allows you to make predictions for 
 (prediction <- predict(seasonal_onset_results, n_step = 5))
 ```
 
-In the example above, we use the predict method to predict growth rates for the next 5 time steps. The n_step argument specifies the number of steps into the future you want to forecast. The resulting prediction object will contain estimates, lower bounds, and upper bounds for each time step.
+In the example above, we use the predict method to predict growth rates for the next 5 time steps.
+The n_step argument specifies the number of steps into the future you want to forecast.
+The resulting prediction object will contain estimates, lower bounds, and upper bounds for each time step.
 
 ### Summarizing seasonal_onset results
 
-The summary method for `tsd_onset` objects provides a concise summary of your automated early detection of seasonal epidemic onset (seasonal_onset) analysis. You can use it to retrieve important information about your analysis, including the latest growth warning and the total number of growth warnings:
+The summary method for `tsd_onset` objects provides a concise summary of your automated early detection of seasonal epidemic onset (seasonal_onset) analysis.
+You can use it to retrieve important information about your analysis, including the latest growth warning and the total number of growth warnings:
 
 
 ```{r summary}
 summary(seasonal_onset_results)
 ```
 
-The summary method generates a summary message that includes details such as the reference time point, growth rate estimates, and the number of growth warnings in the series. It helps you quickly assess the key findings of your analysis.
+The summary method generates a summary message that includes details such as the reference time point, growth rate estimates, and the number of growth warnings in the series.
+It helps you quickly assess the key findings of your analysis.
