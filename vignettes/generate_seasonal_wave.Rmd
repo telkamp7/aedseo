@@ -1,5 +1,5 @@
 ---
-title: "Simulate seasonal epidemic waves"
+title: "Simulate Seasonal Epidemic Waves"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Simulate seasonal epidemic waves}
