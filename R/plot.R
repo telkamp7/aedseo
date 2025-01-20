@@ -53,5 +53,7 @@ plot.tsd <- function(x, ...) {
 #' @method plot tsd_onset
 #' @export
 plot.tsd_onset <- function(x, ...) {
-  print(autoplot(object = x, ...))
+  plot_list <- autoplot(object = x, ...)
+  suppressWarnings(print(plot_list$observed))
+  suppressWarnings(print(plot_list$growth_rate))
 }
