@@ -8,6 +8,8 @@
 
 ## Features
 
+* Added `generate_seasonal_data()` to generate synthetic data for testing and documentation purposes (#56).
+
 * Added a new argument `only_current_season` to `seasonal_onset()`, `seasonal_burden_levels()` and `combined_seasonal_output()` which gives the possibility to either get output from only the current season or for all available seasons (#45).
 
 * Added `combined_seasonal_output()` as the main function to run both `seasonal_onset()` and `seasonal_burden_levels()` to get a combined result for the newest season (#44).
@@ -21,6 +23,8 @@
 * Added the `fit_quantiles()` function, which optimises a user selected distribution and calculates the quantiles based on observations and weights. It is meant to be used within the `seasonal_burden_levels()` function (#35, #37).
 
 ## Improvements
+
+* Improved the autoplot function which can now visualise dates as days, weeks and months on the x-axis with the `time_interval` argument (#56).
 
 * Improved the `epi_calendar()` function to work for a season spanning new year (#34).
 
