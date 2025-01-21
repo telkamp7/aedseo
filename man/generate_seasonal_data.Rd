@@ -38,3 +38,30 @@ A \code{tsd} object with simulated data.
 This function generates a simulated dataset of seasonal waves with trend and noise.
 This function assumes 365 days, 52 weeks, and 12 months per year. Leap years are not included in the calculation.
 }
+\examples{
+# Generate simulated data of seasonal waves
+
+#With default arguments
+default_sim <- generate_seasonal_data()
+plot(default_sim)
+
+#With an exponential growth rate trend
+trend_sim <- generate_seasonal_data(trend_rate = 1.001)
+plot(trend_sim)
+
+#With noise
+noise_sim <- generate_seasonal_data(noise_sd = 100)
+plot(noise_sim)
+
+#With distinct parameters, trend and noise
+sim_data <- generate_seasonal_data(
+  years = 2,
+  start_date = as.Date("2022-05-26"),
+  amplitude = 2000,
+  phase = 0,
+  trend_rate = 1.002,
+  noise_sd = 110,
+  time_interval = c("week")
+)
+plot(sim_data, time_interval = "2 months")
+}

@@ -8,21 +8,23 @@
 
 ## Features
 
-* Added `generate_seasonal_data()` to generate synthetic data for testing and documentation purposes (#56).
+* Added the `seasonal_burden_levels()` function, which calculates burden levels based on data from previous seasons with two different methods; "peak_levels" or "intensity_levels" (#37).
+
+* Added the `fit_quantiles()` function, which optimises a user selected distribution and calculates the quantiles based on observations and weights. It is meant to be used within the `seasonal_burden_levels()` function (#35, #37).
+
+* Added `combined_seasonal_output()` as the main function to run both `seasonal_onset()` and `seasonal_burden_levels()` to get a combined result for the newest season (#44).
 
 * Added a new argument `only_current_season` to `seasonal_onset()`, `seasonal_burden_levels()` and `combined_seasonal_output()` which gives the possibility to either get output from only the current season or for all available seasons (#45).
 
-* Added `combined_seasonal_output()` as the main function to run both `seasonal_onset()` and `seasonal_burden_levels()` to get a combined result for the newest season (#44).
+* Added `generate_seasonal_data()` to generate synthetic data for testing and documentation purposes (#56).
 
 * Added `seasonal_onset()` as a replacement for the deprecated `aedseo()` function (#41).
 
 * Added `to_time_series()` as a replacement for the deprecated `tsd()` function (#41).
 
-* Added the `seasonal_burden_levels()` function, which calculates burden levels based on data from previous seasons with two different methods; "peak_levels" or "intensity_levels" (#37).
-
-* Added the `fit_quantiles()` function, which optimises a user selected distribution and calculates the quantiles based on observations and weights. It is meant to be used within the `seasonal_burden_levels()` function (#35, #37).
-
 ## Improvements
+
+* Enhanced clarity and user guidance in the `vignette("generate_seasonal_wave")`, providing a comprehensive walkthrough of the application of the 'generate_seasonal_data()' algorithm with detailed explanations and illustrative examples ().
 
 * Improved the autoplot function which can now visualise dates as days, weeks and months on the x-axis with the `time_interval` argument (#56).
 
@@ -35,6 +37,10 @@
 * Improved the `aedseo()` function to work with `NA` values. The user now defines how many `NA` values the function should allow in each window (#32).
 
 ## Minor changes
+
+* Added Sofia Myrup Otero as an author of the R package.
+
+* Added Rasmus Skytte Randløv as a reviewer of the R package.
 
 * The `disease_threshold` argument now reflects the disease threshold in one time step. If the total number of cases in a window of size `k` exceeds  `disease_threshold * k`, a seasonal onset alarm can be triggered (#32).
 

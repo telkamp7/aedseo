@@ -1,18 +1,18 @@
 # Make a custom week/year label for the x axis - inspired by scales::label_date_short
 label_week_short <- function() {
   function(x) {
-
+    # Detect changes in vector (between season end and start)
     changed <- function(x) {
       c(TRUE, is.na(x[-length(x)]) | x[-1] != x[-length(x)])
     }
-
+    # Split dates into year and week
     dt <- dplyr::tibble(year = as.character(lubridate::isoyear(x)), week = as.character(lubridate::isoweek(x)))
-
+    # Detect changes to either year or week
     changes <- cbind(year = changed(dt$year), week = changed(dt$week))
-
+    # Keep only the labels where changes occur
     dt2 <- cbind(ifelse(changes[, 1], dt$year, NA),
                  ifelse(changes[, 2], dt$week, NA))
-
+    # Combine to character two-line label with week in first line and year in second line
     apply(dt2, 1, function(x) paste(rev(x[!is.na(x)]), collapse = "\n"))
   }
 }

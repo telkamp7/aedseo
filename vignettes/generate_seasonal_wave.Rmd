@@ -40,6 +40,7 @@ Where:
 - $\epsilon$: Optional random noise, which can be included as a specified standard deviation.
 
 The first step is to create and transform simulated data into a `tsd` object using the `generate_seasonal_data()` function.
+
 - `time_interval` is a character vector specifying the time interval, choose between "day," "week," or "month."
 
 ```{r}
@@ -56,44 +57,70 @@ seasonal_wave_sim_weekly <- generate_seasonal_data(
 
 ## Plot seasonal waves
 
-The aedseo package has an implemented S3 method to plot the `tsd` object.
+The `aedseo` package has an implemented S3 method to plot the `tsd` object.
 The `time_interval` argument can be used to visualise the x-axis as desired, either with days, weeks or months.
 
-The following figure shows the simulated data (solid circles) as individual observations.
+The following figures shows the simulated data (solid circles) as individual observations.
 The solid line connects these points, representing the underlying mean trend over three years of weekly data.
+
+### Example of weekly observations
 The x-axis shows the weeks and years, while the y-axis represents the simulated observations.
+In this simulation there is a positive `trend_rate`, which can be seen as the observations increases exponentially across seasons.
+The noise is the jumps between observations, instead of smoothly transitioning between observations.
 
 ```{r}
 plot(seasonal_wave_sim_weekly, time_interval = "5 weeks")
 ```
 
 
-Example of monthly observations
+### Example of monthly observations
+The x-axis shows the months and years, while the y-axis represents the simulated observations.
+In this simulation there is a negative `trend_rate`, which can be seen as the observations decrease exponentially across seasons.
+This simulation does not have any noise.
 ```{r}
 seasonal_wave_sim_monthly <- generate_seasonal_data(
-  years = 3,
+  years = 4,
   start_date = as.Date("2021-05-26"),
-  amplitude = 1000,
+  amplitude = 2000,
   phase = 0,
-  trend_rate = 1.001,
-  noise_sd = 100,
+  trend_rate = 0.99,
   time_interval = "month"
 )
 
-plot(seasonal_wave_sim_monthly, time_interval = "2 months")
+plot(seasonal_wave_sim_monthly, time_interval = "3 months")
 ```
 
-Example of daily observations
+### Example of daily observations
+The x-axis shows the days, months, years, while the y-axis represents the simulated observations.
+In this simulation there is no trend.
+The noise is the jumps between observations, instead of smoothly transitioning between observations.
 ```{r}
 seasonal_wave_sim_daily <- generate_seasonal_data(
   years = 1,
   start_date = as.Date("2021-05-26"),
-  amplitude = 1000,
+  amplitude = 10000,
   phase = 0,
-  trend_rate = 1.001,
-  noise_sd = 100,
+  noise_sd = 200,
   time_interval = "day"
 )
 
 plot(seasonal_wave_sim_daily, time_interval = "15 days")
+```
+
+### Example of phase shift
+A phase shift in a sinusoidal pattern effectively shifts where the wave starts along the x-axis instead of peaking
+(or hitting zero) at the same times as a wave with `phase = 0` (like in previous plot), it is shifted in time.
+in this example where `phase = 1` rather than `0`, we see that the rise and fall of the sine wave happens later
+compared to a wave with no phase shift.
+```{r}
+seasonal_wave_sim_daily_phase_shift <- generate_seasonal_data(
+  years = 1,
+  start_date = as.Date("2021-05-26"),
+  amplitude = 10000,
+  phase = 1,
+  noise_sd = 200,
+  time_interval = "day"
+)
+
+plot(seasonal_wave_sim_daily_phase_shift, time_interval = "15 days")
 ```

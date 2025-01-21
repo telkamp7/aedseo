@@ -18,6 +18,33 @@
 #' @return A `tsd` object with simulated data.
 #'
 #' @export
+#'
+#' @examples
+#' # Generate simulated data of seasonal waves
+#'
+#' #With default arguments
+#' default_sim <- generate_seasonal_data()
+#' plot(default_sim)
+#'
+#' #With an exponential growth rate trend
+#' trend_sim <- generate_seasonal_data(trend_rate = 1.001)
+#' plot(trend_sim)
+#'
+#' #With noise
+#' noise_sim <- generate_seasonal_data(noise_sd = 100)
+#' plot(noise_sim)
+#'
+#' #With distinct parameters, trend and noise
+#' sim_data <- generate_seasonal_data(
+#'   years = 2,
+#'   start_date = as.Date("2022-05-26"),
+#'   amplitude = 2000,
+#'   phase = 0,
+#'   trend_rate = 1.002,
+#'   noise_sd = 110,
+#'   time_interval = c("week")
+#' )
+#' plot(sim_data, time_interval = "2 months")
 generate_seasonal_data <- function(
   years = 3,
   start_date = as.Date("2021-05-26"),
@@ -32,7 +59,7 @@ generate_seasonal_data <- function(
   coll <- checkmate::makeAssertCollection()
   checkmate::assert_integerish(years, len = 1, lower = 1, add = coll)
   checkmate::assert_date(start_date, add = coll)
-  checkmate::assert_integerish(amplitude, len = 1, lower = 1, add = coll)
+  checkmate::assert_numeric(amplitude, len = 1, lower = 1, add = coll)
   checkmate::assert_numeric(phase, len = 1, lower = 0, upper = 2 * pi, add = coll)
   checkmate::assert_numeric(trend_rate, len = 1, lower = 0, null.ok = TRUE, add = coll)
   checkmate::assert_numeric(noise_sd, len = 1, lower = 0, null.ok = TRUE, add = coll)

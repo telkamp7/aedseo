@@ -57,12 +57,13 @@ It is important to note that the Poisson distribution assumes that the mean and 
 
 ## Applying the algorithm
 
-To apply the aedseo algorithm, data needs to be transformed into a `tsd` object.
-If you have your own data the `to_time_series()` function can be used with the arguments `observation`, `time`, `time_interval`.
-In the following section, the application of the algorithm is done with simulated data created with the `generate_seasonal_data()` function.
-More information about the function can be found in the `vignette("generate_seasonal_wave)`
+To apply the `aedseo` algorithm, data needs to be transformed into a `tsd` object.
+If you have your own data, the `to_time_series()` function can be used with the arguments: `observation`, `time`, `time_interval`.
+In the following section, the application of the algorithm is shownwith simulated data created with the `generate_seasonal_data()` function.
+More information about the function can be found in the `vignette("generate_seasonal_wave")`
 
-```{r}
+```{r, include = FALSE}
+withr::local_seed(222)
 # Construct an 'tsd' object with time series data
 set.seed(222)
 tsd_data <- generate_seasonal_data(
@@ -94,8 +95,8 @@ seasonal_onset_results <- seasonal_onset(
   disease_threshold = 100,
   family = "quasipoisson",
   na_fraction_allowed = 0.4,
-  season_start = 21,
-  season_end = 20,
+  season_start = 21, # Season starts in week 21
+  season_end = 20, # Season ends in week 20 the following year
   only_current_season = FALSE
 )
 ```
