@@ -1,31 +1,22 @@
 test_that("Summary prints without errors", {
-  # Set start and end dates
-  from_date <- as.Date("2021-01-01")
-  to_date <- as.Date("2021-01-31")
-
-  # Choose some time dates
-  time <- seq.Date(from = from_date, to = to_date, by = "day")
-
-  # Count the number of observations
-  n <- length(time)
-
-  # Data
-  set.seed(123)
-  tsd_data_poisson <- to_time_series(
-    observation = rpois(n = n, lambda = 1:n),
-    time = time,
-    time_interval = "day"
+  skip_if_not_installed("withr")
+  withr::local_seed(123)
+  # Generate seasonal data
+  tsd_data <- generate_seasonal_data(
+    years = 1,
+    start_date = as.Date("2021-01-01")
   )
+
   # Calculate seasonal_onset with a 3-day window
-  tsd_poisson <- seasonal_onset(
-    tsd = tsd_data_poisson,
+  tsd_onset <- seasonal_onset(
+    tsd = tsd_data,
     k = 3,
     level = 0.95,
-    family = "poisson"
+    family = "quasipoisson"
   )
 
   # Capture the output of the summary function
-  tmp <- capture_output(summary(tsd_poisson))
+  tmp <- capture_output(summary(tsd_onset))
 
   # Verify that the summary printed without errors
   expect_true(grepl(pattern = "Summary of seasonal_onset Object", x = tmp))

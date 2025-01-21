@@ -1,9 +1,8 @@
 test_that("The growth rate models converge", {
+  skip_if_not_installed("withr")
+  withr::local_seed(42)
   # Number of random data points to generate
   n <- 1e3
-
-  # Set a seed for the simulations
-  set.seed(42)
 
   # The simulated data
   data_poisson <- stats::rpois(n = n, lambda = 5)

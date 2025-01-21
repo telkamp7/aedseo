@@ -1,30 +1,25 @@
 test_that("Returns the desired length", {
+  skip_if_not_installed("withr")
+  withr::local_seed(222)
   # Generate some sample data
-  tsd_data <- to_time_series(
-    observation = c(100, 120, 150, 180, 220, 270),
-    time = as.Date(c(
-      "2023-01-01",
-      "2023-01-02",
-      "2023-01-03",
-      "2023-01-04",
-      "2023-01-05",
-      "2023-01-06"
-    )),
+  tsd_data <- generate_seasonal_data(
+    years = 1,
+    start_date = as.Date("2023-01-01"),
     time_interval = "day"
   )
 
   # Employ the seasonal_onset function
   tsd_results <- seasonal_onset(
     tsd = tsd_data,
-    k = 3,
+    k = 7,
     level = 0.95,
     family = "poisson"
   )
 
-  # Make a 5 step prediction
-  n_step <- 5
+  # Make a 7 step prediction
+  n_step <- 7
 
-  # Predict growth rates for the next 5 time steps
+  # Predict growth rates for the next 7 time steps
   prediction <- predict(object = tsd_results, n_step = n_step)
 
   # Return the number of prediction + the initial observation
@@ -32,32 +27,27 @@ test_that("Returns the desired length", {
 })
 
 test_that("Can correctly make an 'tsd_predict' class object", {
+  skip_if_not_installed("withr")
+  withr::local_seed(222)
   # Generate some sample data
-  tsd_data <- to_time_series(
-    observation = c(100, 120, 150, 180, 220, 270),
-    time = as.Date(c(
-      "2023-01-01",
-      "2023-01-02",
-      "2023-01-03",
-      "2023-01-04",
-      "2023-01-05",
-      "2023-01-06"
-    )),
+  tsd_data <- generate_seasonal_data(
+    years = 1,
+    start_date = as.Date("2023-01-01"),
     time_interval = "day"
   )
 
   # Employ the seasonal_onset function
   tsd_results <- seasonal_onset(
     tsd = tsd_data,
-    k = 3,
+    k = 7,
     level = 0.95,
     family = "poisson"
   )
 
-  # Make a 5 step prediction
-  n_step <- 5
+  # Make a 7 step prediction
+  n_step <- 7
 
-  # Predict growth rates for the next 5 time steps
+  # Predict growth rates for the next 7 time steps
   prediction <- predict(object = tsd_results, n_step = n_step)
 
   # Return the number of prediction + the initial observation

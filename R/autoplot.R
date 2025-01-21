@@ -12,6 +12,8 @@
 #' confidence interval of the growth rate estimate.
 #' @param alpha Numeric, the alpha (transparency) for the observations with a
 #' significantly positive growth rate.
+#' @param time_interval A character vector specifying the time interval and how
+#' many time steps desired on the x-axis, e.g. "10 days," "4 weeks," or "3 months."
 #' @param ... Additional arguments (not used).
 #'
 #' @return A 'ggplot' object for visualizing the time series data.
@@ -55,7 +57,10 @@ autoplot <- function(object, ...) {
 #' @rdname autoplot
 #' @method autoplot tsd
 #' @export
-autoplot.tsd <- function(object, ...) {
+autoplot.tsd <- function(object, time_interval = "5 weeks", ...) {
+  start_date <- min(object$time)
+  end_date <- max(object$time)
+
   object |>
     ggplot2::ggplot(
       mapping = ggplot2::aes(
@@ -64,7 +69,10 @@ autoplot.tsd <- function(object, ...) {
       )
     ) +
     ggplot2::geom_point() +
-    ggplot2::geom_line()
+    ggplot2::geom_line() +
+    time_interval_x_axis(start_date = start_date,
+                         end_date = end_date,
+                         time_interval = time_interval)
 }
 #' @importFrom grDevices devAskNewPage
 #' @rdname autoplot
@@ -76,48 +84,54 @@ autoplot.tsd_onset <- function(
     size = 2,
     alpha = 0.3,
     width = 0.2,
+    time_interval = "5 weeks",
     ...) {
+
+  start_date <- min(object$reference_time)
+  end_date <- max(object$reference_time)
   # Construct the observed cases plot
   # NOTE: We use print to show plots sequentially
-  suppressWarnings(
-    print(
-      object |>
-        ggplot2::ggplot(
-          mapping = ggplot2::aes(
-            x = .data$reference_time,
-            y = .data$observation
-          )
-        ) +
-        ggplot2::geom_point(
-          mapping = ggplot2::aes(alpha = .data$seasonal_onset_alarm),
-          size = size
-        ) +
-        ggplot2::geom_line(linewidth = linewidth)
-    )
-  )
+  p1 <- object |>
+    ggplot2::ggplot(
+      mapping = ggplot2::aes(
+        x = .data$reference_time,
+        y = .data$observation
+      )
+    ) +
+    ggplot2::geom_point(
+      mapping = ggplot2::aes(alpha = .data$seasonal_onset_alarm),
+      size = size
+    ) +
+    ggplot2::geom_line(linewidth = linewidth) +
+    time_interval_x_axis(start_date = start_date,
+                         end_date = end_date,
+                         time_interval = time_interval)
   # Set 'ask' for plotting device to TRUE
   oask <- devAskNewPage(ask = TRUE)
   # ... and clean-up on exit
   on.exit(devAskNewPage(oask))
   # ... and the growth rate plots
-  print(
-    object |>
-      ggplot2::ggplot(
-        mapping = ggplot2::aes(
-          x = .data$reference_time,
-          y = .data$growth_rate,
-          ymin = .data$lower_growth_rate,
-          ymax = .data$upper_growth_rate
-        )
-      ) +
-      ggplot2::geom_point(
-        mapping = ggplot2::aes(alpha = .data$growth_warning),
-        size = size
-      ) +
-      ggplot2::geom_errorbar(
-        mapping = ggplot2::aes(alpha = .data$growth_warning),
-        width = width
-      ) +
-      ggplot2::geom_hline(yintercept = 0, linetype = "dashed")
-  )
+  p2 <- object |>
+    ggplot2::ggplot(
+      mapping = ggplot2::aes(
+        x = .data$reference_time,
+        y = .data$growth_rate,
+        ymin = .data$lower_growth_rate,
+        ymax = .data$upper_growth_rate
+      )
+    ) +
+    ggplot2::geom_point(
+      mapping = ggplot2::aes(alpha = .data$growth_warning),
+      size = size
+    ) +
+    ggplot2::geom_errorbar(
+      mapping = ggplot2::aes(alpha = .data$growth_warning),
+      width = width
+    ) +
+    ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
+    time_interval_x_axis(start_date = start_date,
+                         end_date = end_date,
+                         time_interval = time_interval)
+  # save plots
+  list(observed = p1, growth_rate = p2)
 }

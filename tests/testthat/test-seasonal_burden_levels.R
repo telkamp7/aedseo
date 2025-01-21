@@ -1,20 +1,8 @@
 test_that("Test that input argument checks work", {
-
-  start_date <- as.Date("2021-01-04")
-  end_date <- as.Date("2023-12-31")
-
-  weekly_dates <- seq.Date(from = start_date,
-                           to = end_date,
-                           by = "week")
-
-  set.seed(123)
-  obs <- stats::rpois(length(weekly_dates), 1000)
-
-  tsd_data <- to_time_series(
-    observation = obs,
-    time = as.Date(weekly_dates),
-    time_interval = "week"
-  )
+  skip_if_not_installed("withr")
+  withr::local_seed(123)
+  # Generate seasonal data
+  tsd_data <- generate_seasonal_data(years = 3, start_date = as.Date("2021-01-04"))
 
   expect_error(
     checkmate_err_msg(seasonal_burden_levels(tsd_data, family = "lnorm", decay_factor = 3),
@@ -57,64 +45,49 @@ test_that("Test that input argument checks work", {
   expect_error(
     checkmate_err_msg(seasonal_burden_levels(tsd_fail),
       paste("Variable 'colnames(tsd)': Names must be a identical to set {'time','observation'},
-             but is {'week','observation'}."),
+          but is {'week','observation'}."),
       fixed = TRUE
     )
   )
 
   #Finally check that dots arguments work
-  model_output <- seasonal_burden_levels(tsd_data, family = "exp", optim_method = "Brent",
-                                         lower_optim = 1, upper_optim = 1000)
+  model_output <- seasonal_burden_levels(
+    tsd_data, family = "exp",
+    optim_method = "Brent",
+    lower_optim = 1, upper_optim = 1000
+  )
   expect_equal(model_output$family, "exp")
 })
 
 test_that("Test that we get correct season output for newest season", {
-
-  start_date <- as.Date("2021-01-04")
-  end_date <- as.Date("2023-12-31")
-
-  weekly_dates <- seq.Date(from = start_date,
-                           to = end_date,
-                           by = "week")
-
-  set.seed(123)
-  obs <- stats::rpois(length(weekly_dates), 1000)
-
-  tsd_data <- to_time_series(
-    observation = obs,
-    time = as.Date(weekly_dates),
-    time_interval = "week"
-  )
+  skip_if_not_installed("withr")
+  withr::local_seed(123)
+  # Generate seasonal data
+  tsd_data <- generate_seasonal_data(years = 3, start_date = as.Date("2021-01-04"))
 
   seasonal_tsd <- tsd_data |>
     dplyr::mutate(season = epi_calendar(.data$time, start = 21, end = 20))
 
   newest_season <- max(seasonal_tsd$season)
 
-  intensity_levels <- seasonal_burden_levels(tsd_data, family = "lnorm", method = "intensity_levels")
+  intensity_levels <- seasonal_burden_levels(
+    tsd_data, family = "lnorm",
+    method = "intensity_levels"
+  )
 
   expect_equal(newest_season, intensity_levels$season)
 })
 
 test_that("Test that we have same numbers of outputs for both methods", {
+  skip_if_not_installed("withr")
+  withr::local_seed(123)
+  # Generate seasonal data
+  tsd_data <- generate_seasonal_data(years = 3, start_date = as.Date("2021-01-04"))
 
-  start_date <- as.Date("2021-01-04")
-  end_date <- as.Date("2023-12-31")
-
-  weekly_dates <- seq.Date(from = start_date,
-                           to = end_date,
-                           by = "week")
-
-  set.seed(123)
-  obs <- stats::rpois(length(weekly_dates), 1000)
-
-  tsd_data <- to_time_series(
-    observation = obs,
-    time = as.Date(weekly_dates),
-    time_interval = "week"
+  intensity_levels <- seasonal_burden_levels(
+    tsd_data, family = "lnorm",
+    method = "intensity_levels"
   )
-
-  intensity_levels <- seasonal_burden_levels(tsd_data, family = "lnorm", method = "intensity_levels")
 
   peak_levels <- seasonal_burden_levels(
     tsd_data,
@@ -127,21 +100,12 @@ test_that("Test that we have same numbers of outputs for both methods", {
 })
 
 test_that("Test that function fail with less than two seasons", {
-
-  start_date <- as.Date("2021-06-04")
-  end_date <- as.Date("2021-12-31")
-
-  weekly_dates <- seq.Date(from = start_date,
-                           to = end_date,
-                           by = "week")
-
-  set.seed(123)
-  obs <- stats::rpois(length(weekly_dates), 1000)
-
-  tsd_one_season <- to_time_series(
-    observation = obs,
-    time = as.Date(weekly_dates),
-    time_interval = "week"
+  skip_if_not_installed("withr")
+  withr::local_seed(123)
+  # Generate seasonal data
+  tsd_one_season <- generate_seasonal_data(
+    years = 1,
+    start_date = as.Date("2021-05-24")
   )
 
   expect_error(
@@ -152,26 +116,21 @@ test_that("Test that function fail with less than two seasons", {
 })
 
 test_that("Test that selection of current and all seasons work as expected", {
-  start_date <- as.Date("2021-01-04")
-  end_date <- as.Date("2023-12-31")
+  skip_if_not_installed("withr")
+  withr::local_seed(123)
+  # Generate seasonal data
+  tsd_data <- generate_seasonal_data(years = 3, start_date = as.Date("2021-01-04"))
 
-  weekly_dates <- seq.Date(from = start_date,
-                           to = end_date,
-                           by = "week")
+  current_season <- epi_calendar(dplyr::last(tsd_data$time))
 
-  set.seed(123)
-  obs <- stats::rpois(length(weekly_dates), 1000)
-
-  tsd_data <- to_time_series(
-    observation = obs,
-    time = as.Date(weekly_dates),
-    time_interval = "week"
+  current_level <- seasonal_burden_levels(
+    tsd_data, family = "lnorm",
+    only_current_season = TRUE
   )
-
-  current_season <- epi_calendar(end_date)
-
-  current_level <- seasonal_burden_levels(tsd_data, family = "lnorm", only_current_season = TRUE)
-  all_levels <- seasonal_burden_levels(tsd_data, family = "lnorm", only_current_season = FALSE)
+  all_levels <- seasonal_burden_levels(
+    tsd_data, family = "lnorm",
+    only_current_season = FALSE
+  )
 
   expect_equal(current_season, unique(current_level$season))
   expect_gt(length(all_levels), 1)
@@ -180,60 +139,48 @@ test_that("Test that selection of current and all seasons work as expected", {
 
 test_that("Test that function does not fail if there are no observations surpassing the disease specific threshold
           in the current season.", {
-            start_date <- as.Date("2022-05-23")
-            end_date <- as.Date("2023-05-15")
+    skip_if_not_installed("withr")
+    withr::local_seed(123)
+    # Generate seasonal data
+    tsd_data_one <- generate_seasonal_data(
+      years = 1,
+      start_date = as.Date("2022-05-23")
+    )
+    tsd_data_two <- generate_seasonal_data(
+      years = 1, amplitude = 10,
+      start_date = as.Date("2023-05-22")
+    )
+    tsd_data_combined <- dplyr::bind_rows(tsd_data_one, tsd_data_two)
 
-            start_date_2 <- as.Date("2023-05-22")
-            end_date_2 <- as.Date("2024-05-13")
+    burden_list <- seasonal_burden_levels(
+      tsd_data_combined,
+      disease_threshold = 1000
+    )
 
-            weekly_dates <- seq.Date(from = start_date,
-                                     to = end_date,
-                                     by = "week")
-
-            weekly_dates_2 <- seq.Date(from = start_date_2,
-                                       to = end_date_2,
-                                       by = "week")
-
-            obs <- stats::rpois(length(weekly_dates), 1000)
-            obs_2 <- stats::rpois(length(weekly_dates), 10)
-
-            tsd_data <- to_time_series(
-              observation = c(obs, obs_2),
-              time = c(as.Date(weekly_dates), as.Date(weekly_dates_2)),
-              time_interval = "week"
-            )
-
-            burden_list <- seasonal_burden_levels(tsd_data, disease_threshold = 100)
-
-            expect_equal(burden_list$season, "2023/2024")
-          })
+    expect_equal(burden_list$season, "2023/2024")
+  }
+)
 
 test_that("Test that seasons are correctly increasing when only_current_season = FALSE", {
-  start_date <- as.Date("2021-01-04")
-  end_date <- as.Date("2023-12-31")
-
-  weekly_dates <- seq.Date(from = start_date,
-                           to = end_date,
-                           by = "week")
-
-  set.seed(123)
-  obs <- stats::rpois(length(weekly_dates), 1000)
-
-  tsd_data <- to_time_series(
-    observation = obs,
-    time = as.Date(weekly_dates),
-    time_interval = "week"
+  skip_if_not_installed("withr")
+  withr::local_seed(123)
+  # Generate seasonal data
+  tsd_data <- generate_seasonal_data(
+    years = 3,
+    start_date = as.Date("2021-01-04")
   )
 
-  seasons <- seasonal_onset(tsd = tsd_data,
-                            season_start = 21,
-                            season_end = 20,
-                            only_current_season = FALSE)
-  unique_seasons <- unique(seasons$season)
+  unique_seasons <- tsd_data |>
+    dplyr::mutate(season = epi_calendar(time)) |>
+    dplyr::pull(season) |>
+    base::unique()
 
-  all_levels <- seasonal_burden_levels(tsd_data, family = "lnorm", only_current_season = FALSE)
+  all_levels <- seasonal_burden_levels(
+    tsd_data, family = "lnorm",
+    only_current_season = FALSE
+  )
 
   level_seasons <- sapply(all_levels, function(x) x$season)
 
-  expect_equal(unique(seasons$season)[2:4], level_seasons)
+  expect_equal(unique_seasons[2:4], level_seasons)
 })

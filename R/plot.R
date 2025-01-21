@@ -47,11 +47,13 @@
 #' @method plot tsd
 #' @export
 plot.tsd <- function(x, ...) {
-  print(autoplot(x, ...))
+  suppressWarnings(print(autoplot(x, ...)))
 }
 #' @rdname plot
 #' @method plot tsd_onset
 #' @export
 plot.tsd_onset <- function(x, ...) {
-  print(autoplot(object = x, ...))
+  plot_list <- autoplot(object = x, ...)
+  suppressWarnings(print(plot_list$observed))
+  suppressWarnings(print(plot_list$growth_rate))
 }

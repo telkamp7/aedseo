@@ -1,29 +1,15 @@
 test_that("The growth rate models converge", {
-  from_date <- as.Date("2021-01-01")
-  to_date <- as.Date("2021-01-31")
-
-  # Choose some time dates
-  time <- seq.Date(from = from_date, to = to_date, by = "day")
-
-  # Count the number of observations
-  n <- length(time)
-
-  # Data
-  set.seed(123)
-  tsd_data_poisson <- to_time_series(
-    observation = rpois(n = n, lambda = 1:n),
-    time = time,
-    time_interval = "day"
-  )
-  tsd_data_nbinom <- to_time_series(
-    observation = rnbinom(n = n, mu = 1:n, size = 5),
-    time = time,
-    time_interval = "day"
+  skip_if_not_installed("withr")
+  withr::local_seed(123)
+  # Generate seasonal data
+  tsd_data <- generate_seasonal_data(
+    years = 1,
+    start_date = as.Date("2021-01-01")
   )
 
   # Calculate seasonal_onset with a 3-day window
   tsd_poisson <- seasonal_onset(
-    tsd = tsd_data_poisson,
+    tsd = tsd_data,
     k = 3,
     level = 0.95,
     family = "poisson",
@@ -31,7 +17,7 @@ test_that("The growth rate models converge", {
     na_fraction_allowed = 0.2
   )
   tsd_quasipoisson <- seasonal_onset(
-    tsd = tsd_data_nbinom,
+    tsd = tsd_data,
     k = 3,
     level = 0.95,
     family = "quasipoisson",
@@ -45,39 +31,30 @@ test_that("The growth rate models converge", {
 })
 
 test_that("Test if it works with weeks with NA values", {
-  from_date <- as.Date("2021-01-01")
-  to_date <- as.Date("2021-01-31")
-
-  # Choose some time dates
-  time <- seq.Date(from = from_date, to = to_date, by = "day")
+  skip_if_not_installed("withr")
+  withr::local_seed(123)
+  # Generate seasonal data
+  tsd_data <- generate_seasonal_data(
+    years = 1,
+    start_date = as.Date("2021-01-01")
+  )
 
   # Count the number of observations
-  n <- length(time)
+  n <- length(tsd_data$time)
 
   # Add NA values to observation
   na_count <- 15
 
   # Randomly select indices to replace with NA
-  set.seed(123)
   na_indices <- sample(1:n, na_count, replace = FALSE)
 
-  # Create observable
-  observation <- rpois(n = n, lambda = 1:n)
-
   # Add NA values
-  observation[na_indices] <- NA
-
-  # Data
-  tsd_data_poisson_na <- to_time_series(
-    observation = observation,
-    time = time,
-    time_interval = "day"
-  )
+  tsd_data$observation[na_indices] <- NA
 
   # Calculate seasonal_onset with a 3-day window
   tsd_poisson_na <- seasonal_onset(
-    tsd = tsd_data_poisson_na,
-    k = 3,
+    tsd = tsd_data,
+    k = 5,
     level = 0.95,
     family = "poisson",
     disease_threshold = 20,
@@ -85,13 +62,13 @@ test_that("Test if it works with weeks with NA values", {
   )
 
   # Test if correct amount of windows with NA are skipped
-  k <- 3
+  k <- 5
   na_fraction_allowed <- 0.4
-  n <- base::nrow(tsd_data_poisson_na)
+  n <- base::nrow(tsd_data)
   skipped_window_count <- 0
 
   for (i in k:n) {
-    obs_iter <- tsd_data_poisson_na[(i - k + 1):i, ]
+    obs_iter <- tsd_data[(i - k + 1):i, ]
     if (sum(is.na(obs_iter)) >= k * na_fraction_allowed) {
       skipped_window_count <- skipped_window_count + 1
     }
@@ -104,18 +81,12 @@ test_that("Test if it works with weeks with NA values", {
 })
 
 test_that("Test that input argument checks work", {
-
-  tsd_data <- to_time_series(
-    observation = c(100, 120, 150, 180, 220, 270),
-    time = as.Date(c(
-      "2023-01-01",
-      "2023-01-02",
-      "2023-01-03",
-      "2023-01-04",
-      "2023-01-05",
-      "2023-01-06"
-    )),
-    time_interval = "day"
+  skip_if_not_installed("withr")
+  withr::local_seed(123)
+  # Generate seasonal data
+  tsd_data <- generate_seasonal_data(
+    years = 1,
+    start_date = as.Date("2023-01-01")
   )
 
   expect_no_error(seasonal_onset(tsd_data))
@@ -148,26 +119,18 @@ test_that("Test that input argument checks work", {
   # Expect error with wrong column names
   colnames(tsd_data) <- c("hey", "test")
   expect_error(seasonal_onset(tsd_data))
-
 })
 
 test_that("Test that selection of current and all seasons work as expected", {
-  start_date <- as.Date("2021-01-04")
-  end_date <- as.Date("2023-12-31")
-
-  weekly_dates <- seq.Date(from = start_date,
-                           to = end_date,
-                           by = "week")
-
-  obs <- stats::rpois(length(weekly_dates), 1000)
-
-  tsd_data <- to_time_series(
-    observation = obs,
-    time = as.Date(weekly_dates),
-    time_interval = "week"
+  skip_if_not_installed("withr")
+  withr::local_seed(123)
+  # Generate seasonal data
+  tsd_data <- generate_seasonal_data(
+    years = 3,
+    start_date = as.Date("2021-01-04")
   )
 
-  current_season <- epi_calendar(end_date)
+  current_season <- epi_calendar(dplyr::last(tsd_data$time))
 
   current_onset <- seasonal_onset(tsd_data, season_start = 21, only_current_season = TRUE)
   all_onsets <- seasonal_onset(tsd_data, season_start = 21, only_current_season = FALSE)
