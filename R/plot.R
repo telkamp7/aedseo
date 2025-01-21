@@ -47,7 +47,7 @@
 #' @method plot tsd
 #' @export
 plot.tsd <- function(x, ...) {
-  print(autoplot(x, ...))
+  suppressWarnings(print(autoplot(x, ...)))
 }
 #' @rdname plot
 #' @method plot tsd_onset
