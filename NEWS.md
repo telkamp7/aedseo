@@ -38,9 +38,9 @@
 
 ## Minor changes
 
-* Added Sofia Myrup Otero as an author of the R package.
+* Added Sofia Myrup Otero as an author of the R package (#55).
 
-* Added Rasmus Skytte Randløv as a reviewer of the R package.
+* Added Rasmus Skytte Randløv as a reviewer of the R package (#55).
 
 * The `disease_threshold` argument now reflects the disease threshold in one time step. If the total number of cases in a window of size `k` exceeds  `disease_threshold * k`, a seasonal onset alarm can be triggered (#32).
 
