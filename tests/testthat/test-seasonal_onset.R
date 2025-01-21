@@ -1,144 +1,140 @@
 test_that("The growth rate models converge", {
   skip_if_not_installed("withr")
-  withr::with_seed(
-    seed = 123,
-    code = {
-      # Generate seasonal data
-      tsd_data <- generate_seasonal_data(years = 1, start_date = as.Date("2021-01-01"))
-
-      # Calculate seasonal_onset with a 3-day window
-      tsd_poisson <- seasonal_onset(
-        tsd = tsd_data,
-        k = 3,
-        level = 0.95,
-        family = "poisson",
-        disease_threshold = 20,
-        na_fraction_allowed = 0.2
-      )
-      tsd_quasipoisson <- seasonal_onset(
-        tsd = tsd_data,
-        k = 3,
-        level = 0.95,
-        family = "quasipoisson",
-        disease_threshold = 20,
-        na_fraction_allowed = 0.2
-      )
-
-      # Check if they all converge
-      expect_true(object = all(tsd_poisson$converged))
-      expect_true(object = all(tsd_quasipoisson$converged))
-    }
+  withr::local_seed(123)
+  # Generate seasonal data
+  tsd_data <- generate_seasonal_data(
+    years = 1,
+    start_date = as.Date("2021-01-01")
   )
+
+  # Calculate seasonal_onset with a 3-day window
+  tsd_poisson <- seasonal_onset(
+    tsd = tsd_data,
+    k = 3,
+    level = 0.95,
+    family = "poisson",
+    disease_threshold = 20,
+    na_fraction_allowed = 0.2
+  )
+  tsd_quasipoisson <- seasonal_onset(
+    tsd = tsd_data,
+    k = 3,
+    level = 0.95,
+    family = "quasipoisson",
+    disease_threshold = 20,
+    na_fraction_allowed = 0.2
+  )
+
+  # Check if they all converge
+  expect_true(object = all(tsd_poisson$converged))
+  expect_true(object = all(tsd_quasipoisson$converged))
 })
 
 test_that("Test if it works with weeks with NA values", {
   skip_if_not_installed("withr")
-  withr::with_seed(
-    seed = 123,
-    code = {
-      # Generate seasonal data
-      tsd_data <- generate_seasonal_data(years = 1, start_date = as.Date("2021-01-01"))
-
-      # Count the number of observations
-      n <- length(tsd_data$time)
-
-      # Add NA values to observation
-      na_count <- 15
-
-      # Randomly select indices to replace with NA
-      na_indices <- sample(1:n, na_count, replace = FALSE)
-
-      # Add NA values
-      tsd_data$observation[na_indices] <- NA
-
-      # Calculate seasonal_onset with a 3-day window
-      tsd_poisson_na <- seasonal_onset(
-        tsd = tsd_data,
-        k = 5,
-        level = 0.95,
-        family = "poisson",
-        disease_threshold = 20,
-        na_fraction_allowed = 0.4
-      )
-
-      # Test if correct amount of windows with NA are skipped
-      k <- 5
-      na_fraction_allowed <- 0.4
-      n <- base::nrow(tsd_data)
-      skipped_window_count <- 0
-
-      for (i in k:n) {
-        obs_iter <- tsd_data[(i - k + 1):i, ]
-        if (sum(is.na(obs_iter)) >= k * na_fraction_allowed) {
-          skipped_window_count <- skipped_window_count + 1
-        }
-      }
-
-      # Not all will be converged due to NA injections
-      expect_false(all(tsd_poisson_na$converged))
-      # Count if the skipped windows are = ones in output
-      expect_equal(skipped_window_count, sum(tsd_poisson_na$skipped_window))
-    }
+  withr::local_seed(123)
+  # Generate seasonal data
+  tsd_data <- generate_seasonal_data(
+    years = 1,
+    start_date = as.Date("2021-01-01")
   )
+
+  # Count the number of observations
+  n <- length(tsd_data$time)
+
+  # Add NA values to observation
+  na_count <- 15
+
+  # Randomly select indices to replace with NA
+  na_indices <- sample(1:n, na_count, replace = FALSE)
+
+  # Add NA values
+  tsd_data$observation[na_indices] <- NA
+
+  # Calculate seasonal_onset with a 3-day window
+  tsd_poisson_na <- seasonal_onset(
+    tsd = tsd_data,
+    k = 5,
+    level = 0.95,
+    family = "poisson",
+    disease_threshold = 20,
+    na_fraction_allowed = 0.4
+  )
+
+  # Test if correct amount of windows with NA are skipped
+  k <- 5
+  na_fraction_allowed <- 0.4
+  n <- base::nrow(tsd_data)
+  skipped_window_count <- 0
+
+  for (i in k:n) {
+    obs_iter <- tsd_data[(i - k + 1):i, ]
+    if (sum(is.na(obs_iter)) >= k * na_fraction_allowed) {
+      skipped_window_count <- skipped_window_count + 1
+    }
+  }
+
+  # Not all will be converged due to NA injections
+  expect_false(all(tsd_poisson_na$converged))
+  # Count if the skipped windows are = ones in output
+  expect_equal(skipped_window_count, sum(tsd_poisson_na$skipped_window))
 })
 
 test_that("Test that input argument checks work", {
   skip_if_not_installed("withr")
-  withr::with_seed(
-    seed = 123,
-    code = {
-      # Generate seasonal data
-      tsd_data <- generate_seasonal_data(years = 1, start_date = as.Date("2023-01-01"))
-
-      expect_no_error(seasonal_onset(tsd_data))
-
-      # Expect error when not matching family
-      expect_error(seasonal_onset(tsd_data, family = "ttt"))
-
-      # Expect errors from wrong input arguments
-      expect_error(seasonal_onset(tsd_data, k = 1.4, disease_threshold = 1.5))
-      expect_error(seasonal_onset(tsd_data, disease_threshold = 1.5))
-      expect_error(seasonal_onset(tsd_data, level = 2))
-      expect_error(seasonal_onset(tsd_data, na_fraction_allowed = 2))
-
-      # Expect error with random data frame
-      r_df <- data.frame(
-        observation = c(100, 120, 150, 180, 220, 270),
-        time = as.Date(c(
-          "2023-01-01",
-          "2023-01-02",
-          "2023-01-03",
-          "2023-01-04",
-          "2023-01-05",
-          "2023-01-06"
-        )),
-        time_interval = "day"
-      )
-
-      expect_error(seasonal_onset(r_df))
-
-      # Expect error with wrong column names
-      colnames(tsd_data) <- c("hey", "test")
-      expect_error(seasonal_onset(tsd_data))
-    }
+  withr::local_seed(123)
+  # Generate seasonal data
+  tsd_data <- generate_seasonal_data(
+    years = 1,
+    start_date = as.Date("2023-01-01")
   )
+
+  expect_no_error(seasonal_onset(tsd_data))
+
+  # Expect error when not matching family
+  expect_error(seasonal_onset(tsd_data, family = "ttt"))
+
+  # Expect errors from wrong input arguments
+  expect_error(seasonal_onset(tsd_data, k = 1.4, disease_threshold = 1.5))
+  expect_error(seasonal_onset(tsd_data, disease_threshold = 1.5))
+  expect_error(seasonal_onset(tsd_data, level = 2))
+  expect_error(seasonal_onset(tsd_data, na_fraction_allowed = 2))
+
+  # Expect error with random data frame
+  r_df <- data.frame(
+    observation = c(100, 120, 150, 180, 220, 270),
+    time = as.Date(c(
+      "2023-01-01",
+      "2023-01-02",
+      "2023-01-03",
+      "2023-01-04",
+      "2023-01-05",
+      "2023-01-06"
+    )),
+    time_interval = "day"
+  )
+
+  expect_error(seasonal_onset(r_df))
+
+  # Expect error with wrong column names
+  colnames(tsd_data) <- c("hey", "test")
+  expect_error(seasonal_onset(tsd_data))
 })
 
 test_that("Test that selection of current and all seasons work as expected", {
   skip_if_not_installed("withr")
-  withr::with_seed(
-    seed = 123,
-    code = {
-      # Generate seasonal data
-      tsd_data <- generate_seasonal_data(years = 3, start_date = as.Date("2021-01-04"))
-
-      current_season <- epi_calendar(dplyr::last(tsd_data$time))
-
-      current_onset <- seasonal_onset(tsd_data, season_start = 21, only_current_season = TRUE)
-      all_onsets <- seasonal_onset(tsd_data, season_start = 21, only_current_season = FALSE)
-
-      expect_equal(current_season, unique(current_onset$season))
-      expect_gt(length(unique(all_onsets$season)), 1)
-    }
+  withr::local_seed(123)
+  # Generate seasonal data
+  tsd_data <- generate_seasonal_data(
+    years = 3,
+    start_date = as.Date("2021-01-04")
   )
+
+  current_season <- epi_calendar(dplyr::last(tsd_data$time))
+
+  current_onset <- seasonal_onset(tsd_data, season_start = 21, only_current_season = TRUE)
+  all_onsets <- seasonal_onset(tsd_data, season_start = 21, only_current_season = FALSE)
+
+  expect_equal(current_season, unique(current_onset$season))
+  expect_gt(length(unique(all_onsets$season)), 1)
 })
