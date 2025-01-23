@@ -4,11 +4,14 @@
 \alias{plot.tsd}
 \alias{plot}
 \alias{plot.tsd_onset}
+\alias{plot.tsd_onset_and_burden}
 \title{Create a complete 'ggplot' appropriate to a particular data type}
 \usage{
 \method{plot}{tsd}(x, ...)
 
 \method{plot}{tsd_onset}(x, ...)
+
+\method{plot}{tsd_onset_and_burden}(x, ...)
 }
 \arguments{
 \item{x}{An \code{tsd}, \code{tsd_onset} or \code{tsd_onset_and_burden} object}
@@ -25,20 +28,34 @@ This function generates a complete 'ggplot' object suitable for visualizing time
 \examples{
 # set.seed(321)
 # Create and plot `tsd` object
-tsd_obj <- generate_seasonal_data()
+tsd_obj <- generate_seasonal_data(
+  years = 3,
+  phase = 1,
+  start_date = as.Date("2021-10-18")
+)
 plot(tsd_obj)
+
+disease_threshold <- 150
 
 # Create and plot `tsd_onset` object
 tsd_onset_obj <- seasonal_onset(
   tsd = tsd_obj,
   k = 3,
   level = 0.95,
-  disease_threshold = 50,
+  disease_threshold = disease_threshold,
   family = "quasipoisson"
 )
 plot(tsd_onset_obj)
 
+# Create a `tsd_onset_and_burden` object
+tsd_onset_burden_obj <- combined_seasonal_output(
+  tsd = time_series,
+  disease_threshold = disease_threshold
+)
+plot(tsd_onset_burden_obj,
+     y_lower_bound = ifelse(disease_threshold < 10, 1, 5))
+
 }
 \seealso{
-\code{\link[=autoplot.tsd]{autoplot.tsd()}}, \code{\link[=autoplot.tsd_onset]{autoplot.tsd_onset()}}, \code{\link[=autoplot.tsd_onset_and_burden]{autoplot.tsd_onset_and_burden()}}
+\code{\link[=autoplot]{autoplot()}}
 }

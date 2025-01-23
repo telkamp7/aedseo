@@ -12,23 +12,37 @@
 #'
 #' @aliases plot
 #'
-#' @seealso [autoplot.tsd()], [autoplot.tsd_onset()], [autoplot.tsd_onset_and_burden()]
+#' @seealso [autoplot()]
 #'
 #' @examples
 #' # set.seed(321)
 #' # Create and plot `tsd` object
-#' tsd_obj <- generate_seasonal_data()
+#' tsd_obj <- generate_seasonal_data(
+#'   years = 3,
+#'   phase = 1,
+#'   start_date = as.Date("2021-10-18")
+#' )
 #' plot(tsd_obj)
+#'
+#' disease_threshold <- 150
 #'
 #' # Create and plot `tsd_onset` object
 #' tsd_onset_obj <- seasonal_onset(
 #'   tsd = tsd_obj,
 #'   k = 3,
 #'   level = 0.95,
-#'   disease_threshold = 50,
+#'   disease_threshold = disease_threshold,
 #'   family = "quasipoisson"
 #' )
 #' plot(tsd_onset_obj)
+#'
+#' # Create a `tsd_onset_and_burden` object
+#' tsd_onset_burden_obj <- combined_seasonal_output(
+#'   tsd = time_series,
+#'   disease_threshold = disease_threshold
+#' )
+#' plot(tsd_onset_burden_obj,
+#'      y_lower_bound = ifelse(disease_threshold < 10, 1, 5))
 #'
 #' @importFrom graphics plot
 #' @rdname plot
@@ -44,4 +58,10 @@ plot.tsd_onset <- function(x, ...) {
   plot_list <- autoplot(object = x, ...)
   suppressWarnings(print(plot_list$observed))
   suppressWarnings(print(plot_list$growth_rate))
+}
+#' @rdname plot
+#' @method plot tsd_onset_and_burden
+#' @export
+plot.tsd_onset_and_burden <- function(x, ...) {
+  suppressWarnings(print(autoplot(x, ...)))
 }

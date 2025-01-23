@@ -20,13 +20,13 @@ library(aedseo)
 
 ## Introduction
 
-This function performs automated and early detection of seasonal epidemic onsets and calculates the burden levels from time series dataset stratified by season.
-The seasonal onset estimates growth rates for consecutive time intervals and calculates the sum of cases.
-The burden levels use the previous seasons to calculate the levels of the current season.
+The `aedseo` package performs automated and early detection of seasonal epidemic onsets and calculates the burden levels from time series dataset stratified by season.
+The seasonal onset (`seasonal_onset()`) estimates growth rates for consecutive time intervals and calculates the sum of cases.
+The burden levels (`seasonal_burden_levels()`) use the previous seasons to calculate the levels of the current season.
 The algorithm allows for surveillance of pathogens, by alarming when the observations increase significantly in the selected time interval and based on the
 disease specific threshold, while also evaluating the burden of current rates based on previous seasons.
 
-## Generate seasonal data
+### Generate seasonal data
 
 To apply the `aedseo` algorithm, data needs to be transformed into a `tsd` object.
 If you have your own data, the `to_time_series()` function can be used with the arguments: `observation`, `time`, `time_interval`.
@@ -55,12 +55,12 @@ In the following figure, the simulated data (solid circles) is visualized alongs
 plot(tsd_data)
 ```
 
-# Determining season
+### Determining season
 Respiratory viruses can circulate in different seasons based on the location.
 In the nordic hemisphere they mostly circulate in the fall and winter seasons, hence surveillance is intensified from week 40 to week 20 in the following year.
 To include all data the season in the example is set from week 21 to week 20 in the following year.
 
-# Determining the disease specific threshold
+### Determining the disease specific threshold
 The disease specific threshold can be determined by examining seasonal observations for the pathogen from previous seasons,
 and determine at what number of observations the rate suddenly increases drastically.
 
@@ -68,7 +68,7 @@ In this example the disease specific threshold is determined based on consecutiv
 Significant observations are defined as those with a significant positive growth rate (a positive lower growth rate).
 
 To capturing short-term changes and fluctuations in the data, a rolling window of size $k = 5$ is used to create subsets of the data for model fitting,
-and the `quasipoisson` family is used to accound for overdispersion.
+and the `quasipoisson` family is used to account for overdispersion.
 
 The `seasonal_onset()` function is used for this purpose, without adding the disease threshold.
 ```{r}
@@ -135,11 +135,12 @@ significant_vs_obs |>
   ggplot2::guides(linetype = "none") +
   ggplot2::theme_bw()
 ```
-Since the threshold that has to be exceeded is in a window of 5 weeks, the sum of cases where the significant
-observations start has to be divided with 5 to find the disease specific threshold for one time step.
 
-Observing the plot the significant growth rate starts at around 700 observations, hence the disease specific threshold
-would be $\frac{700}{5} = 140$.
+To declare a seasonal onset, the number of cases must exceed a threshold within a five week window. This threshold is determined by dividing the sum of cases at the onset of continuous significant observations by five, resulting in a disease-specific threshold for each time step.
+
+From the analysis plot, it is observed that the significant growth rate begins at approximately 700 observations. Therefore, the disease-specific threshold is calculated as: $\frac{700}{5} = 140$.
+
+In other words, a weekly observation count surpassing 140 for five consecutive weeks alongside with a significant positive growth rate signifies the onset of the season.
 
 Inspect the exact numbers of when the significant observations for each season starts
 ```{r}
@@ -152,11 +153,11 @@ significant_vs_obs |>
   dplyr::select(season, week, disease_threshold)
 ```
 
-By inspecting the output from the above code, we see that the first season starts very late compared to the subsequent seasons,
-which can also be observed on the plot of the data above. Due to this we select the disease specific threshold based on the
-complete seasons; 2022/2023 - 2024/2025, hence the disease specific threshold is set to 140.
+By inspecting the output from the above code, we observe that the first season initiates significantly later compared to the subsequent seasons. This delayed start was also evident in the plot. As a result, we determine the disease specific threshold based on the complete seasons spanning from 2022/2023 to 2024/2025. As a result, the disease specific threshold is established at `140`.
 
 ## Applying the main algorithm
+The primary function of the `aedseo` package is the `combined_seasonal_output()` which integrates the `seasonal_onset()` and `seasonal_burden_levels()` functions to deliver a comprehensive seasonal analysis.
+Detailed information about each function and their respective arguments can be found in the `vignette("seasonal_onset")` and `vignette("burden_levels")`.
 
 ```{r}
 seasonal_output <- combined_seasonal_output(
@@ -164,14 +165,29 @@ seasonal_output <- combined_seasonal_output(
   disease_threshold = 140
 )
 ```
+The default function calculates onset and burden for the current season. If it is desired to see calculations for all previous seasons, the `only_current_season` argument should be set to `FALSE`.
+Burden levels can not be calculated for the first season and needs at least two seasons of data as the calculations are based on data from previous seasons.
+
+Seasonal onset output can be extracted by:
+```{r}
+seasonal_output$onset_output
+```
+
+Seasonal burden output can be extracted by:
+```{r}
+seasonal_output$burden_output
+```
+
+### Plot the `combined_seasonal_output` object
 
 ```{r}
+# Adjust y_lower_bound dynamically to remove noisy lower values
 disease_threshold <- 140
-# Adjust y_lower_bound dynamically
 y_lower_bound <- ifelse(disease_threshold < 10, 1, 5)
 
-#plot(x = seasonal_output,
-#                    y_lower_bound = y_lower_bound,
-#                    time_interval = "3 weeks",
-#                    legend_position = "bottom")
+plot(
+  x = seasonal_output,
+  y_lower_bound = y_lower_bound,
+  time_interval = "3 weeks"
+)
 ```

@@ -14,21 +14,24 @@ NULL
 #'
 #' @return A 'ggplot' object for visualizing the `tsd` data.
 #'
+#' @aliases autoplot
+#'
 #' @examples
+#' set.seed(345)
 #' # Create an example `tsd` object
 #' time_series <- generate_seasonal_data()
 #'
 #' # Create a ggplot visualization for the `tsd` object
 #' autoplot(time_series)
 #'
+#' @rdname autoplot
 #' @method autoplot tsd
 #' @export
 autoplot.tsd <- function(
   object,
   line_width = 0.7,
   obs_size = 2,
-  time_interval_step = "5 weeks",
-  ...
+  time_interval_step = "5 weeks"
 ) {
   start_date <- min(object$time)
   end_date <- max(object$time)
@@ -79,6 +82,7 @@ autoplot.tsd <- function(
 #'
 #' @return A 'ggplot' object for visualizing the `tsd_onset` data.
 #' @examples
+#' set.seed(345)
 #' # Create an example `tsd` object
 #' time_series <- generate_seasonal_data()
 #'
@@ -91,16 +95,17 @@ autoplot.tsd <- function(
 #' )
 #' autoplot(time_series_with_onset)
 #'
+#' @rdname autoplot
 #' @method autoplot tsd_onset
 #' @export
 autoplot.tsd_onset <- function(
-    object,
-    line_width = 0.7,
-    obs_size = 2,
-    alpha = 0.3,
-    error_width = 0.2,
-    time_interval_step = "5 weeks",
-    ...) {
+  object,
+  line_width = 0.7,
+  obs_size = 2,
+  alpha = 0.3,
+  error_width = 0.2,
+  time_interval_step = "5 weeks"
+) {
 
   start_date <- min(object$reference_time)
   end_date <- max(object$reference_time)
@@ -174,7 +179,7 @@ autoplot.tsd_onset <- function(
 #' @param factor_to_max A numeric specifying the factor to multiply the high burden level for extending the y-axis.
 #' @param disease_color A character specifying the base color for the disease level regions.
 #' @param season_start,season_end `r rd_season_start_end()`
-#' @param time_interval `rd time_interval_step`
+#' @param time_interval_step `rd time_interval_step`
 #' @param y_label A character vector specifying the y label text.
 #' @param fill_alpha A numeric vector specifying the transparency levels for the fill colors of burden levels.
 #' Must match the number of levels.
@@ -193,6 +198,7 @@ autoplot.tsd_onset <- function(
 #'
 #' @return A 'ggplot' object for visualizing the `tsd_onset_and_burden` data for the current season.
 #' @examples
+#' set.seed(345)
 #' # Create a `tsd_onset` object
 #' time_series <- generate_seasonal_data(
 #'   years = 3,
@@ -211,6 +217,7 @@ autoplot.tsd_onset <- function(
 #' autoplot(tsd_onset_burden,
 #'          y_lower_bound = ifelse(disease_threshold < 10, 1, 5))
 #'
+#' @rdname autoplot
 #' @method autoplot tsd_onset_and_burden
 #' @export
 autoplot.tsd_onset_and_burden <- function(
@@ -231,7 +238,7 @@ autoplot.tsd_onset_and_burden <- function(
   vline_linetype = "dashed",
   vline_width = 0.4,
   y_scale_labels = scales::label_comma(big.mark = ".", decimal.mark = ","),
-  theme_custom = ggplot2::theme_minimal(),
+  theme_custom = ggplot2::theme_bw(),
   legend_color = "black",
   legend_size = 10,
   legend_position = "bottom"
@@ -268,9 +275,8 @@ autoplot.tsd_onset_and_burden <- function(
   # Extend y-axis
   very_high <- max(virus_levels_df$values) * factor_to_max
   y_levels <- pretty(c(0, very_high))
-  virus_levels_df$values <- c(virus_levels_df$values, "very high" = very_high)
+  virus_levels_df$values <- append(virus_levels_df$values, stats::setNames(max(y_levels), "very high"))
 
-  # Create levels data frame
   levels_df <- data.frame(
     level = names(virus_levels_df$values),
     ymin = c(y_lower_bound, virus_levels_df$values[-5]),
@@ -280,27 +286,23 @@ autoplot.tsd_onset_and_burden <- function(
   # Assign colors with transparency
   levels_df$color <- scales::alpha(disease_color, fill_alpha)
 
-  # Calculate y-axis ticks on log10 scale
-  y_max_data <- max(y_levels, na.rm = TRUE)
-  y_scale_limits <- c(y_lower_bound, y_max_data)
-  y_tics_log10 <- pretty(c(log10(y_scale_limits[1]), log10(y_scale_limits[2])))
+  # Calculate y_tics
+  y_tics_log10 <- pretty(c(log10(y_lower_bound), log10(max(y_levels))))
   y_tics_levels <- 10^(y_tics_log10)
 
-  # Function to round to nearest magnitude
+  # For each tic, find the closest magnitude to round correctly
   round_to_nearest <- function(x) {
     magnitude <- 10^floor(log10(x))
     plyr::round_any(x, accuracy = magnitude)
   }
-
   y_tics <- sapply(y_tics_levels, round_to_nearest)
-  y_tics[1] <- y_scale_limits[1]
-
-  # Update levels_df$ymax to align with y_scale_limits
-  levels_df$ymax[length(levels_df$ymax)] <- y_scale_limits[2]
+  y_tics[1] <- y_lower_bound
+  levels_df$ymax[length(levels_df$ymax)] <- dplyr::last(y_tics)
 
   # Plot
-  aedseo_plot <- virus_df |>
-    ggplot2::ggplot(mapping = ggplot2::aes(x = .data$reference_time, y = pmax(.data$observation, y_lower_bound))) +
+  virus_df |>
+    ggplot2::ggplot(ggplot2::aes(x = .data$reference_time,
+                                 y = pmax(.data$observation, y_lower_bound))) +
     theme_custom +
     ggplot2::geom_rect(
       data = levels_df,
@@ -309,7 +311,7 @@ autoplot.tsd_onset_and_burden <- function(
         xmax = date_last_week_in_season + 4,
         ymin = .data$ymin,
         ymax = .data$ymax,
-        fill = disease_color
+        fill = .data$color
       ),
       inherit.aes = FALSE
     ) +
@@ -327,17 +329,20 @@ autoplot.tsd_onset_and_burden <- function(
       family = text_family
     ) +
     ggplot2::scale_fill_identity() +
-    ggplot2::geom_line(ggplot2::aes(group = 1), linewidth = line_width, color = line_color) +
+    ggplot2::geom_line(ggplot2::aes(group = 1),
+                       linewidth = line_width,
+                       color = line_color) +
     ggplot2::geom_vline(
       data = virus_df |> dplyr::filter(seasonal_onset == TRUE),
-      ggplot2::aes(xintercept = .data$reference_time, color = "Outbreak Start"),
+      ggplot2::aes(xintercept = .data$reference_time,
+                   color = "Outbreak Start"),
       linetype = vline_linetype,
       linewidth = vline_width
     ) +
     ggplot2::scale_y_log10(
       expand = ggplot2::expansion(mult = 0, add = 0),
       breaks = y_tics,
-      limits = y_scale_limits,
+      limits = range(y_tics),
       labels = y_scale_labels
     ) +
     ggplot2::scale_color_manual(
@@ -346,15 +351,15 @@ autoplot.tsd_onset_and_burden <- function(
     ) +
     ggplot2::labs(y = y_label) +
     ggplot2::theme(
-      legend.text = ggplot2::element_text(size = legend_size, color = legend_color, family = text_family),
+      legend.text = ggplot2::element_text(size = legend_size,
+                                          color = legend_color,
+                                          family = text_family),
       legend.background = ggplot2::element_blank(),
       legend.position = legend_position
     ) +
     time_interval_x_axis(
       start_date = min(virus_df$reference_time),
       end_date = date_last_week_in_season,
-      time_interval = time_interval_step
+      time_interval_step = time_interval_step
     )
-
-  return(aedseo_plot)
 }
