@@ -12,10 +12,11 @@
 #' of the sine wave, hence the phase shift of the seasonal wave.
 #' @param trend_rate A numeric value specifying the exponential growth/decay rate.
 #' @param noise_sd A numeric value specifying the standard deviation of random noise.
-#' @param time_interval A character vector specifying the time interval.
-#' Choose between "day," "week," or "month."
+#' @param time_interval `r rd_time_interval`
 #'
-#' @return A `tsd` object with simulated data.
+#' @return A `tsd` object with simulated data containing:
+#'   - 'time': The time point for for when the observation is observed.
+#'   - 'observation': The observed value at the time point.
 #'
 #' @export
 #'

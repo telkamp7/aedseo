@@ -2,7 +2,7 @@
 title: "Simulate Seasonal Epidemic Waves"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Simulate seasonal epidemic waves}
+  %\VignetteIndexEntry{Simulate Seasonal Epidemic Waves}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

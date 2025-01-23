@@ -28,11 +28,14 @@ of the sine wave, hence the phase shift of the seasonal wave.}
 
 \item{noise_sd}{A numeric value specifying the standard deviation of random noise.}
 
-\item{time_interval}{A character vector specifying the time interval.
-Choose between "day," "week," or "month."}
+\item{time_interval}{A character vector specifying the time interval. Choose between 'day', 'week', or 'month'.}
 }
 \value{
-A \code{tsd} object with simulated data.
+A \code{tsd} object with simulated data containing:
+\itemize{
+\item 'time': The time point for for when the observation is observed.
+\item 'observation': The observed value at the time point.
+}
 }
 \description{
 This function generates a simulated dataset of seasonal waves with trend and noise.

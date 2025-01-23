@@ -11,8 +11,7 @@ to_time_series(observation, time, time_interval = c("day", "week", "month"))
 
 \item{time}{A date vector containing the corresponding dates.}
 
-\item{time_interval}{A character vector specifying the time interval.
-Choose between "day," "week," or "month."}
+\item{time_interval}{A character vector specifying the time interval. Choose between 'day', 'week', or 'month'.}
 }
 \value{
 A \code{tsd} object containing:

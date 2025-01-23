@@ -30,7 +30,7 @@ disease specific threshold, while also evaluating the burden of current rates ba
 
 To apply the `aedseo` algorithm, data needs to be transformed into a `tsd` object.
 If you have your own data, the `to_time_series()` function can be used with the arguments: `observation`, `time`, `time_interval`.
-In the following section, the application of the algorithm is shownwith simulated data created with the `generate_seasonal_data()` function.
+In the following section, the application of the algorithm is shown with simulated data created with the `generate_seasonal_data()` function.
 More information about the function can be found in the `vignette("generate_seasonal_wave")`
 
 ```{r, include = FALSE}
@@ -61,7 +61,7 @@ In the nordic hemisphere they mostly circulate in the fall and winter seasons, h
 To include all data the season in the example is set from week 21 to week 20 in the following year.
 
 # Determining the disease specific threshold
-The disease specific threshold can be determined by examining observations for the pathogen from previous seasons,
+The disease specific threshold can be determined by examining seasonal observations for the pathogen from previous seasons,
 and determine at what number of observations the rate suddenly increases drastically.
 
 In this example the disease specific threshold is determined based on consecutive significant observations from all available previous seasons.
@@ -79,8 +79,6 @@ growth_warning_algo <- seasonal_onset(
   na_fraction_allowed = 0.4,
   season_start = 21, # Season starts in week 21
   season_end = 20, # Season ends in week 20 the following year
-  season_start = 21,
-  season_end = 20,
   only_current_season = FALSE
 )
 
@@ -125,7 +123,10 @@ significant_vs_obs |>
     breaks = unique(significant_vs_obs$season),
     labels = unique(significant_vs_obs$season)
   ) +
-  ggplot2::scale_x_log10() +
+  ggplot2::scale_x_log10(
+    breaks = scales::log_breaks(base = 10, n = 10),
+    labels = scales::label_comma()
+  ) +
   ggplot2::labs(
     y = "Number of significant observations",
     linetype = "",
@@ -134,9 +135,13 @@ significant_vs_obs |>
   ggplot2::guides(linetype = "none") +
   ggplot2::theme_bw()
 ```
-Inspect the exact numbers of when the significant observations for each season starts
 Since the threshold that has to be exceeded is in a window of 5 weeks, the sum of cases where the significant
 observations start has to be divided with 5 to find the disease specific threshold for one time step.
+
+Observing the plot the significant growth rate starts at around 700 observations, hence the disease specific threshold
+would be $\frac{700}{5} = 140$.
+
+Inspect the exact numbers of when the significant observations for each season starts
 ```{r}
 significant_vs_obs |>
   dplyr::filter(!is.na(SequentialCounter)) |>
@@ -149,10 +154,24 @@ significant_vs_obs |>
 
 By inspecting the output from the above code, we see that the first season starts very late compared to the subsequent seasons,
 which can also be observed on the plot of the data above. Due to this we select the disease specific threshold based on the
-complete seasons; 2022/2023 - 2024/2025, and based on this the disease specific threshold is set to 150.
+complete seasons; 2022/2023 - 2024/2025, hence the disease specific threshold is set to 140.
 
 ## Applying the main algorithm
 
 ```{r}
-seasonal_output <- combined_seasonal_output(tsd = tsd_data, disease_threshold = 150)
+seasonal_output <- combined_seasonal_output(
+  tsd = tsd_data,
+  disease_threshold = 140
+)
+```
+
+```{r}
+disease_threshold <- 140
+# Adjust y_lower_bound dynamically
+y_lower_bound <- ifelse(disease_threshold < 10, 1, 5)
+
+#plot(x = seasonal_output,
+#                    y_lower_bound = y_lower_bound,
+#                    time_interval = "3 weeks",
+#                    legend_position = "bottom")
 ```
