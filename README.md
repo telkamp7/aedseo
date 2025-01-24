@@ -48,32 +48,10 @@ To quickly get started with `aedseo`, follow these steps:
 
 1.  Install the package using the code provided above.
 2.  Load the package with `library(aedseo)`.
-3.  Create a time series data object (`aedseo_tsd`) from your data using
-    the `tsd()` function.
-4.  Apply the `aedseo()` function to estimate growth rates and detect
-    seasonal epidemic onsets.
-
-``` r
-# Load the package
-library(aedseo)
-
-# Create a aedseo_tsd object from your data
-tsd_data <- tsd(
-  observation = c(100, 120, 150, 180, 220, 270),
-  time = as.Date(c(
-    "2023-01-01",
-    "2023-01-02",
-    "2023-01-03",
-    "2023-01-04",
-    "2023-01-05",
-    "2023-01-06")
-    ),
-    time_interval = "day"
-  )
-
-# Detect seasonal epidemic onsets
-aedseo_results <- aedseo(tsd = tsd_data, k = 3, level = 0.95, family = "poisson")
-```
+3.  Create a time series data object (`tsd`) from your data using
+    the `to_time_series()` function or `generate_seasonal_data()` functions.
+4.  Apply the `combined_seasonal_output()` function to get a comprehensive
+    seasonal analysis with seasonal onset and burden levels.
 
 ## Vignette
 
@@ -82,7 +60,7 @@ the introductory vignette.
 
 ``` r
 # After installing the package
-vignette("aedseo_introduction", package = "aedseo")
+vignette("aedseo")
 ```
 
 ## Contributing
