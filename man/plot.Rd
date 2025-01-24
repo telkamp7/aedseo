@@ -49,7 +49,7 @@ plot(tsd_onset_obj)
 
 # Create a `tsd_onset_and_burden` object
 tsd_onset_burden_obj <- combined_seasonal_output(
-  tsd = time_series,
+  tsd = tsd_obj,
   disease_threshold = disease_threshold
 )
 plot(tsd_onset_burden_obj,

@@ -1,16 +1,34 @@
-# Import the generic from ggplot2
 #' @importFrom ggplot2 autoplot
-NULL
+#' @rdname autoplot
+#' @export
+autoplot <- function(object, ...) {
+  UseMethod("autoplot")
+}
 #' Autoplot a `tsd` object
 #'
 #' @description
-#' Generates a complete 'ggplot' object suitable for visualizing time series data in an `tsd` object.
-#' It creates points for each observation and connects them with a line.
+#' Generates a complete 'ggplot' object suitable for visualizing time series data in a
+#' `tsd`, `tsd_onset` or `tsd_onset_and_burden` object.
 #'
+#' `autoplot(tsd)`
+#' - Generates points for each observation and connects them with a line.
+#'
+#' `autoplot(tsd_onset)`
+#'  - The first plot generates a line connecting the observations.
+#'    The transparency of the points reflects if seasonal onset has occurred.
+#'  - The second plot presents the growth rate for each observation along with confidence intervals.
+#'    The transparency of the points indicates whether a growth warning condition is met.
+#'
+#' `autoplot(tsd_onset_and_burden)`
+#'  - Generates a line connecting the observations in the current season, along with colored regions
+#'  representing different burdens levels and a vertical line indicating outbreak start.
+#'  The y-axis is scaled with `ggplot2::scale_y_log10` to give better visualisation of the burden levels.
+
 #' @param object A `tsd` object
 #' @param line_width `r rd_line_width`
 #' @param obs_size `r rd_obs_size`
 #' @param time_interval_step `r rd_time_interval_step`
+#' @param ... Additional arguments (not used).
 #'
 #' @return A 'ggplot' object for visualizing the `tsd` data.
 #'
@@ -20,8 +38,6 @@ NULL
 #' set.seed(345)
 #' # Create an example `tsd` object
 #' time_series <- generate_seasonal_data()
-#'
-#' # Create a ggplot visualization for the `tsd` object
 #' autoplot(time_series)
 #'
 #' @rdname autoplot
@@ -31,7 +47,8 @@ autoplot.tsd <- function(
   object,
   line_width = 0.7,
   obs_size = 2,
-  time_interval_step = "5 weeks"
+  time_interval_step = "5 weeks",
+  ...
 ) {
   start_date <- min(object$time)
   end_date <- max(object$time)
@@ -57,20 +74,6 @@ autoplot.tsd <- function(
 #'
 #' Autoplot a `tsd_onset` object
 #'
-#' @description
-#' Generates a complete 'ggplot' object suitable for visualizing time series data in an `tsd_onset` object.
-#' It creates two plots;
-#' - First plot shows points for each observation and connects them with a line, additionally observations
-#' with transparency specifying `seasonal_onset_alarm` or not.
-#' - Second plot shows points for the growth rate of each observation with confidence intervals, with
-#' transparency specifying `growth_warning` or not.
-#'
-#' This function generates two plots:
-#' - The first plot visualizes each observation as points connected by lines.
-#'   The transparency of the points reflects if seasonal onset has occurred.
-#' - The second plot presents the growth rate for each observation along with confidence intervals.
-#'   The transparency of the points indicates whether a growth warning condition is met.
-#'
 #' @param object A `tsd_onset` object
 #' @param line_width `r rd_line_width`
 #' @param obs_size `r rd_obs_size`
@@ -79,13 +82,13 @@ autoplot.tsd <- function(
 #' @param error_width A numeric specifying the width of the error bar employed to show the
 #'  confidence interval of the growth rate estimate.
 #' @param time_interval_step `r rd_time_interval_step`
+#' @param ... Additional arguments (not used).
 #'
 #' @return A 'ggplot' object for visualizing the `tsd_onset` data.
-#' @examples
-#' set.seed(345)
-#' # Create an example `tsd` object
-#' time_series <- generate_seasonal_data()
 #'
+#' @aliases autoplot
+#'
+#' @examples
 #' # Create an `tsd_onset` object
 #' time_series_with_onset <- seasonal_onset(
 #'   tsd = time_series,
@@ -104,7 +107,8 @@ autoplot.tsd_onset <- function(
   obs_size = 2,
   alpha = 0.3,
   error_width = 0.2,
-  time_interval_step = "5 weeks"
+  time_interval_step = "5 weeks",
+  ...
 ) {
 
   start_date <- min(object$reference_time)
@@ -168,12 +172,6 @@ autoplot.tsd_onset <- function(
 #'
 #' Autoplot a `tsd_onset_and_burden` object
 #'
-#' @description
-#' Generates a complete 'ggplot' object suitable for visualizing time series data in an `tsd_onset_and_burden` object.
-#' Creates a line connecting the observations in the current season, along with colored regions representing different
-#' burdens levels and a vertical line indicating outbreak start.
-#' The y-axis is scaled with `ggplot2::scale_y_log10` to give better visualisation of the burden levels.
-#'
 #' @param object a `tsd_combined_seasonal_output` object.
 #' @param y_lower_bound A numeric specifying the lower bound of the y-axis.
 #' @param factor_to_max A numeric specifying the factor to multiply the high burden level for extending the y-axis.
@@ -195,17 +193,13 @@ autoplot.tsd_onset <- function(
 #' @param legend_color A color specifying the color of the legend.
 #' @param legend_size A numeric specifying the size of the legend.
 #' @param legend_position A character specifying the position of the legend on the plot.
+#' @param ... Additional arguments (not used).
 #'
 #' @return A 'ggplot' object for visualizing the `tsd_onset_and_burden` data for the current season.
-#' @examples
-#' set.seed(345)
-#' # Create a `tsd_onset` object
-#' time_series <- generate_seasonal_data(
-#'   years = 3,
-#'   phase = 1,
-#'   start_date = as.Date("2021-10-18")
-#' )
 #'
+#' @aliases autoplot
+#'
+#' @examples
 #' # Define `disease_threshold`
 #' disease_threshold <- 150
 #'
@@ -214,8 +208,7 @@ autoplot.tsd_onset <- function(
 #'   tsd = time_series,
 #'   disease_threshold = disease_threshold
 #' )
-#' autoplot(tsd_onset_burden,
-#'          y_lower_bound = ifelse(disease_threshold < 10, 1, 5))
+#' autoplot(tsd_onset_burden)
 #'
 #' @rdname autoplot
 #' @method autoplot tsd_onset_and_burden
@@ -241,7 +234,8 @@ autoplot.tsd_onset_and_burden <- function(
   theme_custom = ggplot2::theme_bw(),
   legend_color = "black",
   legend_size = 10,
-  legend_position = "bottom"
+  legend_position = "bottom",
+  ...
 ) {
 
   # Check input arguments
