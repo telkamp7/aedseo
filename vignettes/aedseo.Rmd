@@ -20,17 +20,19 @@ library(aedseo)
 
 ## Introduction
 
-The `aedseo` package performs automated and early detection of seasonal epidemic onsets and calculates the burden levels from time series dataset stratified by season.
+The `aedseo` package performs automated and early detection of seasonal epidemic onsets and calculates
+the burden levels from time series dataset stratified by season.
 The seasonal onset (`seasonal_onset()`) estimates growth rates for consecutive time intervals and calculates the sum of cases.
-The burden levels (`seasonal_burden_levels()`) use the previous seasons to calculate the levels of the current season.
-The algorithm allows for surveillance of pathogens, by alarming when the observations increase significantly in the selected time interval and based on the
-disease specific threshold, while also evaluating the burden of current rates based on previous seasons.
+The burden levels (`seasonal_burden_levels()`) use the previous seasons to calculate the burden levels of the current season.
+The algorithm allows for surveillance of pathogens, by alarming when the observations increase significantly in
+the selected time interval and based on the
+disease-specific threshold, while also evaluating the burden of current rates based on previous seasons.
 
 ### Generate seasonal data
 
 To apply the `aedseo` algorithm, data needs to be transformed into a `tsd` object.
 If you have your own data, the `to_time_series()` function can be used with the arguments: `observation`, `time`, `time_interval`.
-In the following section, the application of the algorithm is shown with simulated data created with the `generate_seasonal_data()` function.
+In the following section, the application of the algorithm is shown with simulated data created with the `generate_seasonal_data()`function.
 More information about the function can be found in the `vignette("generate_seasonal_wave")`
 
 ```{r, include = FALSE}
@@ -48,10 +50,9 @@ tsd_data <- generate_seasonal_data(
 )
 ```
 
-In the following figure, the simulated data (solid circles) is visualized alongside the mean (solid line) for the three arbitrary years of weekly data.
-
+In the following figure simulated data (solid circles) are visualised as individual observations.
+The solid line connects these points, representing the underlying mean trend over three years of weekly data.
 ```{r}
-# Have a glance at the time varying mean and the simulated data
 plot(tsd_data)
 ```
 
@@ -60,11 +61,11 @@ Respiratory viruses can circulate in different seasons based on the location.
 In the nordic hemisphere they mostly circulate in the fall and winter seasons, hence surveillance is intensified from week 40 to week 20 in the following year.
 To include all data the season in the example is set from week 21 to week 20 in the following year.
 
-### Determining the disease specific threshold
-The disease specific threshold can be determined by examining seasonal observations for the pathogen from previous seasons,
+### Determining the disease-specific threshold
+The disease-specific threshold can be determined by examining seasonal observations for the pathogen from previous seasons,
 and determine at what number of observations the rate suddenly increases drastically.
 
-In this example the disease specific threshold is determined based on consecutive significant observations from all available previous seasons.
+In this example the disease-specific threshold is determined based on consecutive significant observations from all available previous seasons.
 Significant observations are defined as those with a significant positive growth rate (a positive lower growth rate).
 
 To capturing short-term changes and fluctuations in the data, a rolling window of size $k = 5$ is used to create subsets of the data for model fitting,
@@ -136,11 +137,15 @@ significant_vs_obs |>
   ggplot2::theme_bw()
 ```
 
-To declare a seasonal onset, the number of cases must exceed a threshold within a five week window. This threshold is determined by dividing the sum of cases at the onset of continuous significant observations by five, resulting in a disease-specific threshold for each time step.
+To declare a seasonal onset, the number of cases must exceed a threshold within a five week window.
+This threshold is determined by dividing the sum of cases at the onset of continuous significant observations by five,
+resulting in a disease-specific threshold for each time step.
 
-From the analysis plot, it is observed that the significant growth rate begins at approximately 700 observations. Therefore, the disease-specific threshold is calculated as: $\frac{700}{5} = 140$.
+From the analysis plot, it is observed that the significant growth rate begins at approximately 700 observations.
+Therefore, the disease-specific threshold is calculated as: $\frac{700}{5} = 140$.
 
-In other words, a weekly observation count surpassing 140 for five consecutive weeks alongside with a significant positive growth rate signifies the onset of the season.
+In other words, a weekly observation count surpassing 140 for five consecutive weeks alongside with a
+significant positive growth rate signifies the onset of the season.
 
 Inspect the exact numbers of when the significant observations for each season starts
 ```{r}
@@ -153,7 +158,10 @@ significant_vs_obs |>
   dplyr::select(season, week, disease_threshold)
 ```
 
-By inspecting the output from the above code, we observe that the first season initiates significantly later compared to the subsequent seasons. This delayed start was also evident in the plot. As a result, we determine the disease specific threshold based on the complete seasons spanning from 2022/2023 to 2024/2025. As a result, the disease specific threshold is established at `140`.
+By inspecting the output from the above code, we observe that the first season initiates significantly later
+compared to the subsequent seasons. This delayed start was also evident in the plot, hence we determine
+the disease-specific threshold based on the complete seasons spanning from 2022/2023 to 2024/2025.
+As a result, the disease-specific threshold is established at `140`.
 
 ## Applying the main algorithm
 The primary function of the `aedseo` package is the `combined_seasonal_output()` which integrates the `seasonal_onset()` and `seasonal_burden_levels()` functions to deliver a comprehensive seasonal analysis.

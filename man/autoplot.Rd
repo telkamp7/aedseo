@@ -57,11 +57,12 @@ autoplot(object, ...)
 
 \item{...}{Additional arguments (not used).}
 
-\item{line_width}{\code{rd_line_width}}
+\item{line_width}{A numeric specifying the width of line connecting observations.}
 
 \item{obs_size}{A numeric, specifying the size of observational points.}
 
-\item{time_interval_step}{\verb{rd time_interval_step}}
+\item{time_interval_step}{A character vector specifying the time interval and how many time steps desired on the x-axis,
+e.g. '10 days', '4 weeks', or '3 months'.}
 
 \item{alpha}{A numeric specifying the alpha (transparency) for the observations with a
 seasonal_onset_alarm (first plot) or significantly positive growth rate (second plot).}

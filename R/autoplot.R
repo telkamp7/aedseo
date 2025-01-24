@@ -177,14 +177,14 @@ autoplot.tsd_onset <- function(
 #' @param factor_to_max A numeric specifying the factor to multiply the high burden level for extending the y-axis.
 #' @param disease_color A character specifying the base color for the disease level regions.
 #' @param season_start,season_end `r rd_season_start_end()`
-#' @param time_interval_step `rd time_interval_step`
+#' @param time_interval_step `r rd_time_interval_step`
 #' @param y_label A character vector specifying the y label text.
 #' @param fill_alpha A numeric vector specifying the transparency levels for the fill colors of burden levels.
 #' Must match the number of levels.
 #' @param text_burden_size A numeric specifying the size of the text labels.
 #' @param text_family A character specifying the font family for the text labels.
 #' @param line_color A character specifying the color of the line connecting observations.
-#' @param line_width `rd_line_width`
+#' @param line_width `r rd_line_width`
 #' @param vline_color A character specifying the color of the vertical outbreak start lines.
 #' @param vline_linetype A character specifying the line type for outbreak start lines.
 #' @param vline_width A numeric specifying the width of the outbreak start line.
