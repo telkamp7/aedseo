@@ -20,4 +20,62 @@ library(aedseo)
 
 ## Methodology
 
-WIP - will be documented in the next PR
+The methodology used to define the burden levels of seasonal epidemics is based on observations from previous seasons.
+Historical data from all available seasons is used to establish the levels for the current season.
+This is done by:
+
+- Using `n` peak weekly observations from each season.
+- Selecting only peak observations if they surpass the disease-specific threshold.
+- Weightening the observations such recent observations have a greater impact than older observations.
+- A proper distribution (log-normal, weibull and exponential are implemented) is used to fit the weighted
+ `n` observations. Then the parameters of the selected distribution are optimised to select the best fit.
+- Finally burden levels can be defined by two methods:
+  - `intensity_levels` which models the risk compared to what has been observed in prevous seasons.
+  - `peak_levels` which models the risk compared to what has been observed in the `n` peak observations each season.
+    This is the method used in [MEM](https://github.com/lozalojo/mem), with log normal distribution and without weights.
+- confidence intervals
+
+The model is implemented in the `seasonal_burden_levels()` function of the `aedseo` package.
+In the following sections we will describe the arguments for the function and how the model is build.
+
+#### Peak observations
+`n_peak` observations are used to describe the highest observations that are observed each season.
+The default of `n_peak` is `6` as we are only interested in the highest observations.
+
+#### Weightening
+`decay_factor` is implemented due to more recent seasons often are more indicative of current and future trends.
+ As time progresses, the relevance of older seasons may decrease due to changes in factors like population immunity,
+ virus mutations, or intervention strategies. Weighting older seasons less reflects this reduced relevance.
+The default of `decay_factor` is `0.8`, allowing the model to be responsive to recent changes without being overly
+sensitive to short-term fluctuations.
+The optimal decay factor can vary depending on the variability and trends within the data. For datasets where seasonal
+patterns are highly stable, a higher decay factor might be appropriate. Conversely, data that has changed a lot across
+seasons, a lower factor could improve predictions.
+
+#### Distribution and optimisation
+`family` is the argument used to select which distribution the observations should be fitted to, default is `lnorm` (log-normal),
+but users can also choose between weibull and exp (exponential) distributions. The log-normal distribution theoretically aligns
+well with the nature of epidemic data, which often exhibits multiplicative growth patterns.
+In our optimization process, we evaluated the distributions to determine their performance in fitting the observed data.
+All three distributions had comparable objective function values during optimisation, hence we did not see any statistical
+significant difference in their performance.
+
+The model uses the `fit_quantiles()` function which employes the `stats::optim` for optimisation of the distribution parameters.
+The `optim_method` argument can be passed to `seasonal_burden_levels()`, default is `Nelder-Mead` but other methods can be selected,
+see `?fit_quantiles`.
+
+*Note:* [MEM](https://github.com/lozalojo/mem) uses the log-normal distribution, which allows for more straightforward benchmarking.
+
+#### Burden levels
+`method` is the argument used to select one of the two methods `intensity_levels`(default) and `peak_levels`.
+Both methods return quantile(s) from the fitted distribution which are used to define the burden levels.
+- `intensity_levels` returns one quantile, which is the
+
+ which models the risk compared to what has been observed in prevous seasons.
+
+
+
+- "peak_levels" which models the risk compared to what has been observed in the `n` peak observations each season.
+  This is the method used in [MEM](https://github.com/lozalojo/mem), with log normal distribution and without weights.
+
+## Applying the `seasonal_burden_levels()` algorithm
