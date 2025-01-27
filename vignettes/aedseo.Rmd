@@ -38,7 +38,6 @@ More information about the function can be found in the `vignette("generate_seas
 ```{r, include = FALSE}
 withr::local_seed(222)
 # Construct an 'tsd' object with time series data
-set.seed(222)
 tsd_data <- generate_seasonal_data(
   years = 3,
   start_date = as.Date("2021-10-18"),
