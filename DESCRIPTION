@@ -45,6 +45,7 @@ Imports:
     ggplot2,
     lifecycle,
     lubridate,
+    plyr,
     purrr,
     pracma,
     rlang,

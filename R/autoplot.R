@@ -1,63 +1,57 @@
-#' Create a complete 'ggplot' appropriate to a particular data type
-#'
-#' @description
-#'
-#' This function generates a complete 'ggplot' object suitable for visualizing time series data in an `tsd` object.
-#' It creates a line plot connecting the observations and adds points at each data point.
-#'
-#' @param object An `tsd` or `tsd_onset` object
-#' @param linewidth Numeric, the width of the line for the growth rate
-#' @param size Numeric, size of observational points.
-#' @param width Numeric, the width of the error bar employed to show the
-#' confidence interval of the growth rate estimate.
-#' @param alpha Numeric, the alpha (transparency) for the observations with a
-#' significantly positive growth rate.
-#' @param time_interval A character vector specifying the time interval and how
-#' many time steps desired on the x-axis, e.g. "10 days," "4 weeks," or "3 months."
-#' @param ... Additional arguments (not used).
-#'
-#' @return A 'ggplot' object for visualizing the time series data.
-#'
-#' @aliases autoplot
-#'
-#' @examples
-#' # Create an example `tsd` object
-#' time_series <- tsd(
-#'   observation = c(100, 120, 150, 180, 220, 270),
-#'   time = as.Date(c(
-#'     "2023-01-01",
-#'     "2023-01-02",
-#'     "2023-01-03",
-#'     "2023-01-04",
-#'     "2023-01-05",
-#'     "2023-01-06"
-#'   )),
-#'   time_interval = "day"
-#' )
-#'
-#' # Create a ggplot visualization for the `tsd` object
-#' autoplot(time_series)
-#'
-#' # Create an `tsd_onset` object
-#' time_series_with_onset <- seasonal_onset(
-#'   tsd = time_series,
-#'   k = 3,
-#'   level = 0.95,
-#'   family = "quasipoisson"
-#' )
-#'
-#' # Create a ggplot visualization of growth rates with confidence intervals
-#' autoplot(time_series_with_onset, linewidth = 1, alpha = 0.2)
 #' @importFrom ggplot2 autoplot
 #' @rdname autoplot
 #' @export
 autoplot <- function(object, ...) {
   UseMethod("autoplot")
 }
+#' Autoplot a `tsd` object
+#'
+#' @description
+#' Generates a complete 'ggplot' object suitable for visualizing time series data in a
+#' `tsd`, `tsd_onset` or `tsd_onset_and_burden` object.
+#'
+#' `autoplot(tsd)`
+#' - Generates points for each observation and connects them with a line.
+#'
+#' `autoplot(tsd_onset)`
+#'  - The first plot generates a line connecting the observations.
+#'    The transparency of the points reflects if seasonal onset has occurred.
+#'  - The second plot presents the growth rate for each observation along with confidence intervals.
+#'    The transparency of the points indicates whether a growth warning condition is met.
+#'
+#' `autoplot(tsd_onset_and_burden)`
+#'  - Generates a line connecting the observations in the current season, along with colored regions
+#'  representing different burdens levels and a vertical line indicating outbreak start.
+#'  The y-axis is scaled with `ggplot2::scale_y_log10` to give better visualisation of the burden levels.
+
+#' @param object A `tsd` object
+#' @param line_width `r rd_line_width`
+#' @param obs_size `r rd_obs_size`
+#' @param time_interval_step `r rd_time_interval_step`
+#' @param y_label `r rd_y_label`
+#' @param ... Additional arguments (not used).
+#'
+#' @return A 'ggplot' object for visualizing the `tsd` data.
+#'
+#' @aliases autoplot
+#'
+#' @examples
+#' set.seed(345)
+#' # Create an example `tsd` object
+#' time_series <- generate_seasonal_data()
+#' autoplot(time_series)
+#'
 #' @rdname autoplot
 #' @method autoplot tsd
 #' @export
-autoplot.tsd <- function(object, time_interval = "5 weeks", ...) {
+autoplot.tsd <- function(
+  object,
+  line_width = 0.7,
+  obs_size = 2,
+  time_interval_step = "5 weeks",
+  y_label = "Weekly observations",
+  ...
+) {
   start_date <- min(object$time)
   end_date <- max(object$time)
 
@@ -69,28 +63,63 @@ autoplot.tsd <- function(object, time_interval = "5 weeks", ...) {
       )
     ) +
     ggplot2::geom_point() +
-    ggplot2::geom_line() +
-    time_interval_x_axis(start_date = start_date,
-                         end_date = end_date,
-                         time_interval = time_interval)
+    ggplot2::geom_line(
+      linewidth = line_width,
+      size = obs_size
+    ) +
+    time_interval_x_axis(
+      start_date = start_date,
+      end_date = end_date,
+      time_interval_step = time_interval_step
+    ) +
+    ggplot2::labs(y = y_label) +
+    ggplot2::theme_bw()
 }
-#' @importFrom grDevices devAskNewPage
+#'
+#' Autoplot a `tsd_onset` object
+#'
+#' @param object A `tsd_onset` object
+#' @param line_width `r rd_line_width`
+#' @param obs_size `r rd_obs_size`
+#' @param alpha A numeric specifying the alpha (transparency) for the observations with a
+#' seasonal_onset_alarm (first plot) or significantly positive growth rate (second plot).
+#' @param error_bar_width A numeric specifying the width of the error bar employed to show the
+#'  confidence interval of the growth rate estimate.
+#' @param time_interval_step `r rd_time_interval_step`
+#' @param y_label `r rd_y_label`
+#' @param ... Additional arguments (not used).
+#'
+#' @return A 'ggplot' object for visualizing the `tsd_onset` data.
+#'
+#' @aliases autoplot
+#'
+#' @examples
+#' # Create an `tsd_onset` object
+#' time_series_with_onset <- seasonal_onset(
+#'   tsd = time_series,
+#'   k = 3,
+#'   level = 0.95,
+#'   family = "quasipoisson"
+#' )
+#' autoplot(time_series_with_onset)
+#'
 #' @rdname autoplot
 #' @method autoplot tsd_onset
 #' @export
 autoplot.tsd_onset <- function(
-    object,
-    linewidth = 0.7,
-    size = 2,
-    alpha = 0.3,
-    width = 0.2,
-    time_interval = "5 weeks",
-    ...) {
+  object,
+  line_width = 0.7,
+  obs_size = 2,
+  alpha = 0.2,
+  error_bar_width = 0.2,
+  time_interval_step = "5 weeks",
+  y_label = "Weekly observations",
+  ...
+) {
 
   start_date <- min(object$reference_time)
   end_date <- max(object$reference_time)
-  # Construct the observed cases plot
-  # NOTE: We use print to show plots sequentially
+
   p1 <- object |>
     ggplot2::ggplot(
       mapping = ggplot2::aes(
@@ -99,19 +128,28 @@ autoplot.tsd_onset <- function(
       )
     ) +
     ggplot2::geom_point(
-      mapping = ggplot2::aes(alpha = .data$seasonal_onset_alarm),
-      size = size
+      mapping = ggplot2::aes(
+        alpha = .data$seasonal_onset_alarm
+      ),
+      size = obs_size
     ) +
-    ggplot2::geom_line(linewidth = linewidth) +
-    time_interval_x_axis(start_date = start_date,
-                         end_date = end_date,
-                         time_interval = time_interval)
-  # Set 'ask' for plotting device to TRUE
-  oask <- devAskNewPage(ask = TRUE)
-  # ... and clean-up on exit
-  on.exit(devAskNewPage(oask))
-  # ... and the growth rate plots
+    ggplot2::geom_line(
+      linewidth = line_width
+    ) +
+    ggplot2::scale_alpha_manual(
+      name = "Seasonal onset \n alarm",
+      values = c("TRUE" = 1, "FALSE" = alpha)
+    ) +
+    time_interval_x_axis(
+      start_date = start_date,
+      end_date = end_date,
+      time_interval_step = time_interval_step
+    ) +
+    ggplot2::labs(y = y_label) +
+    ggplot2::theme_bw()
+
   p2 <- object |>
+    dplyr::filter(!is.na(.data$growth_warning)) |>
     ggplot2::ggplot(
       mapping = ggplot2::aes(
         x = .data$reference_time,
@@ -121,17 +159,224 @@ autoplot.tsd_onset <- function(
       )
     ) +
     ggplot2::geom_point(
-      mapping = ggplot2::aes(alpha = .data$growth_warning),
-      size = size
+      mapping = ggplot2::aes(
+        alpha = .data$growth_warning
+      ),
+      size = obs_size
     ) +
     ggplot2::geom_errorbar(
-      mapping = ggplot2::aes(alpha = .data$growth_warning),
-      width = width
+      mapping = ggplot2::aes(
+        alpha = .data$growth_warning
+      ),
+      width = error_bar_width
     ) +
-    ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
-    time_interval_x_axis(start_date = start_date,
-                         end_date = end_date,
-                         time_interval = time_interval)
+    ggplot2::geom_hline(
+      yintercept = 0,
+      linetype = "dashed"
+    ) +
+    ggplot2::scale_alpha_manual(
+      name = "Growth warning",
+      values = c("TRUE" = 1, "FALSE" = alpha)
+    ) +
+    time_interval_x_axis(
+      start_date = start_date,
+      end_date = end_date,
+      time_interval_step = time_interval_step
+    ) +
+    ggplot2::labs(y = y_label) +
+    ggplot2::theme_bw()
   # save plots
   list(observed = p1, growth_rate = p2)
+}
+#'
+#' Autoplot a `tsd_onset_and_burden` object
+#'
+#' @param object a `tsd_combined_seasonal_output` object.
+#' @param y_lower_bound A numeric specifying the lower bound of the y-axis.
+#' @param factor_to_max A numeric specifying the factor to multiply the high burden level for extending the y-axis.
+#' @param disease_color A character specifying the base color for the disease level regions.
+#' @param season_start,season_end `r rd_season_start_end()`
+#' @param time_interval_step `r rd_time_interval_step`
+#' @param y_label `r rd_y_label`
+#' @param fill_alpha A numeric vector specifying the transparency levels for the fill colors of burden levels.
+#' Must match the number of levels.
+#' @param text_burden_size A numeric specifying the size of the text labels.
+#' @param text_family A character specifying the font family for the text labels.
+#' @param line_color A character specifying the color of the line connecting observations.
+#' @param line_type A character specifying the line type for observation line.
+#' @param vline_color A character specifying the color of the vertical outbreak start lines.
+#' @param vline_linetype A character specifying the line type for outbreak start lines.
+#' @param y_scale_labels A function to format y-axis labels.
+#' @param theme_custom A function with a ggplot2 theme, specifying the theme to apply to the plot.
+#' @param legend_size A numeric specifying the size of the legend.
+#' @param legend_position A character specifying the position of the legend on the plot.
+#' @param ... Additional arguments (not used).
+#'
+#' @return A 'ggplot' object for visualizing the `tsd_onset_and_burden` data for the current season.
+#'
+#' @aliases autoplot
+#'
+#' @examples
+#' # Define `disease_threshold`
+#' disease_threshold <- 150
+#'
+#' # Create a `tsd_onset_and_burden` object
+#' tsd_onset_burden <- combined_seasonal_output(
+#'   tsd = time_series,
+#'   disease_threshold = disease_threshold
+#' )
+#' autoplot(tsd_onset_burden)
+#'
+#' @rdname autoplot
+#' @method autoplot tsd_onset_and_burden
+#' @export
+autoplot.tsd_onset_and_burden <- function(
+  object,
+  y_lower_bound = 5,
+  factor_to_max = 2,
+  disease_color = "royalblue",
+  season_start = 21,
+  season_end = season_start - 1,
+  time_interval_step = "3 weeks",
+  y_label = "Weekly observations",
+  text_burden_size = 10 / 2.8,
+  fill_alpha = c(0.45, 0.6, 0.75, 0.89, 1),
+  text_family = "sans",
+  line_color = "black",
+  line_type = "solid",
+  vline_color = "red",
+  vline_linetype = "dashed",
+  y_scale_labels = scales::label_comma(big.mark = ".", decimal.mark = ","),
+  theme_custom = ggplot2::theme_bw(),
+  legend_size = 10,
+  legend_position = "right",
+  ...
+) {
+
+  # Check input arguments
+  coll <- checkmate::makeAssertCollection()
+  checkmate::assert_class(object, "tsd_onset_and_burden", add = coll)
+  checkmate::assert_numeric(y_lower_bound, lower = 0, len = 1, add = coll)
+  checkmate::assert_numeric(factor_to_max, lower = 0, len = 1, add = coll)
+  checkmate::assert_integerish(season_start, lower = 1, upper = 53, add = coll)
+  checkmate::assert_integerish(season_end, lower = 1, upper = 53, add = coll)
+
+  # Extract burden data
+  virus_levels_df <- object$burden_output
+  if (all(sapply(virus_levels_df, is.list))) {
+    virus_levels_df <- dplyr::last(virus_levels_df)
+  }
+  checkmate::assert_numeric(fill_alpha, lower = 0, upper = 1,
+                            len = length(virus_levels_df$values) + 1, add = coll)
+  checkmate::reportAssertions(coll)
+
+  # Extract onset data
+  virus_df <- object$onset_output |>
+    dplyr::filter(.data$season == max(.data$season))
+
+  # Current week
+  cur_week <- max(virus_df$reference_time)
+
+  # Determine last year and date
+  last_year <- stringr::str_split(epi_calendar(cur_week), "/")[[1]][2]
+  date_last_week_in_season <- ISOweek::ISOweek2date(paste0(last_year, "-W", sprintf("%02d", season_end), "-1"))
+
+  # Extend y-axis
+  very_high <- max(virus_levels_df$values) * factor_to_max
+  y_levels <- pretty(c(0, very_high))
+  virus_levels_df$values <- append(virus_levels_df$values, stats::setNames(max(y_levels), "very high"))
+
+  levels_df <- data.frame(
+    level = names(virus_levels_df$values),
+    ymin = c(y_lower_bound, virus_levels_df$values[-5]),
+    ymax = virus_levels_df$values
+  )
+
+  # Assign colors with transparency
+  levels_df$color <- scales::alpha(disease_color, fill_alpha)
+
+  # Calculate y_tics
+  y_tics_log10 <- pretty(c(log10(y_lower_bound), log10(max(y_levels))))
+  y_tics_levels <- 10^(y_tics_log10)
+
+  # For each tic, find the closest magnitude to round correctly
+  round_to_nearest <- function(x) {
+    magnitude <- 10^floor(log10(x))
+    plyr::round_any(x, accuracy = magnitude)
+  }
+  y_tics <- sapply(y_tics_levels, round_to_nearest)
+  y_tics[1] <- y_lower_bound
+  levels_df$ymax[length(levels_df$ymax)] <- dplyr::last(y_tics)
+
+  # Plot
+  virus_df |>
+    ggplot2::ggplot(ggplot2::aes(x = .data$reference_time,
+                                 y = pmax(.data$observation, y_lower_bound))) +
+    theme_custom +
+    ggplot2::geom_rect(
+      data = levels_df,
+      ggplot2::aes(
+        xmin = min(virus_df$reference_time) - 4,
+        xmax = date_last_week_in_season + 4,
+        ymin = .data$ymin,
+        ymax = .data$ymax,
+        fill = .data$color
+      ),
+      inherit.aes = FALSE
+    ) +
+    ggplot2::geom_text(
+      data = levels_df,
+      ggplot2::aes(
+        x = min(virus_df$reference_time) + 15,
+        y = sqrt(.data$ymax * .data$ymin),
+        label = .data$level
+      ),
+      hjust = 0,
+      inherit.aes = FALSE,
+      color = "white",
+      size = text_burden_size,
+      family = text_family
+    ) +
+    ggplot2::scale_fill_identity() +
+    ggplot2::geom_line(
+      ggplot2::aes(group = 1, linetype = "Observations"),
+      color = line_color
+    ) +
+    ggplot2::geom_vline(
+      data = virus_df |> dplyr::filter(seasonal_onset == TRUE),
+      ggplot2::aes(xintercept = .data$reference_time,
+                   color = "Outbreak"),
+      linetype = vline_linetype,
+    ) +
+    ggplot2::scale_y_log10(
+      expand = ggplot2::expansion(mult = 0, add = 0),
+      breaks = y_tics,
+      limits = range(y_tics),
+      labels = y_scale_labels
+    ) +
+    ggplot2::scale_linetype_manual(
+      name = "",
+      values = c(
+        "Observations" = line_type
+      )
+    ) +
+    ggplot2::scale_color_manual(
+      name = "",
+      values = c(
+        "Outbreak" = vline_color
+      )
+    ) +
+    ggplot2::labs(y = y_label) +
+    ggplot2::theme(
+      legend.text = ggplot2::element_text(size = legend_size,
+                                          family = text_family),
+      legend.background = ggplot2::element_blank(),
+      legend.position = legend_position,
+      legend.box.margin = ggplot2::margin(0, 0, 0, 0)
+    ) +
+    time_interval_x_axis(
+      start_date = min(virus_df$reference_time),
+      end_date = date_last_week_in_season,
+      time_interval_step = time_interval_step
+    )
 }

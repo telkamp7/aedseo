@@ -7,8 +7,7 @@
 #'
 #' @param observation A numeric vector containing the observations.
 #' @param time A date vector containing the corresponding dates.
-#' @param time_interval A character vector specifying the time interval.
-#' Choose between "day," "week," or "month."
+#' @param time_interval `r rd_time_interval`
 #'
 #' @return A `tsd` object containing:
 #'   - 'time': The time point for for when the observation is observed.

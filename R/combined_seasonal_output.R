@@ -100,9 +100,11 @@ combined_seasonal_output <- function(
 
   # Extract seasons from onset_output and create seasonal_onset
   onset_output <- onset_output |>
-    dplyr::group_by(.data$season) |>
-    dplyr::mutate(onset_flag = cumsum(.data$seasonal_onset_alarm),
-                  seasonal_onset = .data$onset_flag == 1 & !duplicated(.data$onset_flag)) |>
+    dplyr::mutate(
+      onset_flag = cumsum(.data$seasonal_onset_alarm),
+      seasonal_onset = .data$onset_flag == 1 & !duplicated(.data$onset_flag),
+      .by = "season"
+    ) |>
     dplyr::select(!"onset_flag")
 
   # Extract only current season if assigned
@@ -111,5 +113,12 @@ combined_seasonal_output <- function(
       dplyr::filter(.data$season == max(.data$season))
   }
 
-  return(list(onset_output = onset_output, burden_output = burden_output))
+  seasonal_output <- list(
+    onset_output = onset_output,
+    burden_output = burden_output
+  )
+
+  class(seasonal_output) <- "tsd_onset_and_burden"
+
+  return(seasonal_output)
 }

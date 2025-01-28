@@ -1,3 +1,4 @@
+# Model documentation
 rd_disease_threshold <- function(usage = NULL) {
   paste("An integer specifying the threshold for considering a disease outbreak.",
         if (usage == "onset") {
@@ -65,3 +66,11 @@ rd_seasonal_burden_levels_return <- paste(
   "   - 'disease_threshold': The input disease threshold, which is also the very low level."
 )
 rd_tsd <- "An object containing time series data with 'time' and 'observation.'"
+
+# Autoplot and generate data documentation
+rd_line_width <- "A numeric specifying the width of line connecting observations."
+rd_obs_size <- "A numeric, specifying the size of observational points."
+rd_time_interval <- "A character vector specifying the time interval. Choose between 'day', 'week', or 'month'."
+rd_time_interval_step <- "A character vector specifying the time interval and how many time steps are desired
+ on the x-axis, e.g. '10 days', '4 weeks', or '3 months'."
+rd_y_label <- "A character vector specifying the y label text."

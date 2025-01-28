@@ -1,8 +1,8 @@
 ---
-title: "Simulate seasonal epidemic waves"
+title: "Simulate Seasonal Epidemic Waves"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Simulate seasonal epidemic waves}
+  %\VignetteIndexEntry{Simulate Seasonal Epidemic Waves}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -86,8 +86,11 @@ seasonal_wave_sim_monthly <- generate_seasonal_data(
   trend_rate = 0.99,
   time_interval = "month"
 )
-
-plot(seasonal_wave_sim_monthly, time_interval = "3 months")
+plot(
+  seasonal_wave_sim_monthly,
+  time_interval = "3 months",
+  y_label = "Monthly observations"
+)
 ```
 
 ### Example of daily observations
@@ -103,8 +106,11 @@ seasonal_wave_sim_daily <- generate_seasonal_data(
   noise_sd = 200,
   time_interval = "day"
 )
-
-plot(seasonal_wave_sim_daily, time_interval = "15 days")
+plot(
+  seasonal_wave_sim_daily,
+  time_interval = "15 days",
+  y_label = "Daily observations"
+)
 ```
 
 ### Example of phase shift
@@ -121,6 +127,9 @@ seasonal_wave_sim_daily_phase_shift <- generate_seasonal_data(
   noise_sd = 200,
   time_interval = "day"
 )
-
-plot(seasonal_wave_sim_daily_phase_shift, time_interval = "15 days")
+plot(
+  seasonal_wave_sim_daily_phase_shift,
+  time_interval = "15 days",
+  y_label = "Daily observations"
+)
 ```

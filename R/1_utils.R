@@ -17,21 +17,21 @@ label_week_short <- function() {
   }
 }
 
-time_interval_x_axis <- function(start_date, end_date, time_interval) {
-  if (grepl("week", time_interval)) {
-    x_axis_scale <- ggplot2::scale_x_date(breaks = seq(start_date, end_date, by = time_interval),
+time_interval_x_axis <- function(start_date, end_date, time_interval_step) {
+  if (grepl("week", time_interval_step)) {
+    x_axis_scale <- ggplot2::scale_x_date(breaks = seq(start_date, end_date, by = time_interval_step),
                                           limits = c(start_date, end_date), oob = scales::oob_keep,
                                           labels = label_week_short(),
                                           expand = ggplot2::expansion(mult = c(0, 0), add = c(4, 4)))
     x_label <- "Week"
-  } else if (grepl("month", time_interval)) {
-    x_axis_scale <- ggplot2::scale_x_date(breaks = seq(start_date, end_date, by = time_interval),
+  } else if (grepl("month", time_interval_step)) {
+    x_axis_scale <- ggplot2::scale_x_date(breaks = seq(start_date, end_date, by = time_interval_step),
                                           limits = c(start_date, end_date), oob = scales::oob_keep,
                                           labels = scales::label_date_short(format = c("%Y", "%b"), sep = "\n"),
                                           expand = ggplot2::expansion(mult = c(0, 0), add = c(4, 4)))
     x_label <- "Month"
-  } else if (grepl("day", time_interval)) {
-    x_axis_scale <- ggplot2::scale_x_date(breaks = seq(start_date, end_date, by = time_interval),
+  } else if (grepl("day", time_interval_step)) {
+    x_axis_scale <- ggplot2::scale_x_date(breaks = seq(start_date, end_date, by = time_interval_step),
                                           limits = c(start_date, end_date), oob = scales::oob_keep,
                                           labels = scales::label_date_short(format = c("%Y", "%b", "%d"), sep = "\n"),
                                           expand = ggplot2::expansion(mult = c(0, 0), add = c(4, 4)))
