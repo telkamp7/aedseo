@@ -6,7 +6,7 @@
 #' `tsd`, `tsd_onset` or `tsd_onset_and_burden` objects.
 #'
 #' @param x An `tsd`, `tsd_onset` or `tsd_onset_and_burden` object
-#' @param ... Additional arguments passed to specific methods.
+#' @param ... Additional arguments passed to `autoplot()`.
 #'
 #' @return A 'ggplot' object for visualizing output from desired method.
 #'

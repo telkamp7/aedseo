@@ -14,6 +14,7 @@ autoplot(object, ...)
   line_width = 0.7,
   obs_size = 2,
   time_interval_step = "5 weeks",
+  y_label = "Weekly observations",
   ...
 )
 
@@ -21,9 +22,10 @@ autoplot(object, ...)
   object,
   line_width = 0.7,
   obs_size = 2,
-  alpha = 0.3,
-  error_width = 0.2,
+  alpha = 0.2,
+  error_bar_width = 0.2,
   time_interval_step = "5 weeks",
+  y_label = "Weekly observations",
   ...
 )
 
@@ -40,15 +42,13 @@ autoplot(object, ...)
   fill_alpha = c(0.45, 0.6, 0.75, 0.89, 1),
   text_family = "sans",
   line_color = "black",
-  line_width = 0.5,
+  line_type = "solid",
   vline_color = "red",
   vline_linetype = "dashed",
-  vline_width = 0.4,
   y_scale_labels = scales::label_comma(big.mark = ".", decimal.mark = ","),
   theme_custom = ggplot2::theme_bw(),
-  legend_color = "black",
   legend_size = 10,
-  legend_position = "bottom",
+  legend_position = "right",
   ...
 )
 }
@@ -61,13 +61,15 @@ autoplot(object, ...)
 
 \item{obs_size}{A numeric, specifying the size of observational points.}
 
-\item{time_interval_step}{A character vector specifying the time interval and how many time steps desired on the x-axis,
-e.g. '10 days', '4 weeks', or '3 months'.}
+\item{time_interval_step}{A character vector specifying the time interval and how many time steps are desired
+on the x-axis, e.g. '10 days', '4 weeks', or '3 months'.}
+
+\item{y_label}{A character vector specifying the y label text.}
 
 \item{alpha}{A numeric specifying the alpha (transparency) for the observations with a
 seasonal_onset_alarm (first plot) or significantly positive growth rate (second plot).}
 
-\item{error_width}{A numeric specifying the width of the error bar employed to show the
+\item{error_bar_width}{A numeric specifying the width of the error bar employed to show the
 confidence interval of the growth rate estimate.}
 
 \item{y_lower_bound}{A numeric specifying the lower bound of the y-axis.}
@@ -79,8 +81,6 @@ confidence interval of the growth rate estimate.}
 \item{season_start, season_end}{Integers giving the start and end weeks of the seasons to
 stratify the observations by.}
 
-\item{y_label}{A character vector specifying the y label text.}
-
 \item{text_burden_size}{A numeric specifying the size of the text labels.}
 
 \item{fill_alpha}{A numeric vector specifying the transparency levels for the fill colors of burden levels.
@@ -90,17 +90,15 @@ Must match the number of levels.}
 
 \item{line_color}{A character specifying the color of the line connecting observations.}
 
+\item{line_type}{A character specifying the line type for observation line.}
+
 \item{vline_color}{A character specifying the color of the vertical outbreak start lines.}
 
 \item{vline_linetype}{A character specifying the line type for outbreak start lines.}
 
-\item{vline_width}{A numeric specifying the width of the outbreak start line.}
-
 \item{y_scale_labels}{A function to format y-axis labels.}
 
 \item{theme_custom}{A function with a ggplot2 theme, specifying the theme to apply to the plot.}
-
-\item{legend_color}{A color specifying the color of the legend.}
 
 \item{legend_size}{A numeric specifying the size of the legend.}
 

@@ -28,6 +28,7 @@ autoplot <- function(object, ...) {
 #' @param line_width `r rd_line_width`
 #' @param obs_size `r rd_obs_size`
 #' @param time_interval_step `r rd_time_interval_step`
+#' @param y_label `r rd_y_label`
 #' @param ... Additional arguments (not used).
 #'
 #' @return A 'ggplot' object for visualizing the `tsd` data.
@@ -48,6 +49,7 @@ autoplot.tsd <- function(
   line_width = 0.7,
   obs_size = 2,
   time_interval_step = "5 weeks",
+  y_label = "Weekly observations",
   ...
 ) {
   start_date <- min(object$time)
@@ -69,7 +71,9 @@ autoplot.tsd <- function(
       start_date = start_date,
       end_date = end_date,
       time_interval_step = time_interval_step
-    )
+    ) +
+    ggplot2::labs(y = y_label) +
+    ggplot2::theme_bw()
 }
 #'
 #' Autoplot a `tsd_onset` object
@@ -79,9 +83,10 @@ autoplot.tsd <- function(
 #' @param obs_size `r rd_obs_size`
 #' @param alpha A numeric specifying the alpha (transparency) for the observations with a
 #' seasonal_onset_alarm (first plot) or significantly positive growth rate (second plot).
-#' @param error_width A numeric specifying the width of the error bar employed to show the
+#' @param error_bar_width A numeric specifying the width of the error bar employed to show the
 #'  confidence interval of the growth rate estimate.
 #' @param time_interval_step `r rd_time_interval_step`
+#' @param y_label `r rd_y_label`
 #' @param ... Additional arguments (not used).
 #'
 #' @return A 'ggplot' object for visualizing the `tsd_onset` data.
@@ -105,9 +110,10 @@ autoplot.tsd_onset <- function(
   object,
   line_width = 0.7,
   obs_size = 2,
-  alpha = 0.3,
-  error_width = 0.2,
+  alpha = 0.2,
+  error_bar_width = 0.2,
   time_interval_step = "5 weeks",
+  y_label = "Weekly observations",
   ...
 ) {
 
@@ -130,13 +136,20 @@ autoplot.tsd_onset <- function(
     ggplot2::geom_line(
       linewidth = line_width
     ) +
+    ggplot2::scale_alpha_manual(
+      name = "Seasonal onset \n alarm",
+      values = c("TRUE" = 1, "FALSE" = alpha)
+    ) +
     time_interval_x_axis(
       start_date = start_date,
       end_date = end_date,
       time_interval_step = time_interval_step
-    )
+    ) +
+    ggplot2::labs(y = y_label) +
+    ggplot2::theme_bw()
 
   p2 <- object |>
+    dplyr::filter(!is.na(.data$growth_warning)) |>
     ggplot2::ggplot(
       mapping = ggplot2::aes(
         x = .data$reference_time,
@@ -155,17 +168,23 @@ autoplot.tsd_onset <- function(
       mapping = ggplot2::aes(
         alpha = .data$growth_warning
       ),
-      width = error_width
+      width = error_bar_width
     ) +
     ggplot2::geom_hline(
       yintercept = 0,
       linetype = "dashed"
     ) +
+    ggplot2::scale_alpha_manual(
+      name = "Growth warning",
+      values = c("TRUE" = 1, "FALSE" = alpha)
+    ) +
     time_interval_x_axis(
       start_date = start_date,
       end_date = end_date,
       time_interval_step = time_interval_step
-    )
+    ) +
+    ggplot2::labs(y = y_label) +
+    ggplot2::theme_bw()
   # save plots
   list(observed = p1, growth_rate = p2)
 }
@@ -178,19 +197,17 @@ autoplot.tsd_onset <- function(
 #' @param disease_color A character specifying the base color for the disease level regions.
 #' @param season_start,season_end `r rd_season_start_end()`
 #' @param time_interval_step `r rd_time_interval_step`
-#' @param y_label A character vector specifying the y label text.
+#' @param y_label `r rd_y_label`
 #' @param fill_alpha A numeric vector specifying the transparency levels for the fill colors of burden levels.
 #' Must match the number of levels.
 #' @param text_burden_size A numeric specifying the size of the text labels.
 #' @param text_family A character specifying the font family for the text labels.
 #' @param line_color A character specifying the color of the line connecting observations.
-#' @param line_width `r rd_line_width`
+#' @param line_type A character specifying the line type for observation line.
 #' @param vline_color A character specifying the color of the vertical outbreak start lines.
 #' @param vline_linetype A character specifying the line type for outbreak start lines.
-#' @param vline_width A numeric specifying the width of the outbreak start line.
 #' @param y_scale_labels A function to format y-axis labels.
 #' @param theme_custom A function with a ggplot2 theme, specifying the theme to apply to the plot.
-#' @param legend_color A color specifying the color of the legend.
 #' @param legend_size A numeric specifying the size of the legend.
 #' @param legend_position A character specifying the position of the legend on the plot.
 #' @param ... Additional arguments (not used).
@@ -226,15 +243,13 @@ autoplot.tsd_onset_and_burden <- function(
   fill_alpha = c(0.45, 0.6, 0.75, 0.89, 1),
   text_family = "sans",
   line_color = "black",
-  line_width = 0.5,
+  line_type = "solid",
   vline_color = "red",
   vline_linetype = "dashed",
-  vline_width = 0.4,
   y_scale_labels = scales::label_comma(big.mark = ".", decimal.mark = ","),
   theme_custom = ggplot2::theme_bw(),
-  legend_color = "black",
   legend_size = 10,
-  legend_position = "bottom",
+  legend_position = "right",
   ...
 ) {
 
@@ -323,15 +338,15 @@ autoplot.tsd_onset_and_burden <- function(
       family = text_family
     ) +
     ggplot2::scale_fill_identity() +
-    ggplot2::geom_line(ggplot2::aes(group = 1),
-                       linewidth = line_width,
-                       color = line_color) +
+    ggplot2::geom_line(
+      ggplot2::aes(group = 1, linetype = "Observations"),
+      color = line_color
+    ) +
     ggplot2::geom_vline(
       data = virus_df |> dplyr::filter(seasonal_onset == TRUE),
       ggplot2::aes(xintercept = .data$reference_time,
-                   color = "Outbreak Start"),
+                   color = "Outbreak"),
       linetype = vline_linetype,
-      linewidth = vline_width
     ) +
     ggplot2::scale_y_log10(
       expand = ggplot2::expansion(mult = 0, add = 0),
@@ -339,17 +354,25 @@ autoplot.tsd_onset_and_burden <- function(
       limits = range(y_tics),
       labels = y_scale_labels
     ) +
+    ggplot2::scale_linetype_manual(
+      name = "",
+      values = c(
+        "Observations" = line_type
+      )
+    ) +
     ggplot2::scale_color_manual(
       name = "",
-      values = c("Outbreak Start" = vline_color)
+      values = c(
+        "Outbreak" = vline_color
+      )
     ) +
     ggplot2::labs(y = y_label) +
     ggplot2::theme(
       legend.text = ggplot2::element_text(size = legend_size,
-                                          color = legend_color,
                                           family = text_family),
       legend.background = ggplot2::element_blank(),
-      legend.position = legend_position
+      legend.position = legend_position,
+      legend.box.margin = ggplot2::margin(0, 0, 0, 0)
     ) +
     time_interval_x_axis(
       start_date = min(virus_df$reference_time),

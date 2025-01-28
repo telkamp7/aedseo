@@ -59,14 +59,14 @@ plot(tsd_data)
 ### Determining season
 Respiratory viruses can circulate in different seasons based on the location.
 In the nordic hemisphere they mostly circulate in the fall and winter seasons, hence surveillance is intensified from week 40 to week 20 in the following year.
-To include all data the season in the example is set from week 21 to week 20 in the following year.
+To include all data, the season in the example is set from week 21 to week 20 in the following year.
 
 ### Determining the disease-specific threshold
 The disease-specific threshold can be determined by examining seasonal observations for the pathogen from previous seasons,
 and determine at what number of observations the rate suddenly increases drastically.
 
 In this example the disease-specific threshold is determined based on consecutive significant observations from all available previous seasons.
-Significant observations are defined as those with a significant positive growth rate (a positive lower growth rate).
+Significant observations are defined as those with a significant positive growth rate.
 
 To capturing short-term changes and fluctuations in the data, a rolling window of size $k = 5$ is used to create subsets of the data for model fitting,
 and the `quasipoisson` family is used to account for overdispersion.
@@ -98,7 +98,7 @@ significant_vs_obs <- growth_warning_algo |>
   dplyr::mutate(
     SequentialCounter = dplyr::if_else(
       growth_warning == TRUE, # Increment of numbers for Significant == TRUE
-      rev(cumsum(rev(!is.na(Counter)))), NA # Reverse numbers for visuality on plot
+      rev(cumsum(rev(!is.na(Counter)))), NA # Reverse numbers for visibility on plot
     )
   ) |>
   dplyr::ungroup()
@@ -141,13 +141,13 @@ To declare a seasonal onset, the number of cases must exceed a threshold within 
 This threshold is determined by dividing the sum of cases at the onset of continuous significant observations by five,
 resulting in a disease-specific threshold for each time step.
 
-From the analysis plot, it is observed that the significant growth rate begins at approximately 700 observations.
+From the analysis plot above, it is observed that the significant growth rate begins at approximately 700 observations.
 Therefore, the disease-specific threshold is calculated as: $\frac{700}{5} = 140$.
 
 In other words, a weekly observation count surpassing 140 for five consecutive weeks alongside with a
-significant positive growth rate signifies the onset of the season.
+significant positive growth rate defines the onset of the season.
 
-Inspect the exact numbers of when the significant observations for each season starts
+Inspect the exact conditions around each detected season start
 ```{r}
 significant_vs_obs |>
   dplyr::filter(!is.na(SequentialCounter)) |>

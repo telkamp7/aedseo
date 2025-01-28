@@ -28,9 +28,9 @@ The methodology used to detect the onset of seasonal respiratory epidemics can b
 Here, $k$ denotes the window size employed to obtain the local estimate of the exponential growth rate and SoC.
 When both of these criteria are met, an alarm is triggered and the onset of the seasonal epidemic is detected.
 
- The model is implemented in the `seasonal_onset()` function of the `aedseo package`.
-Criteria one is fufilled if the `sum_of_cases_warning` in the output is `TRUE`.
-Criteria two is fufilled if the `growth_warning` in the output is `TRUE`.
+The model is implemented in the `seasonal_onset()` function of the `aedseo` package.
+Criteria one is fulfilled if the `sum_of_cases_warning` in the output is `TRUE`.
+Criteria two is fulfilled if the `growth_warning` in the output is `TRUE`.
 
 ### Exponential growth rate
 

@@ -32,7 +32,7 @@ fashion.
 install.packages("aedseo")
 ```
 
-### Development vestion
+### Development version
 
 You can install the development version of `aedseo` from
 [GitHub](https://github.com/) with:

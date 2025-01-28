@@ -16,7 +16,7 @@
 \arguments{
 \item{x}{An \code{tsd}, \code{tsd_onset} or \code{tsd_onset_and_burden} object}
 
-\item{...}{Additional arguments passed to specific methods.}
+\item{...}{Additional arguments passed to \code{autoplot()}.}
 }
 \value{
 A 'ggplot' object for visualizing output from desired method.
