@@ -169,7 +169,8 @@ Detailed information about each function and their respective arguments can be f
 ```{r}
 seasonal_output <- combined_seasonal_output(
   tsd = tsd_data,
-  disease_threshold = 140
+  disease_threshold = 140,
+  method = "intensity_levels"
 )
 ```
 The default function calculates onset and burden for the current season. If it is desired to see calculations for all previous seasons, the `only_current_season` argument should be set to `FALSE`.
@@ -198,3 +199,7 @@ plot(
   time_interval = "3 weeks"
 )
 ```
+
+Using the `intensity_levels` method to define burden levels, the Outbreak is expected to fall within the low or medium
+category. This is because the very low threshold is the disease-specific threshold, which must be surpassed for five 
+consecutive weeks along with a significant positive growth rate.
