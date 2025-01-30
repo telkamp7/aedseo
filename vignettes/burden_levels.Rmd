@@ -133,7 +133,7 @@ This is done by:
 - Burden levels can be defined by two methods:
   - `intensity_levels` which models the risk compared to what has been observed in previous seasons.
   - `peak_levels` which models the risk compared to what has been observed in the `n` peak observations each season.
-    This is the method used in [MEM](https://github.com/lozalojo/mem), with log normal distribution and without weights.
+    This is the method used in [mem](https://github.com/lozalojo/mem), with log normal distribution and without weights.
 
 The model is implemented in the `seasonal_burden_levels()` function of the `aedseo` package.
 In the following sections we will describe the arguments for the function and how the model is build.
@@ -164,7 +164,7 @@ The model uses the `fit_quantiles()` function which employes the `stats::optim` 
 The `optim_method` argument can be passed to `seasonal_burden_levels()`, default is `Nelder-Mead` but other methods can be selected,
 see `?fit_quantiles`.
 
-*Note:* [MEM](https://github.com/lozalojo/mem) uses the log-normal distribution, which allows for more straightforward benchmarking,
+*Note:* [mem](https://github.com/lozalojo/mem) uses the log-normal distribution, which allows for more straightforward benchmarking,
 due to this the default is `lnorm`.
 
 #### Burden levels
@@ -178,7 +178,7 @@ Burden levels are "very low", "low", "medium" and "high".
   increase between "very low" and "high" burden levels.
 
 - `peak_levels` takes three quantiles as argument, representing the "low", "medium" and "high" burden levels.
-  The default thresholds are set at 40%, 90%, and 97.5% to align with the parameters used in the [MEM](https://github.com/lozalojo/mem).
+  The default thresholds are set at 40%, 90%, and 97.5% to align with the parameters used in the [mem](https://github.com/lozalojo/mem).
   The disease-specific threshold defines the "very low" burden level.
 
 ## Applying the `seasonal_burden_levels()` algorithm
@@ -253,8 +253,8 @@ intensity_levels_n_neg_t <- seasonal_burden_levels(
 ```
 
 ### Use the `peak_levels` method
-[MEM](https://github.com/lozalojo/mem) uses the n highest values of each epidemic period to fit the parameters of the distribution,
-where `n = 30/seasons`. The data has four seasons, to align with MEM, we use `n_peak = 8`
+[mem](https://github.com/lozalojo/mem) uses the n highest values of each epidemic period to fit the parameters of the distribution,
+where `n = 30/seasons`. The data has four seasons, to align with mem, we use `n_peak = 8`
 ```{r}
 peak_levels_n <- seasonal_burden_levels(
   tsd = tsd_data_noise,
@@ -284,8 +284,8 @@ peak_levels_n_neg_t <- seasonal_burden_levels(
 )
 ```
 
-### Use the [Moving Epidemic Method (MEM)](https://github.com/lozalojo/mem)
-MEM is run with default arguments.
+### Use the [Moving Epidemic Method (mem)](https://github.com/lozalojo/mem)
+mem is run with default arguments.
 ```{r, include = FALSE}
 data_list <- list(
   tsd_data_noise = tsd_data_noise,
@@ -295,7 +295,7 @@ data_list <- list(
 ```
 
 ```{r}
-# Run MEM algorithm
+# Run mem algorithm
 mem_thresholds <- purrr::map(data_list, ~ {
   mem_data <- .x |>
     dplyr::mutate(season = aedseo::epi_calendar(time),
@@ -303,7 +303,7 @@ mem_thresholds <- purrr::map(data_list, ~ {
     dplyr::select(-time) |>
     tidyr::pivot_wider(names_from = season, values_from = observation) |>
     dplyr::select(-week)
-  # Run MEM
+  # Run mem
   mem_result <- mem::memmodel(mem_data, i.seasons = 4)
   # Extract thresholds
   mem_thresholds <- tibble::tibble(
@@ -438,7 +438,7 @@ burden_levels_df |>
   )
 ```
 
-### MEM levels
+### mem levels
 ```{r, echo = FALSE, fig.width=10, fig.height=4}
 mem_levels_df <- tibble::tibble(
   Level = names(
@@ -453,9 +453,9 @@ mem_levels_df <- tibble::tibble(
     as.numeric(mem_thresholds$tsd_data_noise_and_neg_trend)
   ),
   Method = c(
-    rep("MEM Levels \n (noise)", 5),
-    rep("MEM Levels \n (noise and \n positive trend)", 5),
-    rep("MEM Levels \n (noise and \n negative trend)", 5)
+    rep("mem Levels \n (noise)", 5),
+    rep("mem Levels \n (noise and \n positive trend)", 5),
+    rep("mem Levels \n (noise and \n negative trend)", 5)
   )
 )
 
@@ -480,8 +480,8 @@ mem_levels_df |>
   ggplot2::labs(
     x = NULL,
     y = "Observations",
-    linetype = "MEM level",
-    color = "MEM level"
+    linetype = "mem level",
+    color = "mem level"
   ) +
   ggplot2::scale_linetype_manual(
     values = c(
@@ -516,8 +516,8 @@ mem_levels_df |>
   )
 ```
 
-Upon examining all methods and data combinations, it becomes clear that the `intensity_levels` approach establishes 
-levels covering the entire set of observations from previous seasons. In contrast, the `peak_levels` and `MEM` methods 
+Upon examining all methods and data combinations, it becomes clear that the `intensity_levels` approach establishes
+levels covering the entire set of observations from previous seasons. In contrast, the `peak_levels` and `mem` methods
 define levels solely based on the highest-rate observations within each season.
 
 The highest observations for the *2024/2025* season for each data set are:
@@ -532,28 +532,28 @@ In relation to these highest observations and upon further examination, we obser
 
 1. Plots with Noise and Noise with Positive Trend:
 
-- Both `peak_levels` and `MEM` compress all the levels into rather high values. This occurs because high-rate 
-observations remain consistently elevated across all three seasons, causing these methods to overlook the remaining 
-observations. 
+- Both `peak_levels` and `mem` compress all the levels into rather high values. This occurs because high-rate
+observations remain consistently elevated across all three seasons, causing these methods to overlook the remaining
+observations.
 
 2. Data with Noise and Positive Trend:
 
-- All three methods exhibit higher burden levels, indicating that they successfully capture the exponentially 
+- All three methods exhibit higher burden levels, indicating that they successfully capture the exponentially
 increasing trend between seasons.
 
 3. Data with Noise and Negative Trend:
 
-- As observations exponentially decrease between seasons (with the highest observation this season being 3,735), 
-we expect the burden levels to be lower.  This expectation is met across all three methods. However, the weighting 
-of seasons in `intensity_levels` and `peak_levels` leads to older seasons having less impact on the burden levels as 
-we progress forward in time. On the other hand, `MEM` includes all high-rate observations from the previous 10 seasons
+- As observations exponentially decrease between seasons (with the highest observation this season being 3,735),
+we expect the burden levels to be lower.  This expectation is met across all three methods. However, the weighting
+of seasons in `intensity_levels` and `peak_levels` leads to older seasons having less impact on the burden levels as
+we progress forward in time. On the other hand, `mem` includes all high-rate observations from the previous 10 seasons
 without diminishing the importance of older seasons, which results in sustained very high burden levels.
 
-- Notably, in the `MEM` method, the epidemic thresholds are positioned above the medium burden level. 
-This means that the epidemic period begins only when the burden reaches the range of highest-rate observations 
+- Notably, in the `mem` method, the epidemic thresholds are positioned above the medium burden level.
+This means that the epidemic period begins only when the burden reaches the range of highest-rate observations
 observed in previous seasons.
 
 
-This concludes, that using the `peak_levels` and `MEM` methods does not allow us to assess the burden before the season 
-reaches the range of high-rate observations from previous seasons. In contrast, the intensity_levels method allows for 
+This concludes, that using the `peak_levels` and `mem` methods does not allow us to assess the burden before the season
+reaches the range of high-rate observations from previous seasons. In contrast, the intensity_levels method allows for
 continuous monitoring of the burden of current observation rate throughout the entire season.
