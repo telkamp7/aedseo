@@ -20,7 +20,8 @@ generate_seasonal_data(
 
 \item{start_date}{A date representing the start date of the simulated data.}
 
-\item{amplitude}{A number specifying the amplitude of the seasonal wave.}
+\item{amplitude}{A number specifying the amplitude of the seasonal wave.
+The output will fluctuate within the range \verb{[mean - amplitude, mean + amplitude]}.}
 
 \item{mean}{A number specifying the mean of the seasonal wave. Must be greater than or equal to the amplitude.}
 

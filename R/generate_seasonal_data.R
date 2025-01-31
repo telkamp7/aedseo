@@ -8,6 +8,7 @@
 #' @param years An integer specifying the number of years of data to simulate.
 #' @param start_date A date representing the start date of the simulated data.
 #' @param amplitude A number specifying the amplitude of the seasonal wave.
+#' The output will fluctuate within the range `[mean - amplitude, mean + amplitude]`.
 #' @param mean A number specifying the mean of the seasonal wave. Must be greater than or equal to the amplitude.
 #' @param phase A numeric value (in radians) representing the horizontal shift
 #' of the sine wave, hence the phase shift of the seasonal wave. The phase must be between zero and 2*pi.

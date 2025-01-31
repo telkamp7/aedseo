@@ -34,7 +34,7 @@ $$
 Where:
 
 - $t$: The time variable (e.g., weeks or months, represented on the x-axis).
-- $\text{amplitude}$: Controls the height of the wave; the output oscillates between $\text{0 to 2 * amplitude}$.
+- $\text{amplitude}$: Controls the height of the oscillations; the output varies between **\( \text{mean} \pm \text{amplitude} \)**.
 - $\text{mean}$: The baseline value around which the seasonal wave oscillates. Must be greater than or equal to the amplitude.
 - $\text{period}$: Defines the cycle length (e.g., 52 weeks for yearly seasonality) (is calculated based on `time_interval`).
 - $\text{phase}$: Adjusts the horizontal position of the wave on the x-axis.
