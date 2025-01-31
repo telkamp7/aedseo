@@ -42,6 +42,7 @@ tsd_data <- generate_seasonal_data(
   years = 3,
   start_date = as.Date("2021-10-18"),
   amplitude = 2000,
+  mean = 2000,
   phase = 0,
   trend_rate = 1.001,
   noise_sd = 100,

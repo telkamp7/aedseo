@@ -82,6 +82,7 @@ seasonal_wave_sim_monthly <- generate_seasonal_data(
   years = 4,
   start_date = as.Date("2021-05-26"),
   amplitude = 2000,
+  mean = 2000,
   phase = 0,
   trend_rate = 0.99,
   time_interval = "month"
@@ -102,6 +103,7 @@ seasonal_wave_sim_daily <- generate_seasonal_data(
   years = 1,
   start_date = as.Date("2021-05-26"),
   amplitude = 10000,
+  mean = 10000,
   phase = 0,
   noise_sd = 200,
   time_interval = "day"
@@ -123,6 +125,7 @@ seasonal_wave_sim_daily_phase_shift <- generate_seasonal_data(
   years = 1,
   start_date = as.Date("2021-05-26"),
   amplitude = 10000,
+  mean = 10000,
   phase = 1,
   noise_sd = 200,
   time_interval = "day"

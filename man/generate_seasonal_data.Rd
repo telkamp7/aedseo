@@ -8,6 +8,7 @@ generate_seasonal_data(
   years = 3,
   start_date = as.Date("2021-05-26"),
   amplitude = 1000,
+  mean = 1000,
   phase = 0,
   trend_rate = NULL,
   noise_sd = NULL,
@@ -19,10 +20,12 @@ generate_seasonal_data(
 
 \item{start_date}{A date representing the start date of the simulated data.}
 
-\item{amplitude}{An integer specifying the amplitude of the seasonal wave.}
+\item{amplitude}{A number specifying the amplitude of the seasonal wave.}
+
+\item{mean}{A number specifying the mean of the seasonal wave. Must be greather than or equal to the amplitude.}
 
 \item{phase}{A numeric value (in radians) representing the horizontal shift
-of the sine wave, hence the phase shift of the seasonal wave.}
+of the sine wave, hence the phase shift of the seasonal wave. The phase must be between zero and 2*pi.}
 
 \item{trend_rate}{A numeric value specifying the exponential growth/decay rate.}
 
@@ -61,7 +64,7 @@ sim_data <- generate_seasonal_data(
   years = 2,
   start_date = as.Date("2022-05-26"),
   amplitude = 2000,
-  phase = 0,
+  mean = 3000,
   trend_rate = 1.002,
   noise_sd = 110,
   time_interval = c("week")
