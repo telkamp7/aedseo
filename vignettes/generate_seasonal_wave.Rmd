@@ -25,15 +25,17 @@ To demonstrate seasonal variation in a time series while accounting for trends a
 such as dayly, weekly or monthly cycles, while also incorporating optional exponential trend and random noise.
 This makes it suitable for modeling more realistic phenomena like infection rates.
 The wave is defined by the following equation:
-
-\begin{equation}
-  SeasonalWave(t) = \Biggl[\text{amplitude} \cdot \biggl(1 + \sin \Bigl(\frac{2\pi t}{\text{period}} + \text{phase}\Bigl) \biggl)\Biggl] \displaystyle \cdot e^{\text{log(trend_rate)} \cdot t} + \epsilon
-\end{equation}
+$$
+\text{SeasonalWave}(t) =
+\left( \text{mean} + \text{amplitude} \cdot \sin\left(\frac{2\pi t}{\text{period}} + \text{phase}\right) \right)
+\cdot e^{\log(\text{trend_rate}) \cdot t} + \epsilon
+$$
 
 Where:
 
 - $t$: The time variable (e.g., weeks or months, represented on the x-axis).
 - $\text{amplitude}$: Controls the height of the wave; the output oscillates between $\text{0 to 2 * amplitude}$.
+- $\text{mean}$: The baseline value around which the seasonal wave oscillates. Must be greater than or equal to the amplitude.
 - $\text{period}$: Defines the cycle length (e.g., 52 weeks for yearly seasonality) (is calculated based on `time_interval`).
 - $\text{phase}$: Adjusts the horizontal position of the wave on the x-axis.
 - $\text{trend_rate}$: Controls the exponential growth or decay of the trend over time.

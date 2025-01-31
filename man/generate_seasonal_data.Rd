@@ -22,7 +22,7 @@ generate_seasonal_data(
 
 \item{amplitude}{A number specifying the amplitude of the seasonal wave.}
 
-\item{mean}{A number specifying the mean of the seasonal wave. Must be greather than or equal to the amplitude.}
+\item{mean}{A number specifying the mean of the seasonal wave. Must be greater than or equal to the amplitude.}
 
 \item{phase}{A numeric value (in radians) representing the horizontal shift
 of the sine wave, hence the phase shift of the seasonal wave. The phase must be between zero and 2*pi.}
