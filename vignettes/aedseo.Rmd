@@ -200,6 +200,6 @@ plot(
 )
 ```
 
-Using the `intensity_levels` method to define burden levels, the Outbreak is expected to fall within the low or medium
-category. This is because the very low threshold is the disease-specific threshold, which must be surpassed for five 
+Using the `intensity_levels` method to define burden levels, the Outbreak is expected to fall within the `low` or `medium`
+category. This is because the `very low` threshold is the disease-specific threshold, which must be surpassed for five
 consecutive weeks along with a significant positive growth rate.
