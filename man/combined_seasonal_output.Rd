@@ -59,7 +59,7 @@ The \code{conf_levels} are specific for each method:
 \itemize{
 \item for \code{intensity_levels} only specify the highest confidence level e.g.: \code{0.95}, which is the highest intensity
 that has been observed in previous seasons.
-\item for \code{peak_levels} specify three confidence levels e.g.: \code{c(0.5, 0.9, 0.95)}, which are the three confidence
+\item for \code{peak_levels} specify three confidence levels e.g.: \code{c(0.4, 0.9, 0.975)}, which are the three confidence
 levels low, medium and high that reflect the peak severity relative to those observed in previous seasons.
 }}
 

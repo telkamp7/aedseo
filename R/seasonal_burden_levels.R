@@ -20,7 +20,7 @@
 #' The `conf_levels` are specific for each method:
 #'   - for `intensity_levels` only specify the highest confidence level e.g.: `0.95`, which is the highest intensity
 #'     that has been observed in previous seasons.
-#'   - for `peak_levels` specify three confidence levels e.g.: `c(0.5, 0.9, 0.95)`, which are the three confidence
+#'   - for `peak_levels` specify three confidence levels e.g.: `c(0.4, 0.9, 0.975)`, which are the three confidence
 #'     levels low, medium and high that reflect the peak severity relative to those observed in previous seasons.
 #' @param decay_factor A numeric value between 0 and 1, that specifies the weight applied to previous seasons in level
 #' calculations. It is used as `decay_factor`^(number of seasons back), whereby the weight for the most recent season

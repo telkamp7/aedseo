@@ -28,7 +28,8 @@
   - `vignette("generate_seasonal_wave")`,
   - `vignette("aedseo")`,
   - `vignette("seasonal_onset")`
-  providing a comprehensive walkthrough of the application of the functions provided by the `aedseo` package with detailed explanations and illustrative examples (#56, #57).
+  - `vignette("burden_levels")`
+  providing a comprehensive walkthrough of the application of the functions provided by the `aedseo` package with detailed explanations and illustrative examples (#56, #57, #58).
 
 * Improved the autoplot function which can now visualise dates as days, weeks and months on the x-axis with the `time_interval` argument (#56).
 

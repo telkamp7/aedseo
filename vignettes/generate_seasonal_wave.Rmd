@@ -65,7 +65,7 @@ The solid line connects these points, representing the underlying mean trend ove
 
 ### Example of weekly observations
 The x-axis shows the weeks and years, while the y-axis represents the simulated observations.
-In this simulation there is a positive `trend_rate`, which can be seen as the observations increases exponentially across seasons.
+In this simulation there is a positive `trend_rate`, which can be seen as the observations increase exponentially across seasons.
 The noise is the jumps between observations, instead of smoothly transitioning between observations.
 
 ```{r}
