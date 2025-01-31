@@ -34,6 +34,7 @@ tsd_data_clean <- generate_seasonal_data(
   years = 3,
   start_date = as.Date("2021-10-18"),
   amplitude = 2000,
+  mean = 2000,
   phase = 0,
   time_interval = "week"
 )
@@ -188,6 +189,7 @@ tsd_data_noise <- generate_seasonal_data(
   years = 4,
   start_date = as.Date("2021-10-18"),
   amplitude = 2000,
+  mean = 2000,
   phase = 0,
   noise_sd = 200,
   time_interval = "week"
@@ -197,6 +199,7 @@ tsd_data_noise_and_pos_trend <- generate_seasonal_data(
   years = 4,
   start_date = as.Date("2021-10-18"),
   amplitude = 2000,
+  mean = 2000,
   phase = 0,
   noise_sd = 200,
   trend_rate = 1.002,
@@ -207,6 +210,7 @@ tsd_data_noise_and_neg_trend <- generate_seasonal_data(
   years = 4,
   start_date = as.Date("2021-10-18"),
   amplitude = 2000,
+  mean = 2000,
   phase = 0,
   noise_sd = 200,
   trend_rate = 0.99,
@@ -529,8 +533,8 @@ In relation to these highest observations and upon further examination, we obser
 
 1. Plots with Noise and Noise with Positive Trend:
 
-- Both `peak_levels` and `mem` compress all the levels into rather high values. This occurs because high-rate
-observations remain consistently elevated across all three seasons, causing these methods to overlook the remaining
+- Both `peak_levels` and `mem` compress all the levels into rather high values. This occurs because observations
+remain consistently elevated across all three seasons, causing these methods to overlook the remaining
 observations.
 
 2. Data with Noise and Positive Trend:
