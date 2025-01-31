@@ -75,6 +75,21 @@ burden_levels_df$Level <- factor(
   levels = c("high", "medium", "low", "very low")
 )
 
+# Calculate y_tics
+y_tics_log10 <- pretty(c(log10(burden_levels_df$Threshold)))
+y_tics_levels <- 10^(y_tics_log10)
+
+# For each tic, find the closest magnitude to round correctly
+round_to_nearest <- function(x) {
+  magnitude <- 10^floor(log10(x))
+  plyr::round_any(x, accuracy = magnitude)
+}
+y_tics <- sapply(y_tics_levels, round_to_nearest)
+
+# Round max value
+rounded_max_threshold <- (round(max(burden_levels_df$Threshold) / 1000) * 1000) + 1000
+y_tics <- c(y_tics[-5], rounded_max_threshold)
+
 # Create the plot
 burden_levels_df |>
   ggplot2::ggplot(ggplot2::aes(x = 0, y = Threshold, linetype = Level, color = Level)) +
@@ -110,9 +125,13 @@ burden_levels_df |>
     axis.text.x = ggplot2::element_blank(),
     axis.ticks.x = ggplot2::element_blank(),
     legend.position = "right",
-    legend.key.width = grid::unit(2, "cm")
+    legend.key.width = grid::unit(2, "cm"),
+    axis.title = ggplot2::element_text(size = 12)
+    
   ) +
-  ggplot2::scale_y_log10(
+   ggplot2::scale_y_log10(
+    breaks = y_tics,
+    limits = range(y_tics),
     labels = scales::label_comma(big.mark = ".", decimal.mark = ",")
   )
 ```
