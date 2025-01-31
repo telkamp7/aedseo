@@ -116,16 +116,16 @@ test_that("generate_seasonal_data() - trend_rate = NULL implies no trend", {
 test_that("generate_seasonal_data() - mean must be greater than amplitude", {
   skip_if_not_installed("withr")
   withr::local_seed(123)
-  temp <- generate_seasonal_data(
-    years         = 1,
-    start_date    = as.Date("2021-05-26"),
-    amplitude     = 1000,
-    mean          = 100,
-    phase         = 0,
-    trend_rate    = NULL,     # No trend
-    noise_sd      = NULL,
-    time_interval = "week"
+  expect_error(
+    generate_seasonal_data(
+      years         = 1,
+      start_date    = as.Date("2021-05-26"),
+      amplitude     = 1000,
+      mean          = 100,
+      phase         = 0,
+      trend_rate    = NULL,     # No trend
+      noise_sd      = NULL,
+      time_interval = "week"
+    )
   )
-
-  expect_error(temp)
 })
