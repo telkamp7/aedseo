@@ -7,9 +7,10 @@
 #'
 #' @param years An integer specifying the number of years of data to simulate.
 #' @param start_date A date representing the start date of the simulated data.
-#' @param amplitude An integer specifying the amplitude of the seasonal wave.
+#' @param amplitude A number specifying the amplitude of the seasonal wave.
+#' @param mean A number specifying the mean of the seasonal wave. Must be greather than or equal to the amplitude.
 #' @param phase A numeric value (in radians) representing the horizontal shift
-#' of the sine wave, hence the phase shift of the seasonal wave.
+#' of the sine wave, hence the phase shift of the seasonal wave. The phase must be between zero and 2*pi.
 #' @param trend_rate A numeric value specifying the exponential growth/decay rate.
 #' @param noise_sd A numeric value specifying the standard deviation of random noise.
 #' @param time_interval `r rd_time_interval`
@@ -40,7 +41,7 @@
 #'   years = 2,
 #'   start_date = as.Date("2022-05-26"),
 #'   amplitude = 2000,
-#'   phase = 0,
+#'   mean = 3000,
 #'   trend_rate = 1.002,
 #'   noise_sd = 110,
 #'   time_interval = c("week")
@@ -50,6 +51,7 @@ generate_seasonal_data <- function(
   years = 3,
   start_date = as.Date("2021-05-26"),
   amplitude = 1000,
+  mean = 1000,
   phase = 0,
   trend_rate = NULL,
   noise_sd = NULL,
@@ -61,6 +63,8 @@ generate_seasonal_data <- function(
   checkmate::assert_integerish(years, len = 1, lower = 1, add = coll)
   checkmate::assert_date(start_date, add = coll)
   checkmate::assert_numeric(amplitude, len = 1, lower = 1, add = coll)
+  checkmate::assert_numeric(mean, len = 1, lower = 1, add = coll)
+  checkmate::assert_true(mean >= amplitude, add = coll)
   checkmate::assert_numeric(phase, len = 1, lower = 0, upper = 2 * pi, add = coll)
   checkmate::assert_numeric(trend_rate, len = 1, lower = 0, null.ok = TRUE, add = coll)
   checkmate::assert_numeric(noise_sd, len = 1, lower = 0, null.ok = TRUE, add = coll)
@@ -78,7 +82,7 @@ generate_seasonal_data <- function(
   t <- 1:(years * period)
 
   # Generate the seasonal component
-  seasonal_component <- amplitude * (1 + sin(2 * pi * t / period + phase))
+  seasonal_component <- mean + amplitude * sin(2 * pi * t / period + phase)
 
   # Add the trend component
   if (!is.null(trend_rate)) {

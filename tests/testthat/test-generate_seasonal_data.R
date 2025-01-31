@@ -55,6 +55,7 @@ test_that("generate_seasonal_data() - noise works as expected", {
     years         = 1,
     start_date    = as.Date("2021-05-26"),
     amplitude     = 1000,
+    mean          = 1000,
     phase         = 0,
     trend_rate    = 1.001,
     noise_sd      = 10,
@@ -66,6 +67,7 @@ test_that("generate_seasonal_data() - noise works as expected", {
     years         = 1,
     start_date    = as.Date("2021-05-26"),
     amplitude     = 1000,
+    mean          = 1000,
     phase         = 0,
     trend_rate    = 1.001,
     noise_sd      = NULL,
@@ -84,6 +86,7 @@ test_that("generate_seasonal_data() - trend_rate = NULL implies no trend", {
     years         = 1,
     start_date    = as.Date("2021-05-26"),
     amplitude     = 1000,
+    mean          = 1000,
     phase         = 0,
     trend_rate    = NULL,     # No trend
     noise_sd      = NULL,
@@ -95,6 +98,7 @@ test_that("generate_seasonal_data() - trend_rate = NULL implies no trend", {
     years         = 1,
     start_date    = as.Date("2021-05-26"),
     amplitude     = 1000,
+    mean          = 1000,
     phase         = 0,
     trend_rate    = 1.01,
     noise_sd      = NULL,
@@ -107,4 +111,21 @@ test_that("generate_seasonal_data() - trend_rate = NULL implies no trend", {
 
   # With trend should have larger difference than no trend scenario
   expect_true(with_trend_diff > no_trend_diff)
+})
+
+test_that("generate_seasonal_data() - mean must be greater than amplitude", {
+  skip_if_not_installed("withr")
+  withr::local_seed(123)
+  temp <- generate_seasonal_data(
+    years         = 1,
+    start_date    = as.Date("2021-05-26"),
+    amplitude     = 1000,
+    mean          = 100,
+    phase         = 0,
+    trend_rate    = NULL,     # No trend
+    noise_sd      = NULL,
+    time_interval = "week"
+  )
+
+  expect_error(temp)
 })
