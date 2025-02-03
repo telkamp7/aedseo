@@ -264,7 +264,7 @@ autoplot.tsd_onset_and_burden <- function(
   # Extract burden data
   virus_levels_df <- object$burden_output
   if (all(sapply(virus_levels_df, is.list))) {
-    virus_levels_df <- dplyr::last(virus_levels_df)
+    virus_levels_df <- dplyr::last(unclass(virus_levels_df))
   }
   checkmate::assert_numeric(fill_alpha, lower = 0, upper = 1,
                             len = length(virus_levels_df$values) + 1, add = coll)
