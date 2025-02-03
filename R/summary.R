@@ -1,11 +1,10 @@
 #' Summary method for `tsd_onset` objects
 #'
 #' @description
+#' Summarize key results from a seasonal onset analysis.
 #'
-#' Summarize the results of an seasonal onset analysis, including the latest growth rate estimate,
-#' the confidence interval, and information about growth warnings.
-#'
-#' @param object An object of class 'tsd_onset' containing the results of a seasonal_onset analysis.
+#' @param object An object of class 'tsd_onset'
+#' containing the results of a `seasonal_onset` analysis.
 #' @param ... Additional arguments (not used).
 #'
 #' @return This function is used for its side effect, which is printing a summary message to the console.
@@ -13,28 +12,25 @@
 #' @export
 #'
 #' @examples
-#' # Create a `tsd_onset` object from sample data
-#' tsd_data <- to_time_series(
-#'   observation = c(100, 120, 150, 180, 220, 270),
-#'   time = as.Date(c(
-#'     "2023-01-01",
-#'     "2023-01-02",
-#'     "2023-01-03",
-#'     "2023-01-04",
-#'     "2023-01-05",
-#'     "2023-01-06"
-#'   )),
-#'   time_interval = "day"
-#' )
+#' # Create a `tsd` object
+#' tsd_data <- generate_seasonal_data()
 #'
-#' # Calculate seasonal_onset results with a 3-day window and a Poisson family model
-#' seasonal_onset(
+#' # Create a `tsd_onset` object
+#' tsd_onset <- seasonal_onset(
 #'   tsd = tsd_data,
 #'   k = 3,
+#'   disease_threshold = 100,
+#'   season_start = 21,
+#'   season_end = 20,
 #'   level = 0.95,
-#'   family = "poisson"
+#'   family = "poisson",
+#'   only_current_season = TRUE
 #' )
+#' # Print the summary
+#' summary(tsd_onset)
 summary.tsd_onset <- function(object, ...) {
+  checkmate::assert_class(object, "tsd_onset")
+
   # Extract the last observation
   last_observation <- dplyr::last(object)
 
@@ -152,4 +148,32 @@ summary.tsd_onset <- function(object, ...) {
 
   # Print the summary message
   cat(summary_message)
+}
+#' Summary method for `tsd_burden_levels` objects
+#'
+#' @description
+#' Summarize key results from a burden level analysis.
+#'
+#' @param object An object of class 'tsd_burden_levels'
+#' containing the results of a `seasonal_burden_levels` analysis.
+#' @param ... Additional arguments (not used).
+#'
+#' @return This function is used for its side effect, which is printing the burden levels.
+#'
+#' @export
+#'
+#' @examples
+#' # Create a `tsd` object
+#' tsd_data <- generate_seasonal_data()
+#'
+#' Create a `tsd_burden_levels` object
+#' tsd_burden_levels <- seasonal_burden_levels(
+#'   tsd = tsd_data
+#' )
+#' # Print the summary
+#' summary(tsd_burden_levels)
+summary.tsd_burden_levels <- function(object, ...) {
+  checkmate::assert_class(object, "tsd_burden_levels")
+
+  cat(object$burden_levels)
 }

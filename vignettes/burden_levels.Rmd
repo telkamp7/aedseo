@@ -129,7 +129,7 @@ burden_levels_df |>
     axis.title = ggplot2::element_text(size = 12)
 
   ) +
-   ggplot2::scale_y_log10(
+  ggplot2::scale_y_log10(
     breaks = y_tics,
     limits = range(y_tics),
     labels = scales::label_comma(big.mark = ".", decimal.mark = ",")
@@ -180,13 +180,13 @@ In our optimization process, we evaluated the distributions to determine their p
 cases and hospitalisation data for RSV, SARS-CoV-2 and Influenza (A and B). All three distributions had comparable
 weighted likelihood values during optimisation, hence we did not see any statistical significant difference in their performance.
 
-The model uses the `fit_quantiles()` function which employs the `stats::optim` for estimating the parameters that maximizes the weighted likelihood.
+The model uses the `fit_percentiles()` function which employs the `stats::optim` for estimating the parameters that maximizes the weighted likelihood.
 The `optim_method` argument can be passed to `seasonal_burden_levels()`, default is `Nelder-Mead` but other methods can be selected,
-see `?fit_quantiles`.
+see `?fit_percentiles`.
 
 #### Burden levels
 `method` is the argument used to select one of the two methods `intensity_levels`(default) and `peak_levels`.
-Both methods return quantile(s) from the fitted distribution which are used to define the breakpoins for the burden levels.
+Both methods return percentile(s) from the fitted distribution which are used to define the breakpoins for the burden levels.
 Breakpoints are named `very low`, `low`, `medium` and `high` and define the upper bound of the corresponding burden level.
 
 - `intensity_levels` takes one percentile as argument, representing the highest breakpoint.
