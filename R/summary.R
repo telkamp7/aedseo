@@ -91,7 +91,7 @@ summary.tsd_onset <- function(object, ...) {
 
   # Generate the summary message
   summary_message <- sprintf(
-    "Summary of seasonal_onset Object
+    "Summary of tsd_onset object
 
     Called using distributional family:
       %s
@@ -111,6 +111,7 @@ summary.tsd_onset <- function(object, ...) {
 
     Sum of cases at reference time point:
       %d
+
     Latest sum of cases warning:
       %s
 
@@ -120,13 +121,14 @@ summary.tsd_onset <- function(object, ...) {
 
     Total number of growth warnings in the series:
       %d
+
     Latest growth warning:
       %s
 
     Latest seasonal onset alarm:
       %s
 
-    The seasons defined in the series:
+    The season(s) defined in the series:
       %s",
     family,
     k,
@@ -152,7 +154,7 @@ summary.tsd_onset <- function(object, ...) {
 #' Summary method for `tsd_burden_levels` objects
 #'
 #' @description
-#' Summarize key results from a burden level analysis.
+#' Summarize key results from a seasonal burden levels analysis.
 #'
 #' @param object An object of class 'tsd_burden_levels'
 #' containing the results of a `seasonal_burden_levels` analysis.
@@ -166,7 +168,7 @@ summary.tsd_onset <- function(object, ...) {
 #' # Create a `tsd` object
 #' tsd_data <- generate_seasonal_data()
 #'
-#' Create a `tsd_burden_levels` object
+#' # Create a `tsd_burden_levels` object
 #' tsd_burden_levels <- seasonal_burden_levels(
 #'   tsd = tsd_data
 #' )
@@ -175,5 +177,45 @@ summary.tsd_onset <- function(object, ...) {
 summary.tsd_burden_levels <- function(object, ...) {
   checkmate::assert_class(object, "tsd_burden_levels")
 
-  cat(object$burden_levels)
+  # Extract data
+  if (all(sapply(object, is.list))) {
+    object <- dplyr::last(unclass(object))
+  }
+
+  # Generate the summary message
+  summary_message <- sprintf(
+
+    "Summary of tsd_burden_levels object
+
+    Break point (very low):
+      %f
+
+    Break point (low):
+      %f
+
+    Break point (medium):
+      %f
+
+    Break point (high):
+      %f
+
+    The season for the burden levels:
+      %s
+
+    Disease specific threshold:
+      %d
+
+    Called using distributional family:
+      %s",
+
+    object$values["very low"],
+    object$values["low"],
+    object$values["medium"],
+    object$values["high"],
+    object$season,
+    object$disease_threshold,
+    object$optim$family
+  )
+
+  cat(summary_message)
 }

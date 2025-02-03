@@ -181,5 +181,8 @@ seasonal_burden_levels <- function(
   } else {
     level_results <- main_level_fun(peak_seasonal_tsd, current_season = max(seasonal_tsd$season))
   }
+
+  class(level_results) <- "tsd_burden_levels"
+
   return(level_results)
 }

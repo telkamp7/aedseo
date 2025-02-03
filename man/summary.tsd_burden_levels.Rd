@@ -22,7 +22,7 @@ Summarize key results from a burden level analysis.
 # Create a `tsd` object
 tsd_data <- generate_seasonal_data()
 
-Create a `tsd_burden_levels` object
+# Create a `tsd_burden_levels` object
 tsd_burden_levels <- seasonal_burden_levels(
   tsd = tsd_data
 )
