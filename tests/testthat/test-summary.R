@@ -19,5 +19,5 @@ test_that("Summary prints without errors", {
   tmp <- capture_output(summary(tsd_onset))
 
   # Verify that the summary printed without errors
-  expect_true(grepl(pattern = "Summary of seasonal_onset Object", x = tmp))
+  expect_true(grepl(pattern = "Summary of tsd_onset object", x = tmp))
 })

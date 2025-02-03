@@ -1,8 +1,8 @@
 ---
-title: "Automated Detection of Seasonal Epidemic Onset"
+title: "Seasonal Epidemic Onset"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Automated Detection of Seasonal Epidemic Onset}
+  %\VignetteIndexEntry{Seasonal Epidemic Onset}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
